@@ -9,6 +9,15 @@
                     @if ($inc->src_ip) · IP sumber <span class="font-mono text-gray-200">{{ $inc->src_ip }}</span> @endif
                     · {{ waktu_wib($inc->first_seen_at, 'd/m/Y H:i:s') }} s.d. {{ waktu_wib($inc->last_seen_at, 'H:i:s') }}
                 </p>
+                @if ($inc->campaign)
+                    <p class="mt-2">
+                        @can('lihat-kampanye')
+                            <a href="{{ route('campaigns.show', $inc->campaign) }}" wire:navigate class="inline-flex items-center gap-1 rounded-full bg-red-900/60 px-2.5 py-0.5 text-xs font-semibold text-red-200 ring-1 ring-inset ring-red-700 hover:underline">Bagian dari Kampanye #{{ $inc->campaign->id }} · {{ $inc->campaign->unit_count }} satuan · skor ×1,3</a>
+                        @else
+                            <span class="inline-flex rounded-full bg-red-900/60 px-2.5 py-0.5 text-xs font-semibold text-red-200 ring-1 ring-inset ring-red-700">Bagian dari serangan lintas satuan · skor ×1,3</span>
+                        @endcan
+                    </p>
+                @endif
             </div>
             <div class="flex items-center gap-3">
                 <div class="text-right">

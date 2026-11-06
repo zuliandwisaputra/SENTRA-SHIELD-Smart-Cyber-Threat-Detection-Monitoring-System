@@ -61,6 +61,7 @@ class IncidentCorrelator
         $incident->first_seen_at = $incident->first_seen_at->min($time);
         $incident->last_seen_at = $incident->last_seen_at->max($time);
         $this->scorer->apply($incident);
+        app(CampaignLinker::class)->link($incident);
 
         return $incident;
     }

@@ -22,6 +22,7 @@ new class extends Component
     $menu = [
         ['route' => 'dashboard', 'label' => 'Beranda Komando', 'ability' => 'lihat-dashboard'],
         ['route' => 'incidents.index', 'label' => 'Insiden', 'ability' => 'lihat-dashboard', 'active' => 'incidents.*'],
+        ['route' => 'campaigns.index', 'label' => 'Kampanye', 'ability' => 'lihat-kampanye', 'active' => 'campaigns.*'],
         ['route' => 'actions.index', 'label' => 'Tindakan', 'ability' => 'lihat-dashboard'],
         ['route' => 'approvals', 'label' => 'Antrean Persetujuan', 'ability' => 'putuskan-tindakan', 'badge' => $pendingApprovals],
         ['route' => 'units-agents', 'label' => 'Satuan & Agent', 'ability' => 'lihat-satuan-agent'],

@@ -6,6 +6,7 @@ use App\Enums\ActionStatus;
 use App\Enums\ActionType;
 use App\Enums\AgentStatus;
 use App\Models\Agent;
+use App\Models\Campaign;
 use App\Models\Incident;
 use App\Models\ResponseAction;
 use App\Models\Setting;
@@ -91,6 +92,61 @@ class ActionService
         });
 
         LiveUpdate::notify('tindakan', [$incident->unit_id]);
+
+        return $group;
+    }
+
+    /**
+     * Blokir serentak dari halaman Kampanye (FR-10): satu baris per agent aktif
+     * di setiap satuan terdampak, satu grup = satu keputusan Komandan.
+     * Satuan yang sudah punya usulan/blokir aktif untuk IP ini dilewati.
+     *
+     * @return string group_uuid
+     */
+    public function proposeCampaignBlock(Campaign $campaign, User $user, int $durationS): string
+    {
+        if (! $user->can('usul-tindakan') || ! $user->can('lihat-kampanye')) {
+            throw new AuthorizationException('Anda tidak berwenang mengusulkan blokir serentak.');
+        }
+        if ($durationS < 60 || $durationS > 86400) {
+            throw ValidationException::withMessages(['blokir' => 'Durasi blokir harus antara 1 menit dan 24 jam.']);
+        }
+
+        $incidents = $campaign->incidents()->get()->keyBy('unit_id');
+        $agents = Agent::query()
+            ->whereIn('unit_id', $incidents->keys())
+            ->whereIn('status', [AgentStatus::Online->value, AgentStatus::Buta->value])
+            ->orderBy('unit_id')->orderBy('hostname')
+            ->get()
+            ->reject(fn (Agent $a) => $this->openBlockExists($a->unit_id, $campaign->src_ip));
+        if ($agents->isEmpty()) {
+            throw ValidationException::withMessages(['blokir' => 'Semua satuan kampanye ini sudah punya usulan atau blokir aktif untuk IP ini.']);
+        }
+
+        $group = (string) Str::uuid();
+        DB::transaction(function () use ($agents, $incidents, $campaign, $user, $durationS, $group) {
+            foreach ($agents as $agent) {
+                ResponseAction::create([
+                    'group_uuid' => $group,
+                    'incident_id' => $incidents[$agent->unit_id]->id ?? null,
+                    'campaign_id' => $campaign->id,
+                    'type' => ActionType::BlockIp,
+                    'target_agent_id' => $agent->id,
+                    'params' => ['ip' => $campaign->src_ip, 'duration_s' => $durationS],
+                    'status' => ActionStatus::Diusulkan,
+                    'proposed_by' => $user->id,
+                ]);
+            }
+            $this->audit->record('tindakan_diusulkan', $campaign, [
+                'grup' => $group,
+                'ip' => $campaign->src_ip,
+                'durasi_s' => $durationS,
+                'agent' => $agents->pluck('hostname')->all(),
+                'serentak' => true,
+            ], $user);
+        });
+
+        LiveUpdate::notify('tindakan', $agents->pluck('unit_id')->all());
 
         return $group;
     }

@@ -6,6 +6,8 @@ use App\Livewire\Actions\ApprovalQueue;
 use App\Livewire\Admin\Rules;
 use App\Livewire\Admin\UnitsAgents;
 use App\Livewire\Admin\Users;
+use App\Livewire\Campaigns\CampaignList;
+use App\Livewire\Campaigns\CampaignShow;
 use App\Livewire\Dashboard\CommandDashboard;
 use App\Livewire\Incidents\IncidentList;
 use App\Livewire\Incidents\IncidentShow;
@@ -25,6 +27,13 @@ Route::middleware('auth')->group(function () {
         ->name('incidents.show');
     Route::get('event/{event}', [EventController::class, 'show'])
         ->name('events.show');
+
+    Route::get('kampanye', CampaignList::class)
+        ->middleware('can:lihat-kampanye')
+        ->name('campaigns.index');
+    Route::get('kampanye/{campaign}', CampaignShow::class)
+        ->middleware('can:lihat-kampanye')
+        ->name('campaigns.show');
 
     Route::get('tindakan', ActionHistory::class)
         ->middleware('can:lihat-dashboard')

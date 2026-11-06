@@ -16,7 +16,7 @@
             <article class="rounded-lg border border-sky-800 bg-gray-900 p-4" wire:key="usulan-{{ $group }}" data-testid="usulan">
                 <div class="flex items-start justify-between gap-3">
                     <div class="min-w-0">
-                        <div class="text-xs uppercase tracking-wide text-sky-300">Usulan {{ $first->type->label() }}</div>
+                        <div class="text-xs uppercase tracking-wide text-sky-300">Usulan {{ $first->type->label() }}{{ $first->campaign_id ? ' serentak · Kampanye #'.$first->campaign_id : '' }}</div>
                         <div class="mt-1 font-mono text-2xl font-bold text-gray-100 break-all">{{ $first->params['ip'] ?? '—' }}</div>
                     </div>
                     @if ($inc)
@@ -27,7 +27,9 @@
                     @endif
                 </div>
                 <dl class="mt-3 grid grid-cols-1 gap-x-4 gap-y-1 text-sm sm:grid-cols-2">
-                    @if ($inc)
+                    @if ($first->campaign_id)
+                        <div class="sm:col-span-2"><dt class="inline text-gray-500">Satuan:</dt> <dd class="inline text-gray-200">{{ $rows->map(fn ($r) => $r->targetAgent->unit->name)->unique()->join(', ') }}</dd></div>
+                    @elseif ($inc)
                         <div class="sm:col-span-2"><dt class="inline text-gray-500">Insiden:</dt> <dd class="inline"><a href="{{ route('incidents.show', $inc) }}" wire:navigate class="text-emerald-400 hover:underline">#{{ $inc->id }} {{ $inc->title }}</a></dd></div>
                     @endif
                     <div><dt class="inline text-gray-500">Durasi:</dt> <dd class="inline text-gray-200">{{ \App\Response\ActionService::DURATIONS[$first->params['duration_s'] ?? 0] ?? (($first->params['duration_s'] ?? 0).' detik') }}</dd></div>

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Incidents;
 
+use App\Detection\CampaignLinker;
 use App\Detection\RiskScorer;
 use App\Enums\IncidentStatus;
 use App\Enums\KillChainStage;
@@ -95,6 +96,7 @@ class IncidentShow extends Component
         $this->incident->update(['status' => $new]);
         $audit->record('status_insiden_diubah', $this->incident, ['dari' => $old->value, 'ke' => $new->value]);
         $scorer->refreshUnitAlert($this->incident->unit_id);
+        app(CampaignLinker::class)->refreshStatus($this->incident->campaign);
         LiveUpdate::notify('insiden', [$this->incident->unit_id]);
     }
 
