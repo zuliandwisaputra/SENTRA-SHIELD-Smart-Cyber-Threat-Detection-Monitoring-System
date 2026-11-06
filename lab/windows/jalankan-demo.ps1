@@ -80,8 +80,9 @@ Tunggu-Enter
 
 # 4:10 Uji Kesiapan
 Tulis-Judul '6. Uji Kesiapan'
-Tulis-Info 'Login sebagai analis, buka menu Uji Kesiapan, klik Jalankan.'
-Tulis-Info 'Matriks skenario terisi; angka cakupan dan rata-rata waktu deteksi tampil.'
+Tulis-Info 'Login sebagai analis, buka menu Uji Kesiapan, pilih Kodim Latihan A, klik Jalankan Uji Kesiapan.'
+Tulis-Info 'Uji berjalan sekitar 1,5 menit (termasuk jeda heartbeat 45 detik untuk skenario Sensor Buta).'
+Tulis-Info 'Matriks 11 skenario terisi; cakupan dan rata-rata waktu deteksi tampil. Tidak ada insiden baru.'
 Tunggu-Enter
 
 Tulis-Judul 'Demo selesai'

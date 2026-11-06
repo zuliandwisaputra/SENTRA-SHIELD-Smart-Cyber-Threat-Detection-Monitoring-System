@@ -16,7 +16,7 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 | 1a | Lab Docker, agent Python, API agent (F1, F2) | ✅ Selesai |
 | 1b | Mesin deteksi, Attack Story, skor (F3, F4, F5) | ✅ Selesai |
 | 1c | Dashboard live, respons berjenjang & blokir (F6, F7) | ✅ Selesai |
-| 2 | Uji Kesiapan, Sensor Buta, Kampanye, audit log, LAPSIT, Penjaga Situs (F8–F13) | ⏳ Berikutnya |
+| 2 | Uji Kesiapan, Sensor Buta, Kampanye, audit log, LAPSIT, Penjaga Situs (F8–F13) | 🔄 Sedang dikerjakan: F8, F9, F10 selesai |
 | 3 | Mode demo read-only, landing page (F15); Telegram (F14) bila sempat | ⏳ |
 
 ### Sudah jalan vs peta jalan
@@ -38,7 +38,10 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 | Skor yang bisa dijelaskan + rincian per komponen; severity dan Tingkat Siaga satuan otomatis | ✅ Sudah jalan (contoh PRD = 240 Kritis diuji otomatis) |
 | Daftar Insiden, Detail Insiden, Detail Event (setiap angka bisa diklik ke buktinya) | ✅ Sudah jalan |
 | Beranda Komando live: metrik, feed event, grafik event per menit, pohon satuan | ✅ Sudah jalan: WebSocket Reverb (event → tampil ±2 detik), cadangan polling 3 detik |
-| Kampanye lintas satuan, Sensor Buta, Uji Kesiapan, LAPSIT, Penjaga Situs, dan seterusnya | ⏳ Fase 2–3 |
+| Sensor Buta: heartbeat hilang > 30 detik → agent BUTA + insiden Tinggi; sumber log rutin yang diam → peringatan; agent hidup kembali tercatat | ✅ Sudah jalan di lab (alarm 39 detik setelah agent dimatikan) |
+| Kampanye lintas satuan: IP yang sama menyerang ≥ 2 satuan dalam 24 jam → skor ×1,3, blokir serentak sekali setuju | ✅ Sudah jalan di lab (penyerang terputus dari dua satuan 7,2 detik setelah disetujui dari HP) |
+| Uji Kesiapan: 11 skenario aman ke host sendiri (R01–R07, R09–R12), matriks hasil, cakupan, rata-rata waktu deteksi, riwayat | ✅ Sudah jalan di lab: cakupan 11/11, rata-rata 4,2 detik, tanpa insiden palsu |
+| Halaman audit log + Verifikasi Rantai, LAPSIT, Penjaga Situs, dan seterusnya | ⏳ Fase 2–3 |
 | Mode Latihan (replay), impor IOC offline | 🗺️ Peta jalan (di luar lingkup lomba) |
 
 ## Menjalankan lab demo (disarankan)

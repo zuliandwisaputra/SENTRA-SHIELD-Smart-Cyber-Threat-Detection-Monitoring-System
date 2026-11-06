@@ -51,7 +51,28 @@
                     </div>
                 </div>
 
-                <div class="mt-4 overflow-x-auto">
+                {{-- Layar kecil: kartu per skenario --}}
+                <ul class="mt-4 divide-y divide-gray-800 sm:hidden">
+                    @foreach ($results as $r)
+                        <li class="py-3" wire:key="hasil-hp-{{ $r->id }}">
+                            <div class="flex items-start justify-between gap-3">
+                                <span class="min-w-0 text-sm text-gray-200">{{ \App\Readiness\ScenarioCatalog::SCENARIOS[$r->scenario]['nama'] ?? $r->scenario }}</span>
+                                <span class="shrink-0">@include('livewire.readiness.partials.hasil')</span>
+                            </div>
+                            <div class="mt-1 text-xs text-gray-400">
+                                <span class="font-mono text-gray-300">{{ $r->rule->code }}</span> {{ $r->rule->name }} · {{ $r->rule->attack_id }} · <span class="whitespace-nowrap">{{ $r->agent?->hostname }}</span>
+                                @if ($r->ttd_ms !== null)
+                                    · <span class="whitespace-nowrap font-mono text-gray-200">{{ number_format($r->ttd_ms / 1000, 1, ',', '.') }} dtk</span>
+                                @endif
+                            </div>
+                            @if ($r->note)
+                                <div class="mt-0.5 text-xs text-gray-500">{{ $r->note }}</div>
+                            @endif
+                        </li>
+                    @endforeach
+                </ul>
+
+                <div class="mt-4 hidden overflow-x-auto sm:block">
                     <table class="min-w-full text-sm">
                         <thead class="text-left text-xs uppercase tracking-wide text-gray-500">
                             <tr><th class="py-2 pe-3">Skenario</th><th class="py-2 pe-3">Aturan &amp; ATT&amp;CK</th><th class="py-2 pe-3">Agent</th><th class="py-2 pe-3">Hasil</th><th class="py-2">Waktu deteksi</th></tr>
@@ -61,20 +82,14 @@
                                 <tr wire:key="hasil-{{ $r->id }}">
                                     <td class="py-2 pe-3 text-gray-200">{{ \App\Readiness\ScenarioCatalog::SCENARIOS[$r->scenario]['nama'] ?? $r->scenario }}</td>
                                     <td class="py-2 pe-3 text-xs text-gray-400"><span class="font-mono text-gray-300">{{ $r->rule->code }}</span> {{ $r->rule->name }}<br>{{ $r->rule->attack_id }} {{ $r->rule->attack_name }}</td>
-                                    <td class="py-2 pe-3 text-gray-300">{{ $r->agent?->hostname }}</td>
+                                    <td class="whitespace-nowrap py-2 pe-3 text-gray-300">{{ $r->agent?->hostname }}</td>
                                     <td class="py-2 pe-3">
-                                        @if ($r->detected)
-                                            <span class="inline-flex rounded-full bg-emerald-900/60 px-2 py-0.5 text-xs font-semibold text-emerald-300 ring-1 ring-inset ring-emerald-700">Terdeteksi</span>
-                                        @elseif ($running)
-                                            <span class="inline-flex rounded-full bg-sky-900/60 px-2 py-0.5 text-xs font-semibold text-sky-300 ring-1 ring-inset ring-sky-700">{{ $r->started_at ? 'Menunggu deteksi' : 'Menunggu' }}</span>
-                                        @else
-                                            <span class="inline-flex rounded-full bg-red-900/70 px-2 py-0.5 text-xs font-semibold text-red-300 ring-1 ring-inset ring-red-600">Lolos</span>
-                                        @endif
+                                        @include('livewire.readiness.partials.hasil')
                                         @if ($r->note)
                                             <div class="mt-0.5 text-xs text-gray-500">{{ $r->note }}</div>
                                         @endif
                                     </td>
-                                    <td class="py-2 font-mono text-gray-200">{{ $r->ttd_ms !== null ? number_format($r->ttd_ms / 1000, 1, ',', '.').' dtk' : '—' }}</td>
+                                    <td class="whitespace-nowrap py-2 font-mono text-gray-200">{{ $r->ttd_ms !== null ? number_format($r->ttd_ms / 1000, 1, ',', '.').' dtk' : '—' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
