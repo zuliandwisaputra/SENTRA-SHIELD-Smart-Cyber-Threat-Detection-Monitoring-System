@@ -5,6 +5,7 @@ namespace App\Livewire\Incidents;
 use App\Detection\RiskScorer;
 use App\Enums\IncidentStatus;
 use App\Enums\KillChainStage;
+use App\Models\AuditLog;
 use App\Models\Detection;
 use App\Models\Incident;
 use App\Models\ResponseAction;
@@ -125,7 +126,7 @@ class IncidentShow extends Component
 
         $evidence = Detection::query()
             ->where('incident_id', $incident->id)
-            ->with(['rule', 'event'])
+            ->with(['rule', 'event', 'agent'])
             ->when($this->ruleFilter !== '', fn ($q) => $q->whereHas('rule', fn ($r) => $r->where('code', $this->ruleFilter)))
             ->orderByDesc('id')
             ->paginate(15);
@@ -135,6 +136,7 @@ class IncidentShow extends Component
             'breakdown' => $breakdown,
             'stages' => $stages,
             'evidence' => $evidence,
+            'timeline' => AuditLog::query()->with('user')->where('subject_type', 'Incident')->where('subject_id', $incident->id)->orderBy('id')->get(),
             'canUpdateStatus' => auth()->user()->can('updateStatus', $incident),
             'canPropose' => auth()->user()->can('proposeAction', $incident) && $incident->src_ip !== null,
             'actions' => ResponseAction::query()->with(['targetAgent', 'proposer', 'approver'])

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Agent;
 
+use App\Detection\SensorWatch;
 use App\Enums\ActionStatus;
 use App\Enums\AgentStatus;
 use App\Http\Controllers\Controller;
@@ -15,7 +16,7 @@ use Illuminate\Http\Request;
  */
 class HeartbeatController extends Controller
 {
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request, SensorWatch $watch): JsonResponse
     {
         /** @var Agent $agent */
         $agent = $request->user();
@@ -30,6 +31,8 @@ class HeartbeatController extends Controller
         ]);
 
         $wasOnline = $agent->status === AgentStatus::Online;
+        $wasBlind = $agent->status === AgentStatus::Buta;
+        $lastHeartbeat = $agent->last_heartbeat_at;
         $agent->forceFill([
             'version' => $data['version'],
             'ip' => $data['ip'] ?? $agent->ip,
@@ -37,7 +40,9 @@ class HeartbeatController extends Controller
             'status' => AgentStatus::Online,
             'last_heartbeat_at' => now(),
         ])->save();
-        if (! $wasOnline) {
+        if ($wasBlind) {
+            $watch->agentRecovered($agent, $lastHeartbeat);
+        } elseif (! $wasOnline) {
             LiveUpdate::notify('agent', [$agent->unit_id]);
         }
 

@@ -65,6 +65,43 @@ class IncidentCorrelator
         return $incident;
     }
 
+    /**
+     * Aturan korelasi 3: deteksi R12 (Sensor Buta) membentuk insidennya sendiri
+     * per agent karena tidak punya IP penyerang. Agent yang mati lagi dalam 30
+     * menit masuk ke insiden yang sama.
+     */
+    public function attachAgent(Detection $detection): Incident
+    {
+        $time = $detection->detected_at;
+        $incident = Incident::query()->open()
+            ->where('agent_id', $detection->agent_id)
+            ->where('last_seen_at', '>=', DbTime::of($time->copy()->subMinutes(self::WINDOW_MINUTES)))
+            ->lockForUpdate()
+            ->orderByDesc('last_seen_at')
+            ->first();
+
+        if ($incident === null) {
+            $hostname = $detection->agent?->hostname ?? 'agent #'.$detection->agent_id;
+            $incident = Incident::create([
+                'unit_id' => $detection->unit_id,
+                'agent_id' => $detection->agent_id,
+                'src_ip' => null,
+                'title' => "Sensor Buta: {$hostname} berhenti mengirim heartbeat",
+                'severity' => Severity::Rendah,
+                'status' => IncidentStatus::Baru,
+                'first_seen_at' => $time,
+                'last_seen_at' => $time,
+            ]);
+        }
+
+        $detection->incident_id = $incident->id;
+        $detection->save();
+        $incident->last_seen_at = $incident->last_seen_at->max($time);
+        $this->scorer->apply($incident);
+
+        return $incident;
+    }
+
     private function title(Detection $detection): string
     {
         $unit = Unit::query()->whereKey($detection->unit_id)->value('name');

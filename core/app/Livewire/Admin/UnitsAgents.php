@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Detection\SensorWatch;
 use App\Enums\AgentStatus;
 use App\Enums\AssetType;
 use App\Enums\UnitLevel;
@@ -175,6 +176,7 @@ class UnitsAgents extends Component
             'units' => Unit::query()->orderBy('name')->get(),
             'agents' => Agent::query()->with('unit')->orderBy('unit_id')->orderBy('hostname')->get(),
             'canManage' => auth()->user()->can('kelola-sistem'),
+            'warnings' => app(SensorWatch::class)->sourceWarnings()->groupBy(fn ($w) => $w['agent']->id),
         ]);
     }
 }

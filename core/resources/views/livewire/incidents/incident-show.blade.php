@@ -56,7 +56,11 @@
                                 <div class="mt-1 text-xs text-gray-400 break-words">
                                     {{ waktu_wib(\Illuminate\Support\Carbon::parse($r->pertama), 'H:i:s') }} ·
                                     <button wire:click="filterRule('{{ $r->rule->code }}')" class="text-emerald-400 hover:underline">{{ $r->jumlah }} deteksi</button> ·
-                                    bukti pertama <a href="{{ route('events.show', $r->event_pertama) }}" class="whitespace-nowrap font-mono text-emerald-400 hover:underline">EV-{{ $r->event_pertama }}</a>
+                                    @if ($r->event_pertama)
+                                        bukti pertama <a href="{{ route('events.show', $r->event_pertama) }}" class="whitespace-nowrap font-mono text-emerald-400 hover:underline">EV-{{ $r->event_pertama }}</a>
+                                    @else
+                                        dideteksi Core dari heartbeat yang hilang
+                                    @endif
                                     @if ($r->atribusi === 'waktu' && $inc->src_ip)
                                         · <span class="rounded bg-yellow-900/60 px-1.5 py-0.5 text-yellow-300" title="Event FIM tidak memuat IP; dikaitkan ke insiden yang aktif pada waktu yang sama">Atribusi berdasarkan waktu</span>
                                     @endif
@@ -91,6 +95,21 @@
             @endisset
             <p class="mt-3 text-xs text-gray-500">Rendah 0–39 · Sedang 40–79 · Tinggi 80–149 · Kritis 150+</p>
         </section>
+
+        {{-- Garis waktu (audit log insiden) --}}
+        @if ($timeline->isNotEmpty())
+            <section class="min-w-0 lg:col-span-3 bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6" aria-labelledby="garis-waktu">
+                <h3 id="garis-waktu" class="text-base font-semibold text-gray-100">Garis waktu</h3>
+                <ol class="mt-3 space-y-1.5 text-sm">
+                    @foreach ($timeline as $log)
+                        <li class="flex gap-3" wire:key="tl-{{ $log->id }}">
+                            <span class="shrink-0 font-mono text-xs text-gray-500">{{ waktu_wib($log->created_at, 'H:i:s') }}</span>
+                            <span class="text-gray-200">{{ \App\Support\TimelineText::describe($log) }}</span>
+                        </li>
+                    @endforeach
+                </ol>
+            </section>
+        @endif
 
         {{-- Respons berjenjang --}}
         <section class="min-w-0 lg:col-span-3 bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6" aria-labelledby="tindakan">
@@ -178,10 +197,10 @@
                         @foreach ($evidence as $d)
                             <tr wire:key="det-{{ $d->id }}">
                                 <td class="py-2 pe-4 whitespace-nowrap text-gray-400">{{ waktu_wib($d->event?->occurred_at ?? $d->detected_at, 'H:i:s') }}</td>
-                                <td class="py-2 pe-4">@if ($d->event_id)<a href="{{ route('events.show', $d->event_id) }}" class="font-mono text-emerald-400 hover:underline">EV-{{ $d->event_id }}</a>@endif</td>
+                                <td class="py-2 pe-4">@if ($d->event_id)<a href="{{ route('events.show', $d->event_id) }}" class="font-mono text-emerald-400 hover:underline">EV-{{ $d->event_id }}</a>@else<span class="text-xs text-gray-500">Core</span>@endif</td>
                                 <td class="py-2 pe-4 whitespace-nowrap text-gray-300"><span class="font-mono text-xs">{{ $d->rule->code }}</span> {{ $d->rule->name }}</td>
-                                <td class="py-2 pe-4 text-gray-400">{{ $d->event?->source->label() }}</td>
-                                <td class="py-2 text-gray-300"><span class="line-clamp-2 break-all" title="{{ $d->event?->summary() }}">{{ $d->event?->summary() }}</span></td>
+                                <td class="py-2 pe-4 text-gray-400">{{ $d->event?->source->label() ?? 'Heartbeat' }}</td>
+                                <td class="py-2 text-gray-300"><span class="line-clamp-2 break-all" title="{{ $d->event?->summary() }}">{{ $d->event?->summary() ?? 'Heartbeat agent '.($d->agent?->hostname ?? '').' hilang lebih dari ambang' }}</span></td>
                             </tr>
                         @endforeach
                     </tbody>

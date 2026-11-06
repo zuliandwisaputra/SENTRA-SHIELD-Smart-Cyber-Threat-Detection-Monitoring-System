@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Dashboard;
 
+use App\Detection\SensorWatch;
 use App\Enums\AgentStatus;
 use App\Enums\Severity;
 use App\Models\Agent;
@@ -72,6 +73,7 @@ class CommandDashboard extends Component
             'feed' => $scope(SecurityEvent::query())->with(['unit', 'agent', 'detections.rule'])
                 ->where('is_test', false)->orderByDesc('id')->limit(12)->get(),
             'canSeeAgents' => $user->can('lihat-satuan-agent'),
+            'sourceWarnings' => app(SensorWatch::class)->sourceWarnings($units)->count(),
         ]);
     }
 

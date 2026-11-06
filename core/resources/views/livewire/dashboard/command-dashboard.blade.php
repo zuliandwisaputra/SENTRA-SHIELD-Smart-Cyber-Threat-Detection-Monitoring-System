@@ -31,6 +31,9 @@
                 <div class="mt-2 text-xs {{ $agentBlind > 0 ? 'text-red-300 font-semibold' : 'text-gray-500' }}">
                     {{ $agentBlind > 0 ? $agentBlind.' agent BUTA (sensor mati)' : 'Tidak ada agent buta' }}
                 </div>
+                @if ($sourceWarnings > 0)
+                    <div class="mt-1 text-xs font-semibold text-yellow-300">{{ $sourceWarnings }} peringatan sumber log</div>
+                @endif
             </{{ $agentTag }}>
 
             <a href="{{ route('actions.index', ['status' => 'aktif']) }}" wire:navigate class="block rounded-lg border border-gray-800 bg-gray-900 p-4 hover:border-gray-600" data-testid="kartu-blokir">

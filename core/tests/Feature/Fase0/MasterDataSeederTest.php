@@ -21,7 +21,7 @@ dataset('katalog_prd', [
     'R09' => ['R09', 'fim', 'pattern', 'T1505.003', 'persistensi', 60],
     'R10' => ['R10', 'fim/site', 'pattern', 'T1491.001', 'dampak', 50],
     'R11' => ['R11', 'modbus', 'pattern', 'T0855', 'dampak', 60],
-    'R12' => ['R12', 'heartbeat', 'threshold', 'T1562.001', 'pertahanan_dilumpuhkan', 40],
+    'R12' => ['R12', 'heartbeat', 'threshold', 'T1562.001', 'pertahanan_dilumpuhkan', 80],
     'R13' => ['R13', 'site', 'pattern', 'T1491.002', 'dampak', 45],
 ]);
 

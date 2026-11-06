@@ -109,7 +109,7 @@ class DetectionRuleSeeder extends Seeder
             ],
             [
                 'code' => 'R12', 'name' => 'Sensor Buta', 'source' => 'heartbeat',
-                'type' => RuleType::Threshold, 'stage' => KillChainStage::PertahananDilumpuhkan, 'weight' => 40,
+                'type' => RuleType::Threshold, 'stage' => KillChainStage::PertahananDilumpuhkan, 'weight' => 80,
                 'attack_id' => 'T1562.001', 'attack_name' => 'Disable or Modify Tools',
                 'config' => ['heartbeat_timeout_s' => 30, 'source_silence_s' => 300],
             ],

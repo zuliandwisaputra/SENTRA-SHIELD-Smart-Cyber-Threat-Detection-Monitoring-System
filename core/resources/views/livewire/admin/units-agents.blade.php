@@ -59,6 +59,9 @@
                                             <span class="text-xs text-gray-500">—</span>
                                         @endforelse
                                     </div>
+                                    @foreach ($warnings->get($agent->id, []) as $w)
+                                        <div class="mt-1 text-xs font-semibold text-yellow-300" title="{{ $w['detail'] }}">Peringatan: sumber {{ $w['source'] }} {{ $w['alasan'] }}</div>
+                                    @endforeach
                                 </td>
                                 <td class="py-2 pe-4">
                                     @if ($canManage)
