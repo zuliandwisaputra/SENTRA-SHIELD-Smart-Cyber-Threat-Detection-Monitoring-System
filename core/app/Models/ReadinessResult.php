@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['run_id', 'scenario', 'rule_id', 'detected', 'ttd_ms', 'started_at'])]
+#[Fillable(['run_id', 'scenario', 'rule_id', 'agent_id', 'detected', 'ttd_ms', 'note', 'started_at'])]
 class ReadinessResult extends Model
 {
     /** Simpan pecahan detik (kolom DATETIME(3)/(6)). */
@@ -24,6 +24,11 @@ class ReadinessResult extends Model
     public function run(): BelongsTo
     {
         return $this->belongsTo(ReadinessRun::class, 'run_id');
+    }
+
+    public function agent(): BelongsTo
+    {
+        return $this->belongsTo(Agent::class);
     }
 
     public function rule(): BelongsTo

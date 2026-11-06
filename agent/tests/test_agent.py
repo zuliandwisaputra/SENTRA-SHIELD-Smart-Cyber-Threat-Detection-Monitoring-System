@@ -12,6 +12,7 @@ import tempfile
 import threading
 import time
 import unittest
+import unittest.mock
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import sentra_agent as sa  # noqa: E402
@@ -321,7 +322,7 @@ class CommandTest(unittest.TestCase):
         self.exec.execute({"type": "block_ip", "params": {"ip": "2001:db8::66", "duration_s": 60}})
         self.assertIn("blocklist6", self.runner.calls[-1])
 
-    def test_run_test_not_yet_available(self):
+    def test_run_test_is_not_run_by_block_executor(self):
         ok, _ = self.exec.execute({"type": "run_test", "params": {"scenario": "R01"}})
         self.assertFalse(ok)
 
@@ -381,6 +382,7 @@ class FakeCore(http.server.BaseHTTPRequestHandler):
             s.setdefault("events", []).extend(body["events"])
             return self._send(200, {"accepted": len(body["events"])})
         if self.path.endswith("/heartbeat"):
+            body["_t"] = time.monotonic()
             s.setdefault("heartbeats", []).append(body)
             return self._send(200, {"pending_commands": 0})
         if "/commands/" in self.path:
@@ -391,6 +393,10 @@ class FakeCore(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         if not self._authorized():
             return self._send(401, {})
+        if "commands" in self.state:
+            done = {p for p, _ in self.state.get("results", [])}
+            commands = [c for c in self.state["commands"] if f"/api/v1/agent/commands/{c['id']}/result" not in done]
+            return self._send(200, {"commands": commands})
         commands = [] if self.state.get("results") else [
             {"id": 31, "type": "block_ip", "params": {"ip": "172.30.0.66", "duration_s": 3600}, "approved_by": "Komandan"},
             {"id": 32, "type": "exec", "params": {"cmd": "id"}},
@@ -449,6 +455,31 @@ class AgentFlowTest(unittest.TestCase):
         self.assertEqual(results["/api/v1/agent/commands/32/result"]["status"], "failed")
         self.assertNotIn(["id"], [c[-1:] for c in self.runner.calls], "perintah bebas tidak pernah dijalankan")
 
+    def test_run_test_pauses_heartbeat_without_holding_block_commands(self):
+        token = "ab" * 16
+        FakeCore.state["commands"] = [
+            {"id": 41, "type": "run_test", "params": {"run_id": 1, "token": token, "scenarios": ["R12"]}},
+            {"id": 42, "type": "block_ip", "params": {"ip": "172.30.0.66", "duration_s": 3600}},
+        ]
+        self.agent.readiness.SETTLE_S = 0
+        with unittest.mock.patch.object(sa, "HEARTBEAT_GAP_S", 0.6):
+            threading.Thread(target=self.agent.run, daemon=True).start()
+            self.assertTrue(self.wait_for(lambda: len(FakeCore.state.get("results", [])) == 2, timeout=5), "kedua hasil dilaporkan")
+
+        results = FakeCore.state["results"]
+        self.assertEqual(results[0][0], "/api/v1/agent/commands/42/result", "blokir tidak menunggu uji selesai")
+        report = results[1][1]
+        self.assertEqual(report["status"], "success")
+        self.assertEqual(report["details"]["skenario"]["R12"]["ok"], True)
+        self.assertIn("mulai", report["details"]["skenario"]["R12"])
+
+        beats = FakeCore.state["heartbeats"]
+        marked = [i for i, b in enumerate(beats) if "uji" in b]
+        self.assertEqual(len(marked), 1, "penanda R12 dikirim sekali")
+        self.assertEqual(beats[marked[0]]["uji"], {"token": token, "skenario": "R12"})
+        self.assertGreater(len(beats), marked[0] + 1, "heartbeat kembali setelah jeda")
+        self.assertGreaterEqual(beats[marked[0] + 1]["_t"] - beats[marked[0]]["_t"], 0.55, "heartbeat dijeda")
+
     def test_events_are_kept_when_token_is_revoked(self):
         FakeCore.state["revoked"] = True
         with open(os.path.join(self.tmp.name, "token"), "w") as fh:
@@ -458,6 +489,189 @@ class AgentFlowTest(unittest.TestCase):
 
         self.assertTrue(self.wait_for(lambda: self.agent.revoked))
         self.assertEqual(self.agent.queue.size(), 1, "event tetap di antrean lokal")
+
+
+class FakeAgentForReadiness:
+    def __init__(self, webroot, modbus_port=502):
+        self.cfg = {"sources": {"fim": {"paths": [webroot]}, "modbus": {"port": modbus_port}}}
+        self.heartbeat_wake = threading.Event()
+
+
+class CaptureHttp(http.server.BaseHTTPRequestHandler):
+    requests = []
+
+    def log_message(self, *args):
+        pass
+
+    def do_GET(self):
+        CaptureHttp.requests.append((self.path, self.headers.get("User-Agent")))
+        self.send_response(404 if "tidak-ada" in self.path else 200)
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+
+
+class ReadinessTest(unittest.TestCase):
+    TOKEN = "0123456789abcdef0123456789abcdef"
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.home = os.path.join(self.tmp.name, "index.php")
+        with open(self.home, "w") as fh:
+            fh.write("<?php echo 'Portal Kodim Latihan';")
+        self.cfg = dict(sa.DEFAULT_CONFIG["readiness"], homepage=[self.home])
+        self.ready = sa.Readiness(FakeAgentForReadiness(self.tmp.name), self.cfg)
+        self.ready.FIM_WAIT_S = 0.3
+        self.ready.SETTLE_S = 0
+
+    def activate(self):
+        self.ready.token, self.ready.until = self.TOKEN, time.monotonic() + 60
+
+    def ev(self, source, src_ip, port=None, **payload):
+        return {"source": source, "src_ip": src_ip, "dst_port": port, "payload": payload}
+
+    def test_nothing_is_marked_outside_a_test_window(self):
+        self.ready.token, self.ready.until = self.TOKEN, time.monotonic() - 1
+        self.assertFalse(self.ready.marks(self.ev("web", "127.0.0.1", user_agent=f"sqlmap SENTRA-UJI/{self.TOKEN}")))
+
+    def test_only_unspoofable_events_are_marked(self):
+        self.activate()
+        ua = f"sqlmap/1.8 SENTRA-UJI/{self.TOKEN}"
+        cases = [
+            (self.ev("web", "127.0.0.1", user_agent=ua), True),
+            (self.ev("web", "172.30.0.66", user_agent=ua), False),  # token disalin penyerang dari luar
+            (self.ev("web", "127.0.0.1", user_agent="sqlmap/1.8"), False),
+            (self.ev("ssh", "127.0.0.1", 22, user=sa.TEST_SSH_USER, outcome="failed"), True),
+            (self.ev("ssh", "172.30.0.66", 22, user=sa.TEST_SSH_USER, outcome="failed"), False),
+            (self.ev("ssh", "127.0.0.1", 22, user="root", outcome="failed"), False),
+            (self.ev("firewall", "127.0.0.1", 64995), True),
+            (self.ev("firewall", "127.0.0.1", 22), False),
+            (self.ev("firewall", "172.30.0.66", 64995), False),
+            (self.ev("modbus", "127.0.0.1", 502, address=31, function_code=6), True),
+            (self.ev("modbus", "172.30.0.66", 502, address=31, function_code=6), False),
+            (self.ev("modbus", "127.0.0.1", 502, address=40, function_code=6), False),
+            (self.ev("fim", None, path=f"/var/www/html/.sentra_uji_{self.TOKEN}.php", change="created"), True),
+            (self.ev("fim", None, path="/var/www/html/shell.php", change="created"), False),
+            (self.ev("fim", None, path="/var/www/html/.sentra_uji_ffffffffffffffffffffffffffffffff.php", change="created"), False),
+        ]
+        for event, expected in cases:
+            self.assertEqual(self.ready.marks(event), expected, event)
+
+    def test_run_rejects_bad_token_and_unknown_scenarios(self):
+        for params in (
+            {"token": "pendek", "scenarios": ["R01"]},
+            {"token": self.TOKEN.upper(), "scenarios": ["R01"]},
+            {"token": self.TOKEN, "scenarios": ["R01", "rm -rf /"]},
+            {"token": self.TOKEN, "scenarios": ["R08"]},
+            {"token": self.TOKEN, "scenarios": []},
+        ):
+            ok, _msg, details = self.ready.run(params)
+            self.assertFalse(ok, params)
+            self.assertEqual(details, {})
+        self.assertIsNone(self.ready.token)
+
+    def test_disabled_in_config(self):
+        self.ready.cfg["enabled"] = False
+        ok, msg, _ = self.ready.run({"token": self.TOKEN, "scenarios": ["R01"]})
+        self.assertFalse(ok)
+        self.assertIn("dinonaktifkan", msg)
+
+    def test_web_scenarios_carry_token_and_only_hit_loopback(self):
+        CaptureHttp.requests = []
+        server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), CaptureHttp)
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        self.addCleanup(server.server_close)
+        self.addCleanup(server.shutdown)
+        self.ready.cfg["web_url"] = f"http://127.0.0.1:{server.server_port}/"
+
+        ok, msg, details = self.ready.run({"token": self.TOKEN, "scenarios": ["R06", "R02", "R03", "R04", "R05"]})
+        self.assertTrue(ok, msg)
+        self.assertEqual(list(details["skenario"]), ["R02", "R03", "R04", "R05", "R06"], "urutan daftar tetap")
+        self.assertTrue(all(r["ok"] for r in details["skenario"].values()), details)
+        self.assertEqual(len(CaptureHttp.requests), 34)
+        self.assertTrue(all(ua.endswith(f"SENTRA-UJI/{self.TOKEN}") for _p, ua in CaptureHttp.requests))
+        self.assertTrue(CaptureHttp.requests[0][1].startswith("sqlmap/"))
+        self.assertEqual(sum(1 for p, _ in CaptureHttp.requests if "tidak-ada" in p), 30)
+        self.assertIsNone(self.ready.token, "jendela uji ditutup setelah selesai")
+
+        self.ready.cfg["web_url"] = "http://10.20.30.40/"
+        ok, _msg, details = self.ready.run({"token": self.TOKEN, "scenarios": ["R02"]})
+        self.assertFalse(details["skenario"]["R02"]["ok"])
+        self.assertIn("loopback", details["skenario"]["R02"]["pesan"])
+
+    def test_r01_connects_only_to_closed_test_ports(self):
+        self.activate()
+        ok, msg = self.ready.scenario_R01()
+        self.assertTrue(ok, msg)
+        self.assertEqual(list(sa.TEST_PORTS), list(range(64990, 65010)))
+
+    def test_r07_without_ssh_client_reports_failure(self):
+        self.activate()
+        with unittest.mock.patch("shutil.which", return_value=None):
+            ok, msg = self.ready.scenario_R07()
+        self.assertFalse(ok)
+        self.assertIn("ssh", msg)
+
+    def test_r09_test_file_is_marked_and_removed(self):
+        self.activate()
+        path = os.path.join(self.tmp.name, f".sentra_uji_{self.TOKEN}.php")
+        fim = sa.FimCollector(self.ready.agent, {"paths": [self.tmp.name], "max_sample_bytes": 4096})
+        worker = threading.Thread(target=self.ready.scenario_R09)
+        worker.start()
+        end = time.time() + 2
+        while not os.path.exists(path) and time.time() < end:
+            time.sleep(0.01)
+        event = fim._event(path, "created")
+        worker.join(3)
+        self.assertTrue(self.ready.marks(event))
+        self.assertIn("eval(", event["payload"]["sample"])
+        self.assertFalse(os.path.exists(path), "file uji dihapus")
+
+    def test_r10_touch_is_marked_but_real_change_is_not(self):
+        self.activate()
+        fim = sa.FimCollector(self.ready.agent, {"paths": [self.tmp.name]})
+        ok, msg = self.ready.scenario_R10()
+        self.assertTrue(ok, msg)
+        self.assertTrue(self.ready.marks(fim._event(self.home, "modified")), "isi sama: event uji")
+        with open(self.home, "w") as fh:
+            fh.write("<?php echo 'DIRETAS';")
+        self.assertFalse(self.ready.marks(fim._event(self.home, "modified")), "isi berubah: event asli")
+
+        os.remove(self.home)
+        ok, _ = self.ready.scenario_R10()
+        self.assertFalse(ok)
+
+    def test_r11_sends_single_register_write_to_local_plc(self):
+        received = []
+        srv = socket.socket()
+        srv.bind(("127.0.0.1", 0))
+        srv.listen(1)
+        self.addCleanup(srv.close)
+
+        def plc():
+            conn, _ = srv.accept()
+            data = conn.recv(64)
+            received.append(data)
+            conn.sendall(data)
+            conn.close()
+
+        threading.Thread(target=plc, daemon=True).start()
+        self.ready.agent.cfg["sources"]["modbus"]["port"] = srv.getsockname()[1]
+        ok, msg = self.ready.scenario_R11()
+        self.assertTrue(ok, msg)
+        write = sa.parse_modbus_write(received[0])
+        self.assertEqual((write["function_code"], write["address"]), (6, 31))
+
+    def test_collector_emit_marks_test_events(self):
+        self.activate()
+        queue = []
+        agent = FakeAgentForReadiness(self.tmp.name)
+        agent.readiness = self.ready
+        agent.queue = type("Q", (), {"put": lambda _self, e: queue.append(e)})()
+        collector = sa.WebCollector(agent, {"path": "/dev/null"})
+        collector.emit(self.ev("web", "127.0.0.1", user_agent=f"x SENTRA-UJI/{self.TOKEN}"))
+        collector.emit(self.ev("web", "172.30.0.66", user_agent=f"x SENTRA-UJI/{self.TOKEN}"))
+        self.assertEqual([e["is_test"] for e in queue], [True, False])
 
 
 if __name__ == "__main__":

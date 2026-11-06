@@ -24,6 +24,7 @@ new class extends Component
         ['route' => 'incidents.index', 'label' => 'Insiden', 'ability' => 'lihat-dashboard', 'active' => 'incidents.*'],
         ['route' => 'campaigns.index', 'label' => 'Kampanye', 'ability' => 'lihat-kampanye', 'active' => 'campaigns.*'],
         ['route' => 'actions.index', 'label' => 'Tindakan', 'ability' => 'lihat-dashboard'],
+        ['route' => 'readiness', 'label' => 'Uji Kesiapan', 'ability' => 'lihat-uji-kesiapan'],
         ['route' => 'approvals', 'label' => 'Antrean Persetujuan', 'ability' => 'putuskan-tindakan', 'badge' => $pendingApprovals],
         ['route' => 'units-agents', 'label' => 'Satuan & Agent', 'ability' => 'lihat-satuan-agent'],
         ['route' => 'rules', 'label' => 'Aturan Deteksi', 'ability' => 'kelola-sistem'],

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['started_by', 'agent_id', 'status', 'coverage', 'avg_ttd_ms', 'started_at', 'finished_at'])]
+#[Fillable(['started_by', 'unit_id', 'agent_id', 'status', 'coverage', 'avg_ttd_ms', 'started_at', 'finished_at'])]
 class ReadinessRun extends Model
 {
     /** Simpan pecahan detik (kolom DATETIME(3)/(6)). */
@@ -28,6 +28,11 @@ class ReadinessRun extends Model
     public function starter(): BelongsTo
     {
         return $this->belongsTo(User::class, 'started_by');
+    }
+
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class);
     }
 
     public function agent(): BelongsTo

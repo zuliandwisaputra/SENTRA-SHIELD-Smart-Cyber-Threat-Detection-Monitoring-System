@@ -11,6 +11,7 @@ use App\Models\Incident;
 use App\Models\ResponseAction;
 use App\Models\Setting;
 use App\Models\User;
+use App\Readiness\ReadinessService;
 use App\Services\AuditLogger;
 use App\Support\LiveUpdate;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -241,6 +242,9 @@ class ActionService
     /** Dipanggil setelah agent melaporkan hasil sebuah perintah. */
     public function afterResult(ResponseAction $action): void
     {
+        if ($action->type === ActionType::RunTest) {
+            app(ReadinessService::class)->onAgentResult($action);
+        }
         $rollbackOf = $action->params['rollback_of'] ?? null;
         if ($action->type === ActionType::UnblockIp && $action->status === ActionStatus::Dieksekusi && $rollbackOf) {
             $original = ResponseAction::query()->find($rollbackOf);

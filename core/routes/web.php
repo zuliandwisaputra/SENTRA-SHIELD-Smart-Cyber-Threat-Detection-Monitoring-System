@@ -11,6 +11,7 @@ use App\Livewire\Campaigns\CampaignShow;
 use App\Livewire\Dashboard\CommandDashboard;
 use App\Livewire\Incidents\IncidentList;
 use App\Livewire\Incidents\IncidentShow;
+use App\Livewire\Readiness\ReadinessPage;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/beranda');
@@ -34,6 +35,10 @@ Route::middleware('auth')->group(function () {
     Route::get('kampanye/{campaign}', CampaignShow::class)
         ->middleware('can:lihat-kampanye')
         ->name('campaigns.show');
+
+    Route::get('uji-kesiapan', ReadinessPage::class)
+        ->middleware('can:lihat-uji-kesiapan')
+        ->name('readiness');
 
     Route::get('tindakan', ActionHistory::class)
         ->middleware('can:lihat-dashboard')

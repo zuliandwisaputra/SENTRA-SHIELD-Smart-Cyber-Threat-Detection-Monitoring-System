@@ -44,6 +44,14 @@ VERSION = "0.1.0"
 LOG = logging.getLogger("sentra-agent")
 
 ALLOWED_COMMANDS = ("block_ip", "unblock_ip", "run_test")
+
+# Uji Kesiapan (FR-08): daftar tetap skenario, semuanya ke host ini sendiri.
+READINESS_SCENARIOS = ("R01", "R02", "R03", "R04", "R05", "R06", "R07", "R09", "R10", "R11", "R12")
+TEST_PORTS = range(64990, 65010)
+TEST_SSH_USER = "sentra-uji"
+# Lebih lama dari batas R12 (30 dtk) + satu putaran pemeriksaan Core (10 dtk).
+HEARTBEAT_GAP_S = 45
+LOOPBACK = ("127.0.0.1", "::1")
 NFT_TABLE = "sentra"
 NFT_BIN = "nft"
 
@@ -67,6 +75,12 @@ DEFAULT_CONFIG = {
         "modbus": {"enabled": False, "port": 502},
     },
     "blocking": {"enabled": True, "min_duration_s": 60, "max_duration_s": 86400},
+    "readiness": {
+        "enabled": True,
+        "web_url": "http://127.0.0.1/",
+        "homepage": ["/var/www/html/index.php", "/var/www/html/index.html"],
+        "modbus_register": 31,
+    },
 }
 
 
@@ -387,6 +401,12 @@ class Nft:
             f'burst {int(rate_per_s) * 2} packets log group {int(nflog_group)} prefix "SENTRA_CLOSED"'
             if with_log else "# log port tertutup memakai cadangan raw socket"
         )
+        # Uji Kesiapan R01: hanya port uji di loopback (tidak bisa dipicu dari luar host).
+        test_rule = (
+            f'iif "lo" tcp dport {TEST_PORTS.start}-{TEST_PORTS.stop - 1} tcp flags & (syn | ack) == syn '
+            f'log group {int(nflog_group)} prefix "SENTRA_TEST"'
+            if with_log else "# port uji loopback dicatat lewat raw socket"
+        )
         script = f"""
 table inet {NFT_TABLE} {{
     set blocklist4 {{ type ipv4_addr; flags timeout; }}
@@ -399,6 +419,7 @@ table inet {NFT_TABLE} {{
     chain input {{
         ip saddr @blocklist4 counter drop
         ip6 saddr @blocklist6 counter drop
+        {test_rule}
         iif "lo" accept
         ct state established,related accept
         {log_rule}
@@ -521,6 +542,7 @@ class Collector(threading.Thread):
         self.last_event_at: str | None = None
 
     def emit(self, event: dict) -> None:
+        event["is_test"] = bool(event.get("is_test")) or self.agent.readiness.marks(event)
         self.agent.queue.put(event)
         self.last_event_at = utc_now_iso()
 
@@ -697,7 +719,13 @@ class FirewallCollector(Collector):
                 packet, addr = sock.recvfrom(65535)
             except socket.timeout:
                 continue
-            if addr[0] == "lo" or addr[2] == self.PACKET_OUTGOING:
+            if addr[2] == self.PACKET_OUTGOING:
+                continue
+            if addr[0] == "lo":
+                info = parse_ipv4(packet)
+                if (info and info.get("protocol") == "tcp" and info.get("dst_port") in TEST_PORTS
+                        and info.get("tcp_flags", 0) & (TCP_SYN | TCP_ACK) == TCP_SYN):
+                    self.emit_closed_port(info, "SENTRA_TEST_RAW")
                 continue
             info = closed_port_syn(packet, open_ports, self.agent.blocked_ips())
             if info and limiter.allow():
@@ -853,6 +881,183 @@ COLLECTORS = {
 # --------------------------------------------------------------------------
 # Perintah (daftar tetap)
 # --------------------------------------------------------------------------
+class Readiness:
+    """Uji Kesiapan (FR-08): skenario serangan aman ke host ini sendiri.
+
+    Event hasil uji ditandai is_test HANYA bila tidak mungkin dipalsukan dari
+    luar host: berasal dari loopback, memuat token acak dari Core yang hanya
+    berlaku selama uji, atau (R10) isi file terbukti tidak berubah. Target uji
+    selalu loopback dari konfigurasi lokal, tidak pernah dari parameter Core.
+    """
+
+    FIM_WAIT_S = 5.0  # FIM memindai tiap 2 detik; beri waktu perubahan tercatat
+    SETTLE_S = 6.0  # beri waktu batch event terakhir terkirim sebelum jendela uji ditutup
+
+    def __init__(self, agent: "Agent", cfg: dict):
+        self.agent = agent
+        self.cfg = cfg
+        self.token: str | None = None
+        self.until = 0.0
+        self.touched: dict[str, str] = {}
+        self._marker: str | None = None
+        self.gap_done = threading.Event()
+
+    def active(self) -> bool:
+        return self.token is not None and time.monotonic() < self.until
+
+    def marks(self, event: dict) -> bool:
+        if not self.active():
+            return False
+        p = event.get("payload") or {}
+        loop = event.get("src_ip") in LOOPBACK
+        source = event.get("source")
+        if source == "web":
+            return loop and self.token in str(p.get("user_agent") or "")
+        if source == "ssh":
+            return loop and p.get("user") == TEST_SSH_USER
+        if source == "firewall":
+            return loop and event.get("dst_port") in TEST_PORTS
+        if source == "fim":
+            path = str(p.get("path") or "")
+            if os.path.basename(path).startswith(f".sentra_uji_{self.token}"):
+                return True
+            before = self.touched.get(path)
+            return before is not None and p.get("change") == "modified" and p.get("sha256") == before
+        if source == "modbus":
+            return loop and int(p.get("address", -1)) == int(self.cfg.get("modbus_register", 31))
+        return False
+
+    def take_marker(self) -> str | None:
+        marker, self._marker = self._marker, None
+        return marker
+
+    def run(self, params: dict) -> tuple[bool, str, dict]:
+        if not self.cfg.get("enabled", True):
+            return False, "Uji Kesiapan dinonaktifkan di konfigurasi agent", {}
+        token = str(params.get("token", ""))
+        requested = list(params.get("scenarios") or [])
+        if not re.fullmatch(r"[0-9a-f]{32}", token):
+            return False, "token uji tidak valid", {}
+        unknown = [s for s in requested if s not in READINESS_SCENARIOS]
+        if unknown or not requested:
+            return False, f"skenario di luar daftar tetap: {unknown}", {}
+
+        self.token, self.until = token, time.monotonic() + 300
+        report: dict[str, dict] = {}
+        for code in [s for s in READINESS_SCENARIOS if s in requested]:
+            started = utc_now_iso()
+            try:
+                ok, message = getattr(self, f"scenario_{code}")()
+            except Exception as exc:  # satu skenario gagal tidak menghentikan yang lain
+                ok, message = False, f"{type(exc).__name__}: {exc}"
+            report[code] = {"mulai": started, "ok": ok, "pesan": message}
+            LOG.info("uji kesiapan %s: %s", code, message)
+        # Beri waktu FIM/batch mengirim event terakhir, lalu tutup jendela uji.
+        time.sleep(self.SETTLE_S)
+        self.token, self.touched = None, {}
+        done = sum(1 for r in report.values() if r["ok"])
+        return True, f"{done}/{len(report)} skenario dijalankan", {"skenario": report}
+
+    # -- skenario (semuanya ke host ini sendiri) -------------------------
+    def scenario_R01(self) -> tuple[bool, str]:
+        for port in TEST_PORTS:
+            try:
+                socket.create_connection(("127.0.0.1", port), timeout=0.3).close()
+            except OSError:
+                pass  # diharapkan ditolak: port uji tertutup
+        return True, f"{len(TEST_PORTS)} koneksi ke port uji tertutup"
+
+    def _http(self, path: str, user_agent: str) -> None:
+        url = urllib.parse.urljoin(self.cfg.get("web_url", "http://127.0.0.1/"), path)
+        if urllib.parse.urlparse(url).hostname not in ("127.0.0.1", "localhost", "::1"):
+            raise ValueError("web_url uji harus loopback")
+        req = urllib.request.Request(url, headers={"User-Agent": f"{user_agent} SENTRA-UJI/{self.token}"})
+        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+        try:
+            opener.open(req, timeout=3).read(1024)
+        except urllib.error.HTTPError:
+            pass  # 404/500 tetap tercatat di log akses
+
+    def scenario_R02(self) -> tuple[bool, str]:
+        self._http("/", "sqlmap/1.8")
+        return True, "request dengan user agent sqlmap"
+
+    def scenario_R03(self) -> tuple[bool, str]:
+        for i in range(30):
+            self._http(f"/sentra-uji-tidak-ada-{i}", "Mozilla/5.0")
+        return True, "30 request ke halaman yang tidak ada"
+
+    def scenario_R04(self) -> tuple[bool, str]:
+        self._http("/?id=1%27%20OR%20%271%27%3D%271", "Mozilla/5.0")
+        return True, "request berpola SQL injection"
+
+    def scenario_R05(self) -> tuple[bool, str]:
+        self._http("/?q=%3Cscript%3Ealert(1)%3C%2Fscript%3E", "Mozilla/5.0")
+        return True, "request berpola XSS"
+
+    def scenario_R06(self) -> tuple[bool, str]:
+        self._http("/?file=..%2F..%2F..%2F..%2Fetc%2Fpasswd", "Mozilla/5.0")
+        return True, "request berpola path traversal"
+
+    def scenario_R07(self) -> tuple[bool, str]:
+        import shutil
+        ssh = shutil.which("ssh")
+        if ssh is None:
+            return False, "klien ssh tidak tersedia di host ini"
+        env = dict(os.environ, SSH_ASKPASS="/bin/echo", SSH_ASKPASS_REQUIRE="force")
+        args = [ssh, "-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null",
+                "-o", "PreferredAuthentications=password", "-o", "PubkeyAuthentication=no",
+                "-o", "NumberOfPasswordPrompts=1", "-o", "ConnectTimeout=3", "-o", "LogLevel=QUIET",
+                f"{TEST_SSH_USER}@127.0.0.1", "true"]
+        threads = [threading.Thread(target=subprocess.run, args=(args,),
+                                    kwargs={"env": env, "stdin": subprocess.DEVNULL, "capture_output": True, "timeout": 15})
+                   for _ in range(10)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join(20)
+        return True, "10 login SSH gagal ke akun uji (kata sandi salah)"
+
+    def _webroot(self) -> str:
+        paths = self.agent.cfg["sources"].get("fim", {}).get("paths") or ["/var/www/html"]
+        return paths[0]
+
+    def scenario_R09(self) -> tuple[bool, str]:
+        path = os.path.join(self._webroot(), f".sentra_uji_{self.token}.php")
+        with open(path, "w", encoding="utf-8") as fh:
+            fh.write("<?php /* SENTRA SHIELD Uji Kesiapan - bukan webshell. Pola uji: eval( base64_decode( */ ?>\n")
+        time.sleep(self.FIM_WAIT_S)
+        os.remove(path)
+        return True, "file uji berpola webshell dibuat lalu dihapus"
+
+    def scenario_R10(self) -> tuple[bool, str]:
+        for path in self.cfg.get("homepage") or []:
+            if os.path.isfile(path):
+                with open(path, "rb") as fh:
+                    self.touched[path] = hashlib.sha256(fh.read()).hexdigest()
+                os.utime(path, None)  # hanya waktu modifikasi; isi tidak diubah
+                time.sleep(self.FIM_WAIT_S)
+                return True, f"metadata {path} diubah tanpa mengubah isi"
+        return False, "halaman utama tidak ditemukan"
+
+    def scenario_R11(self) -> tuple[bool, str]:
+        register = int(self.cfg.get("modbus_register", 31))
+        port = int(self.agent.cfg["sources"].get("modbus", {}).get("port", 502))
+        frame = struct.pack("!HHHBBHH", 0x5E07, 0, 6, 1, 6, register, 0)
+        with socket.create_connection(("127.0.0.1", port), timeout=3) as conn:
+            conn.sendall(frame)
+            conn.recv(64)
+        return True, f"tulis register uji {register} (FC6) ke PLC lokal"
+
+    def scenario_R12(self) -> tuple[bool, str]:
+        self.gap_done.clear()
+        self._marker = self.token
+        self.agent.heartbeat_wake.set()
+        if not self.gap_done.wait(HEARTBEAT_GAP_S + 30):
+            return False, "jeda heartbeat tidak terlaksana"
+        return True, f"heartbeat dijeda {HEARTBEAT_GAP_S} detik"
+
+
 class CommandExecutor:
     def __init__(self, nft: Nft, blocking_cfg: dict):
         self.nft = nft
@@ -885,8 +1090,8 @@ class CommandExecutor:
             if code != 0 and "No such file" not in out and "does not exist" not in out:
                 return False, f"nft gagal: {out}"
             return True, f"blokir IP {ip} dibuka"
-        # run_test: skenario Uji Kesiapan ditambahkan di Fase 2.
-        return False, "skenario uji belum tersedia di versi agent ini"
+        # run_test dijalankan Agent lewat Readiness (thread sendiri), bukan di sini.
+        return False, "run_test hanya dijalankan modul Uji Kesiapan"
 
 
 # --------------------------------------------------------------------------
@@ -907,6 +1112,9 @@ class Agent:
         self._blocked: dict[str, float] = {}
         self._blocked_lock = threading.Lock()
         self.hostname = cfg.get("hostname") or socket.gethostname()
+        self.readiness = Readiness(self, cfg.get("readiness", {}))
+        self.heartbeat_wake = threading.Event()
+        self.running_tests: set = set()
 
     # -- pendaftaran ------------------------------------------------------
     @property
@@ -1001,18 +1209,33 @@ class Agent:
 
     def heartbeat_loop(self) -> None:
         while True:
+            marker = self.readiness.take_marker()
+            body = {"version": VERSION, "ip": self.local_ip(), "sources": self.source_status()}
+            if marker:
+                body["uji"] = {"token": marker, "skenario": "R12"}
+            pause = 0.0
             try:
-                self.client.request("POST", "/heartbeat", {
-                    "version": VERSION,
-                    "ip": self.local_ip(),
-                    "sources": self.source_status(),
-                })
+                self.client.request("POST", "/heartbeat", body)
                 self.revoked = False
                 wait = float(self.cfg["heartbeat_interval_s"])
+                if marker:
+                    pause = float(HEARTBEAT_GAP_S)  # skenario R12: jeda heartbeat
             except CoreError as exc:
                 wait = min(float(self.cfg["heartbeat_interval_s"]), self.handle_core_error(exc, "heartbeat"))
-            if self.stopping.wait(wait):
-                return
+            if pause:
+                stopped = self.stopping.wait(pause)
+                self.readiness.gap_done.set()
+                if stopped:
+                    return
+                continue
+            # Tunggu interval, tetapi bangun lebih cepat bila uji R12 meminta.
+            self.heartbeat_wake.clear()
+            deadline = time.monotonic() + wait
+            while time.monotonic() < deadline:
+                if self.stopping.is_set():
+                    return
+                if self.heartbeat_wake.wait(min(0.5, max(0.0, deadline - time.monotonic()))):
+                    break
 
     def command_loop(self) -> None:
         while not self.stopping.wait(float(self.cfg["command_poll_s"])):
@@ -1026,6 +1249,12 @@ class Agent:
 
     def process_command(self, command: dict) -> None:
         cid = command.get("id")
+        if command.get("type") == "run_test" and cid not in self.done_commands:
+            # Uji Kesiapan berjalan di thread sendiri agar perintah blokir tidak tertahan.
+            if cid not in self.running_tests:
+                self.running_tests.add(cid)
+                threading.Thread(target=self._run_test_command, args=(command,), daemon=True, name=f"uji-{cid}").start()
+            return
         if cid in self.done_commands:
             result = self.done_commands[cid]
         else:
@@ -1042,6 +1271,16 @@ class Agent:
             self.client.request("POST", f"/commands/{int(cid)}/result", result)
         except (CoreError, TypeError, ValueError) as exc:
             LOG.warning("gagal melaporkan hasil perintah #%s: %s", cid, exc)
+
+    def _run_test_command(self, command: dict) -> None:
+        cid = command.get("id")
+        started = utc_now_iso()
+        ok, message, details = self.readiness.run(command.get("params") or {})
+        LOG.info("perintah #%s run_test: %s", cid, message)
+        self.done_commands[cid] = {"status": "success" if ok else "failed", "message": message,
+                                   "executed_at": started, "details": details}
+        self.running_tests.discard(cid)
+        self.process_command(command)
 
     def remember_block(self, command: dict) -> None:
         """Catat IP yang diblokir agar cadangan raw socket tidak mencatat ulang paketnya."""

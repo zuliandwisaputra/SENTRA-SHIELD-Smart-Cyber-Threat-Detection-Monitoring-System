@@ -8,10 +8,12 @@ use App\Models\Agent;
 use App\Models\Detection;
 use App\Models\DetectionRule;
 use App\Models\Incident;
+use App\Readiness\ReadinessService;
 use App\Services\AuditLogger;
 use App\Support\DbTime;
 use App\Support\LiveUpdate;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -53,7 +55,29 @@ class SensorWatch
             ->where('last_heartbeat_at', '<', DbTime::of(now()->subSeconds($timeout)))
             ->get();
 
+        $count = 0;
         foreach ($silent as $agent) {
+            // Jeda heartbeat bagian dari Uji Kesiapan (R12): catat sebagai deteksi
+            // uji (tanpa insiden, agent tidak dinyatakan BUTA).
+            $gap = Cache::get(ReadinessService::gapKey($agent->id));
+            if ($gap !== null) {
+                if ($gap !== 'tercatat') {
+                    Detection::create([
+                        'rule_id' => $rule->id,
+                        'agent_id' => $agent->id,
+                        'unit_id' => $agent->unit_id,
+                        'attack_id' => $rule->attack_id,
+                        'weight' => $rule->weight,
+                        'attribution' => DetectionAttribution::Agent,
+                        'detected_at' => now(),
+                    ]);
+                    Cache::put(ReadinessService::gapKey($agent->id), 'tercatat', now()->addSeconds(120));
+                }
+
+                continue;
+            }
+
+            $count++;
             DB::transaction(function () use ($agent, $rule) {
                 $agent->update(['status' => AgentStatus::Buta]);
                 $detection = Detection::create([
@@ -77,7 +101,7 @@ class SensorWatch
             LiveUpdate::notify('agent', [$agent->unit_id]);
         }
 
-        return $silent->count();
+        return $count;
     }
 
     /** Dipanggil saat agent BUTA kembali mengirim heartbeat. */
