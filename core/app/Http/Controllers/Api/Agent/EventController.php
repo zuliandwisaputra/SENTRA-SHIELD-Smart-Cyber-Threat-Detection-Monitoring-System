@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Jobs\ProcessEvents;
 use App\Models\Agent;
 use App\Services\EventIngestor;
+use App\Support\LiveUpdate;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -35,6 +36,7 @@ class EventController extends Controller
 
         $ids = $ingestor->ingest($agent, $data['events']);
         ProcessEvents::dispatch($ids);
+        LiveUpdate::notify('event', [$agent->unit_id]);
 
         return response()->json(['accepted' => count($ids)]);
     }

@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Detection\DetectionEngine;
+use App\Support\LiveUpdate;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
@@ -21,6 +22,9 @@ class ProcessEvents implements ShouldQueue
 
     public function handle(DetectionEngine $engine): void
     {
-        $engine->processIds($this->eventIds);
+        $detections = $engine->processIds($this->eventIds);
+        if ($detections !== []) {
+            LiveUpdate::notify('insiden', array_map(fn ($d) => $d->unit_id, $detections));
+        }
     }
 }

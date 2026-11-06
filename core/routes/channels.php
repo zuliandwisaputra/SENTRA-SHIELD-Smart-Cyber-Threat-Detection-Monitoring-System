@@ -1,7 +1,8 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Broadcast;
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});
+// Sinyal pembaruan dashboard live. Isinya hanya jenis perubahan; data diambil
+// ulang per pengguna sesuai satuannya.
+Broadcast::channel('sentra.dashboard', fn (User $user) => $user->can('lihat-dashboard'));

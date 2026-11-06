@@ -7,6 +7,7 @@ use App\Enums\ActionType;
 use App\Http\Controllers\Controller;
 use App\Models\Agent;
 use App\Models\ResponseAction;
+use App\Response\ActionService;
 use App\Services\AuditLogger;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -42,7 +43,7 @@ class CommandController extends Controller
         return response()->json(['commands' => $commands]);
     }
 
-    public function result(Request $request, int $id, AuditLogger $audit): JsonResponse
+    public function result(Request $request, int $id, AuditLogger $audit, ActionService $actions): JsonResponse
     {
         /** @var Agent $agent */
         $agent = $request->user();
@@ -84,6 +85,7 @@ class CommandController extends Controller
             'type' => $action->type->value,
             'message' => $data['message'] ?? null,
         ]);
+        $actions->afterResult($action);
 
         return response()->json(['status' => $action->status->value]);
     }

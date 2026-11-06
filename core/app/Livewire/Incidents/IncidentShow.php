@@ -8,6 +8,7 @@ use App\Enums\KillChainStage;
 use App\Models\Detection;
 use App\Models\Incident;
 use App\Services\AuditLogger;
+use App\Support\LiveUpdate;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -43,6 +44,7 @@ class IncidentShow extends Component
         $this->incident->update(['status' => $new]);
         $audit->record('status_insiden_diubah', $this->incident, ['dari' => $old->value, 'ke' => $new->value]);
         $scorer->refreshUnitAlert($this->incident->unit_id);
+        LiveUpdate::notify('insiden', [$this->incident->unit_id]);
     }
 
     public function filterRule(string $code): void

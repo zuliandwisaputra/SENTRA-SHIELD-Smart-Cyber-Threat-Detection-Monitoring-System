@@ -1,4 +1,10 @@
 <?php
 
-// Perintah artisan SENTRA ada di app/Console/Commands (didaftarkan otomatis).
-// Jadwal (Sensor Buta, Penjaga Situs, kedaluwarsa blokir) ditambahkan di fase terkait.
+use App\Response\ActionService;
+use Illuminate\Support\Facades\Schedule;
+
+// Blokir yang durasinya habis -> Kedaluwarsa (agent sudah membukanya lewat timeout nftables).
+Schedule::call(fn () => app(ActionService::class)->expireBlocks())
+    ->name('sentra:kedaluwarsa-blokir')
+    ->everyTenSeconds()
+    ->withoutOverlapping();

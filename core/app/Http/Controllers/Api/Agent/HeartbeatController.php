@@ -6,6 +6,7 @@ use App\Enums\ActionStatus;
 use App\Enums\AgentStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Agent;
+use App\Support\LiveUpdate;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -28,6 +29,7 @@ class HeartbeatController extends Controller
             'sources.*.last_event_at' => ['nullable', 'date'],
         ]);
 
+        $wasOnline = $agent->status === AgentStatus::Online;
         $agent->forceFill([
             'version' => $data['version'],
             'ip' => $data['ip'] ?? $agent->ip,
@@ -35,6 +37,9 @@ class HeartbeatController extends Controller
             'status' => AgentStatus::Online,
             'last_heartbeat_at' => now(),
         ])->save();
+        if (! $wasOnline) {
+            LiveUpdate::notify('agent', [$agent->unit_id]);
+        }
 
         return response()->json([
             'server_time' => now()->toIso8601ZuluString('millisecond'),

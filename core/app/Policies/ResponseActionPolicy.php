@@ -21,6 +21,12 @@ class ResponseActionPolicy
             && $action->proposed_by !== $user->id;
     }
 
+    /** Pengusul membatalkan usulannya sendiri selama belum diputuskan. */
+    public function cancel(User $user, ResponseAction $action): bool
+    {
+        return $action->status === ActionStatus::Diusulkan && $action->proposed_by === $user->id;
+    }
+
     /** Rollback (buka blokir) hanya oleh Komandan untuk blokir yang sudah dieksekusi. */
     public function rollback(User $user, ResponseAction $action): bool
     {
