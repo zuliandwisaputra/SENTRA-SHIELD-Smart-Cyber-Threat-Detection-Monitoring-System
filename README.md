@@ -17,23 +17,23 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 | 1b | Mesin deteksi, Attack Story, skor (F3, F4, F5) | ✅ Selesai |
 | 1c | Dashboard live, respons berjenjang & blokir (F6, F7) | ✅ Selesai |
 | 2 | Uji Kesiapan, Sensor Buta, Kampanye, audit log, LAPSIT, Penjaga Situs (F8–F13) | ✅ Selesai |
-| 3 | Mode demo read-only, landing page (F15); Telegram (F14) bila sempat | ⏳ Berikutnya, setelah stabilisasi dan perbaikan dari tes Windows |
+| 3 | Landing page statis + video + screenshot (F15); Telegram (F14) bila sempat | ⏳ Berikutnya, setelah stabilisasi dan perbaikan dari tes Windows |
 
 ### Sudah jalan vs peta jalan
 
 | Kemampuan | Status |
 |---|---|
-| Lab satu perintah: `docker compose up -d` → 3 agent terdaftar otomatis dan mengirim heartbeat | ✅ Sudah jalan (24 detik dari volume kosong, di luar waktu build) |
+| Lab satu perintah: `docker compose up -d` → 3 agent terdaftar otomatis dan mengirim heartbeat | ✅ Sudah jalan (19–56 detik dari volume kosong di mesin pengembang, di luar waktu build) |
 | Agent Python tanpa dependensi: log web, SSH, firewall (NFLOG), FIM, sensor Modbus pasif | ✅ Sudah jalan, diuji dengan nmap, hydra, sqlmap, dan tulis Modbus dari container penyerang |
 | Antrean lokal 10.000 event saat Core putus, batch 1 detik, heartbeat 10 detik | ✅ Sudah jalan |
 | API agent sesuai PRD bagian 9 (HTTPS, token Sanctum ter-hash, 401/422/429) | ✅ Sudah jalan |
 | Kode pendaftaran sekali pakai, cabut token → agent langsung ditolak | ✅ Sudah jalan |
-| Respons berjenjang: Operator/Analis usul blokir → Komandan setuju/tolak (dari HP) → agent memblokir di nftables | ✅ Sudah jalan di lab: penyerang terputus 2,7 detik setelah disetujui |
+| Respons berjenjang: Operator/Analis usul blokir → Komandan setuju/tolak (dari HP) → agent memblokir di nftables | ✅ Sudah jalan di lab: penyerang terputus 2,7–4,0 detik setelah disetujui (agent mengambil perintah tiap 3 detik) |
 | Rollback oleh Komandan, blokir Kedaluwarsa otomatis, riwayat tindakan | ✅ Sudah jalan |
 | Audit log berantai hash (login, ubah status, usul, setuju, eksekusi, aksi admin) + halaman Audit Log dengan filter dan tombol Verifikasi Rantai | ✅ Sudah jalan: baris yang diubah atau dihapus langsung di database ditunjukkan nomor barisnya (diuji di lab) |
 | Halaman Satuan & Agent, Pengguna; Beranda: pohon satuan + Tingkat Siaga | ✅ Sudah jalan |
 | Lima peran sesuai matriks hak akses PRD; Operator hanya melihat satuannya | ✅ Sudah jalan |
-| Mesin deteksi R01–R11 (pola + ambang), daftar putih IP, aturan bisa diubah Admin | ✅ Sudah jalan |
+| Mesin deteksi 13 aturan R01–R13 (pola + ambang, Sensor Buta, situs), daftar putih IP, aturan bisa diubah Admin | ✅ Sudah jalan |
 | Korelasi Attack Story: nmap + hydra + sqlmap dari satu IP = 1 insiden dengan tahap kill chain dan ATT&CK | ✅ Sudah jalan di lab (insiden muncul ±6 detik setelah serangan dimulai) |
 | Skor yang bisa dijelaskan + rincian per komponen; severity dan Tingkat Siaga satuan otomatis | ✅ Sudah jalan (contoh PRD = 240 Kritis diuji otomatis) |
 | Daftar Insiden, Detail Insiden, Detail Event (setiap angka bisa diklik ke buktinya) | ✅ Sudah jalan |
@@ -44,6 +44,7 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 | LAPSIT: tombol Buat LAPSIT di Detail Insiden; LLM lokal (Ollama `qwen2.5:3b`) dengan prompt fakta JSON, setiap temuan mengutip `[EV-n]`, sitasi/IP karangan dibuang; cadangan template bila Ollama tidak ada atau > 60 detik; PDF dengan SHA-256 isi di kaki halaman; ekspor tercatat di audit | ✅ Sudah jalan di lab: template ±1 detik; jalur LLM diuji dengan Ollama tiruan (batas waktu 60 detik → template terbukti). Model asli belum diuji di sandbox pengembangan (unduhan model diblokir), perlu dicoba di laptop |
 | Halaman Pengaturan (durasi blokir default, alamat/model/batas waktu Ollama, periksa koneksi) | ✅ Sudah jalan |
 | Penjaga Situs: situs satuan diperiksa tiap menit dalam 3 varian (browser, Googlebot, referer Google); isi berbeda + kata judi → R13 injeksi judi ber-cloaking; hash halaman utama berubah di luar jadwal → R10; perbandingan isi per varian dengan kata judi disorot | ✅ Sudah jalan di lab: injeksi judol ke portal Kodim A → versi Googlebot kemiripan 7%, 8 kata judi → R13 tertaut ke insiden yang sama dengan R10 dari FIM |
+| Uji alur penuh dari nol (semua serangan → kampanye → blokir dari HP → LAPSIT → Sensor Buta → Uji Kesiapan → verifikasi audit) | ✅ Lulus di lab pengembang 6 Nov: insiden Kodim A 946 Kritis (12 aturan), Uji Kesiapan 11/11 rata-rata 4,7 detik, 0 insiden dari event uji, rantai audit utuh |
 | Akun Demo read-only (sudah ada sejak Fase 0); landing page statis `site/` + video + screenshot (F15, tanpa VPS); Telegram (F14) bila sempat | ⏳ Fase 3 |
 | Mode Latihan (replay), impor IOC offline | 🗺️ Peta jalan (di luar lingkup lomba) |
 
