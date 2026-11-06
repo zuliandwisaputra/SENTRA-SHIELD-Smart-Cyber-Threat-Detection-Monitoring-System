@@ -15,7 +15,7 @@
         @endif
 
         {{-- Agent --}}
-        <section class="bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6" wire:poll.5s>
+        <section class="bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6">
             <h3 class="text-base font-semibold text-gray-100">Agent</h3>
             <p class="mt-1 text-xs text-gray-500">Satu host = satu agent. Heartbeat diharapkan tiap 10 detik.</p>
 

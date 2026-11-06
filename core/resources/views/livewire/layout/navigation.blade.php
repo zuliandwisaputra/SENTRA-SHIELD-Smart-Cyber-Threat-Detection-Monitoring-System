@@ -16,9 +16,14 @@ new class extends Component
 @php
     $user = auth()->user();
     // Menu halaman ditambahkan per fase, sesuai halaman yang sudah benar-benar ada.
+    $pendingApprovals = $user->can('putuskan-tindakan')
+        ? \App\Models\ResponseAction::query()->where('status', \App\Enums\ActionStatus::Diusulkan)->distinct()->count('group_uuid')
+        : 0;
     $menu = [
         ['route' => 'dashboard', 'label' => 'Beranda Komando', 'ability' => 'lihat-dashboard'],
         ['route' => 'incidents.index', 'label' => 'Insiden', 'ability' => 'lihat-dashboard', 'active' => 'incidents.*'],
+        ['route' => 'actions.index', 'label' => 'Tindakan', 'ability' => 'lihat-dashboard'],
+        ['route' => 'approvals', 'label' => 'Antrean Persetujuan', 'ability' => 'putuskan-tindakan', 'badge' => $pendingApprovals],
         ['route' => 'units-agents', 'label' => 'Satuan & Agent', 'ability' => 'lihat-satuan-agent'],
         ['route' => 'rules', 'label' => 'Aturan Deteksi', 'ability' => 'kelola-sistem'],
         ['route' => 'users', 'label' => 'Pengguna', 'ability' => 'kelola-sistem'],
@@ -41,13 +46,17 @@ new class extends Component
                         @can($item['ability'])
                             <x-nav-link :href="route($item['route'])" :active="request()->routeIs($item['active'] ?? $item['route'])" wire:navigate>
                                 {{ $item['label'] }}
+                                @if (! empty($item['badge']))
+                                    <span class="ms-1.5 rounded-full bg-sky-700 px-1.5 text-xs font-bold text-white" aria-label="{{ $item['badge'] }} menunggu">{{ $item['badge'] }}</span>
+                                @endif
                             </x-nav-link>
                         @endcan
                     @endforeach
                 </div>
             </div>
 
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div class="hidden sm:flex sm:items-center sm:ms-6 sm:gap-3">
+                <span data-sentra-live class="whitespace-nowrap rounded-full border border-gray-700 px-2 py-0.5 text-xs text-gray-400" role="status">Polling 3 detik</span>
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-300 bg-gray-900 hover:text-white focus:outline-none transition ease-in-out duration-150">
@@ -78,7 +87,8 @@ new class extends Component
                 </x-dropdown>
             </div>
 
-            <div class="-me-2 flex items-center sm:hidden">
+            <div class="-me-2 flex items-center gap-2 sm:hidden">
+                <span data-sentra-live class="whitespace-nowrap rounded-full border border-gray-700 px-2 py-0.5 text-xs text-gray-400" role="status">Polling 3 detik</span>
                 <button @click="open = ! open" aria-label="Buka menu" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-200 hover:bg-gray-800 focus:outline-none transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -95,6 +105,9 @@ new class extends Component
                 @can($item['ability'])
                     <x-responsive-nav-link :href="route($item['route'])" :active="request()->routeIs($item['active'] ?? $item['route'])" wire:navigate>
                         {{ $item['label'] }}
+                        @if (! empty($item['badge']))
+                            <span class="ms-1.5 rounded-full bg-sky-700 px-1.5 text-xs font-bold text-white">{{ $item['badge'] }}</span>
+                        @endif
                     </x-responsive-nav-link>
                 @endcan
             @endforeach

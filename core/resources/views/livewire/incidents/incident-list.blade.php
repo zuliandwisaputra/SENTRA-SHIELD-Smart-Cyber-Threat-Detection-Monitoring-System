@@ -1,4 +1,4 @@
-<div wire:poll.3s>
+<div>
     <header class="border-b border-gray-800 bg-gray-900">
         <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8">
             <h2 class="font-semibold text-xl text-gray-100 leading-tight">Daftar Insiden</h2>

@@ -1,4 +1,4 @@
-<div wire:poll.3s>
+<div>
     <header class="border-b border-gray-800 bg-gray-900">
         <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8 flex flex-wrap items-start justify-between gap-4">
             <div>
@@ -90,6 +90,75 @@
                 <p class="mt-3 font-mono text-xs text-gray-500">{{ $breakdown['rumus'] }}</p>
             @endisset
             <p class="mt-3 text-xs text-gray-500">Rendah 0–39 · Sedang 40–79 · Tinggi 80–149 · Kritis 150+</p>
+        </section>
+
+        {{-- Respons berjenjang --}}
+        <section class="min-w-0 lg:col-span-3 bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6" aria-labelledby="tindakan">
+            <div class="flex flex-wrap items-baseline justify-between gap-2">
+                <h3 id="tindakan" class="text-base font-semibold text-gray-100">Tindakan respons</h3>
+                <p class="text-xs text-gray-500">Operator/Analis mengusulkan, Komandan menyetujui, agent mengeksekusi di firewall host.</p>
+            </div>
+
+            @if ($flash)
+                <div class="mt-3 rounded-md border border-emerald-800 bg-emerald-950/60 px-3 py-2 text-sm text-emerald-200" role="status">{{ $flash }}</div>
+            @endif
+            @error('blokir')
+                <div class="mt-3 rounded-md border border-red-800 bg-red-950/60 px-3 py-2 text-sm text-red-200" role="alert">{{ $message }}</div>
+            @enderror
+
+            @if ($canPropose)
+                <form wire:submit="proposeBlock" class="mt-4 flex flex-wrap items-end gap-3">
+                    <div>
+                        <label for="durasi" class="block text-xs text-gray-400">Blokir IP <span class="font-mono text-gray-200">{{ $inc->src_ip }}</span> di semua agent {{ $inc->unit->name }} selama</label>
+                        <select id="durasi" wire:model="duration" class="mt-1 rounded-md border-gray-700 bg-gray-950 text-sm text-gray-200">
+                            @foreach (\App\Response\ActionService::DURATIONS as $seconds => $label)
+                                <option value="{{ $seconds }}">{{ $label }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <x-primary-button>Usulkan blokir IP</x-primary-button>
+                </form>
+            @endif
+
+            @if ($actions->isNotEmpty())
+                <div class="mt-4 overflow-x-auto">
+                    <table class="min-w-full text-sm">
+                        <thead class="text-left text-xs uppercase tracking-wide text-gray-500">
+                            <tr><th class="py-2 pe-3">Tindakan</th><th class="py-2 pe-3">Agent</th><th class="py-2 pe-3">Status</th><th class="py-2 pe-3">Pengusul / pemutus</th><th class="py-2 pe-3">Hasil agent</th><th class="py-2"></th></tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800">
+                            @foreach ($actions as $a)
+                                <tr wire:key="tindakan-{{ $a->id }}">
+                                    <td class="py-2 pe-3 whitespace-nowrap text-gray-200">{{ $a->type->label() }} <span class="font-mono">{{ $a->params['ip'] ?? '' }}</span></td>
+                                    <td class="py-2 pe-3 text-gray-300">{{ $a->targetAgent->hostname }}</td>
+                                    <td class="py-2 pe-3"><x-action-status :status="$a->status" />
+                                        @if ($a->expires_at && $a->status === \App\Enums\ActionStatus::Dieksekusi)
+                                            <div class="mt-0.5 text-xs text-gray-500">s.d. {{ waktu_wib($a->expires_at, 'H:i:s') }}</div>
+                                        @endif
+                                    </td>
+                                    <td class="py-2 pe-3 text-xs text-gray-400">{{ $a->proposer?->name ?? 'Sistem' }}<br>{{ $a->approver?->name ?? '—' }}@if ($a->decision_note) · “{{ $a->decision_note }}”@endif</td>
+                                    <td class="py-2 pe-3 text-xs text-gray-300">{{ $a->result['message'] ?? '—' }}</td>
+                                    <td class="py-2 text-right whitespace-nowrap">
+                                        @can('cancel', $a)
+                                            <button wire:click="cancelProposal('{{ $a->group_uuid }}')" class="text-xs text-gray-300 hover:underline">Batalkan usulan</button>
+                                        @endcan
+                                        @can('rollback', $a)
+                                            <button wire:click="rollback({{ $a->id }})" wire:confirm="Buka blokir {{ $a->params['ip'] ?? '' }} di {{ $a->targetAgent->hostname }}?" class="text-xs font-semibold text-yellow-300 hover:underline">Buka blokir</button>
+                                        @endcan
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                @can('putuskan-tindakan')
+                    @if ($actions->contains(fn ($a) => $a->status === \App\Enums\ActionStatus::Diusulkan))
+                        <a href="{{ route('approvals') }}" wire:navigate class="mt-3 inline-block text-sm font-semibold text-sky-300 hover:underline">Putuskan di Antrean Persetujuan &rarr;</a>
+                    @endif
+                @endcan
+            @elseif (! $canPropose)
+                <p class="mt-3 text-sm text-gray-500">Belum ada tindakan untuk insiden ini.</p>
+            @endif
         </section>
 
         {{-- Bukti --}}

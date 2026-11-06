@@ -7,9 +7,14 @@ use App\Enums\IncidentStatus;
 use App\Enums\KillChainStage;
 use App\Models\Detection;
 use App\Models\Incident;
+use App\Models\ResponseAction;
+use App\Response\ActionService;
 use App\Services\AuditLogger;
 use App\Support\LiveUpdate;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -26,10 +31,55 @@ class IncidentShow extends Component
 
     public string $ruleFilter = '';
 
+    public int $duration = 3600;
+
+    public ?string $flash = null;
+
     public function mount(Incident $incident): void
     {
         $this->authorize('view', $incident);
         $this->incident = $incident;
+        $this->duration = ActionService::defaultDuration();
+    }
+
+    #[On('sentra-refresh')]
+    public function refreshLive(): void {}
+
+    public function proposeBlock(ActionService $actions): void
+    {
+        $this->resetErrorBag();
+        try {
+            $actions->proposeBlock($this->incident, auth()->user(), (int) $this->duration);
+        } catch (ValidationException $e) {
+            $this->addError('blokir', collect($e->errors())->flatten()->first());
+
+            return;
+        }
+        $this->flash = 'Usulan blokir dikirim ke Antrean Persetujuan Komandan.';
+    }
+
+    public function cancelProposal(string $group, ActionService $actions): void
+    {
+        $actions->cancel($group, auth()->user());
+        $this->flash = 'Usulan dibatalkan.';
+    }
+
+    public function rollback(int $actionId, ActionService $actions): void
+    {
+        $this->resetErrorBag();
+        $block = ResponseAction::query()->where('incident_id', $this->incident->id)->findOrFail($actionId);
+        try {
+            $actions->rollback($block, auth()->user());
+        } catch (ValidationException $e) {
+            $this->addError('blokir', collect($e->errors())->flatten()->first());
+
+            return;
+        } catch (AuthorizationException $e) {
+            $this->addError('blokir', $e->getMessage());
+
+            return;
+        }
+        $this->flash = 'Perintah buka blokir dikirim ke agent.';
     }
 
     public function setStatus(string $status, AuditLogger $audit, RiskScorer $scorer): void
@@ -86,6 +136,9 @@ class IncidentShow extends Component
             'stages' => $stages,
             'evidence' => $evidence,
             'canUpdateStatus' => auth()->user()->can('updateStatus', $incident),
+            'canPropose' => auth()->user()->can('proposeAction', $incident) && $incident->src_ip !== null,
+            'actions' => ResponseAction::query()->with(['targetAgent', 'proposer', 'approver'])
+                ->where('incident_id', $incident->id)->orderByDesc('id')->get(),
         ])->title('Insiden #'.$incident->id);
     }
 }

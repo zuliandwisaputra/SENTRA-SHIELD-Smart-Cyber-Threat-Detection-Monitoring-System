@@ -28,4 +28,15 @@ enum ActionStatus: string
             self::Dibatalkan => 'Dibatalkan',
         };
     }
+
+    public function badgeClass(): string
+    {
+        return match ($this) {
+            self::Diusulkan => 'bg-sky-900/60 text-sky-300 ring-sky-700',
+            self::Disetujui => 'bg-indigo-900/60 text-indigo-300 ring-indigo-700',
+            self::Dieksekusi => 'bg-emerald-900/60 text-emerald-300 ring-emerald-700',
+            self::Gagal => 'bg-red-900/70 text-red-300 ring-red-600',
+            self::Ditolak, self::Kedaluwarsa, self::Dibatalkan => 'bg-gray-800 text-gray-300 ring-gray-600',
+        };
+    }
 }

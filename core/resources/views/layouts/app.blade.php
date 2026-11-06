@@ -5,6 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="color-scheme" content="dark">
+        {{-- Kunci publik Reverb dibaca saat runtime (dibuat acak saat lab pertama kali jalan). --}}
+        <meta name="reverb-key" content="{{ config('broadcasting.connections.reverb.key') }}">
+        <meta name="sentra-user" content="{{ auth()->id() }}">
 
         <title>{{ isset($title) ? $title.' · ' : '' }}{{ config('app.name', 'SENTRA SHIELD') }}</title>
 

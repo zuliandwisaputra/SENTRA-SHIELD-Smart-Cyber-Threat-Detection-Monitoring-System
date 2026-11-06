@@ -7,6 +7,7 @@ use App\Enums\Severity;
 use App\Models\Incident;
 use App\Models\Unit;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -45,6 +46,9 @@ class IncidentList extends Component
             $this->resetPage();
         }
     }
+
+    #[On('sentra-refresh')]
+    public function refreshLive(): void {}
 
     public function render()
     {

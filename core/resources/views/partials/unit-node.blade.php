@@ -4,7 +4,7 @@
             <span class="font-medium text-gray-100">{{ $unit->name }}</span>
             <span class="ms-2 text-xs uppercase tracking-wide text-gray-500">{{ $unit->level->label() }} · {{ $unit->code }}</span>
         </div>
-        <x-alert-badge :level="$unit->effectiveAlertLevel()" />
+        <a href="{{ route('incidents.index', ['unit' => $unit->id]) }}" wire:navigate title="Lihat insiden {{ $unit->name }}"><x-alert-badge :level="$unit->effectiveAlertLevel()" /></a>
     </div>
 
     @if ($unit->children->isNotEmpty())

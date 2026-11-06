@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\EventController;
+use App\Livewire\Actions\ActionHistory;
+use App\Livewire\Actions\ApprovalQueue;
 use App\Livewire\Admin\Rules;
 use App\Livewire\Admin\UnitsAgents;
 use App\Livewire\Admin\Users;
+use App\Livewire\Dashboard\CommandDashboard;
 use App\Livewire\Incidents\IncidentList;
 use App\Livewire\Incidents\IncidentShow;
 use Illuminate\Support\Facades\Route;
@@ -11,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', '/beranda');
 
 Route::middleware('auth')->group(function () {
-    Route::view('beranda', 'dashboard')
+    Route::get('beranda', CommandDashboard::class)
         ->middleware('can:lihat-dashboard')
         ->name('dashboard');
 
@@ -22,6 +25,13 @@ Route::middleware('auth')->group(function () {
         ->name('incidents.show');
     Route::get('event/{event}', [EventController::class, 'show'])
         ->name('events.show');
+
+    Route::get('tindakan', ActionHistory::class)
+        ->middleware('can:lihat-dashboard')
+        ->name('actions.index');
+    Route::get('persetujuan', ApprovalQueue::class)
+        ->middleware('can:putuskan-tindakan')
+        ->name('approvals');
 
     Route::get('satuan-agent', UnitsAgents::class)
         ->middleware('can:lihat-satuan-agent')
