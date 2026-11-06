@@ -16,9 +16,13 @@ Dashboard: **https://localhost:8443**. Sertifikat dibuat oleh CA lab sendiri, ja
 
 Build pertama butuh internet (image dasar, apt, composer, npm). Setelah image ditarik sekali, lab berjalan **offline**. Tidak ada layanan cloud yang dipanggil saat runtime.
 
-Tidak ada langkah manual lain. Entrypoint `sentra-core` membuat CA dan sertifikat TLS, menjalankan `php artisan sentra:setup` (migrasi, data master, agent lab), lalu menyalakan nginx, php-fpm, queue, scheduler, dan Reverb. Setiap agent lab menunggu CA dan kode pendaftaran acak dari volume `lab-pki`, lalu mendaftar sendiri.
+Tidak ada langkah manual lain. Entrypoint `sentra-core` membuat CA dan sertifikat TLS, menjalankan `php artisan sentra:setup` (migrasi, data master, agent lab), lalu menyalakan nginx, php-fpm, queue (deteksi), queue `lapsit`, scheduler, dan Reverb. Setiap agent lab menunggu CA dan kode pendaftaran acak dari volume `lab-pki`, lalu mendaftar sendiri.
 
-Reset total (hapus database dan token agent):
+Reset total (hapus database dan token agent; model LLM, bila ada, tidak ikut terhapus):
+
+```bash
+docker compose -f lab/docker-compose.yml --profile llm down
+```
 
 ```bash
 docker compose -f lab/docker-compose.yml down -v

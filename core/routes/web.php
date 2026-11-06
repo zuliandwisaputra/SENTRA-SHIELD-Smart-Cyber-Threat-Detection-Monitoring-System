@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ReportPdfController;
 use App\Livewire\Actions\ActionHistory;
 use App\Livewire\Actions\ApprovalQueue;
 use App\Livewire\Admin\Rules;
+use App\Livewire\Admin\Settings;
 use App\Livewire\Admin\UnitsAgents;
 use App\Livewire\Admin\Users;
 use App\Livewire\Audit\AuditLogPage;
@@ -29,6 +31,9 @@ Route::middleware('auth')->group(function () {
         ->name('incidents.show');
     Route::get('event/{event}', [EventController::class, 'show'])
         ->name('events.show');
+
+    Route::get('lapsit/{report}/pdf', ReportPdfController::class)
+        ->name('reports.pdf');
 
     Route::get('kampanye', CampaignList::class)
         ->middleware('can:lihat-kampanye')
@@ -61,6 +66,9 @@ Route::middleware('auth')->group(function () {
     Route::get('pengguna', Users::class)
         ->middleware('can:kelola-sistem')
         ->name('users');
+    Route::get('pengaturan', Settings::class)
+        ->middleware('can:kelola-sistem')
+        ->name('settings');
 
     Route::view('profil', 'profile')
         ->name('profile');

@@ -56,6 +56,12 @@ function Compose {
     docker compose -f $SentraCompose @args
 }
 
+# Model LLM sudah pernah diunduh (siapkan-llm.bat)? Bila ya, Ollama ikut dinyalakan.
+function LLM-Tersedia {
+    $vol = docker volume ls -q --filter 'name=sentra-lab_ollama-data' 2>$null
+    return -not [string]::IsNullOrWhiteSpace($vol)
+}
+
 function Lab-Menyala {
     $id = docker compose -f $SentraCompose ps -q sentra-core 2>$null
     return -not [string]::IsNullOrWhiteSpace($id)

@@ -9,7 +9,9 @@ use App\Enums\KillChainStage;
 use App\Models\AuditLog;
 use App\Models\Detection;
 use App\Models\Incident;
+use App\Models\Report;
 use App\Models\ResponseAction;
+use App\Reports\LapsitService;
 use App\Response\ActionService;
 use App\Services\AuditLogger;
 use App\Support\LiveUpdate;
@@ -84,6 +86,15 @@ class IncidentShow extends Component
         $this->flash = 'Perintah buka blokir dikirim ke agent.';
     }
 
+    public function createReport(LapsitService $lapsit): void
+    {
+        $this->authorize('kelola-lapsit');
+        $this->resetErrorBag();
+        if (! $lapsit->request($this->incident, auth()->user())) {
+            $this->addError('lapsit', 'LAPSIT untuk insiden ini masih disusun.');
+        }
+    }
+
     public function setStatus(string $status, AuditLogger $audit, RiskScorer $scorer): void
     {
         $this->authorize('updateStatus', $this->incident);
@@ -143,6 +154,9 @@ class IncidentShow extends Component
             'canPropose' => auth()->user()->can('proposeAction', $incident) && $incident->src_ip !== null,
             'actions' => ResponseAction::query()->with(['targetAgent', 'proposer', 'approver'])
                 ->where('incident_id', $incident->id)->orderByDesc('id')->get(),
+            'reports' => Report::query()->with('creator')->where('incident_id', $incident->id)->orderByDesc('id')->get(),
+            'lapsitPending' => LapsitService::pending($incident),
+            'canLapsit' => auth()->user()->can('kelola-lapsit'),
         ])->title('Insiden #'.$incident->id);
     }
 }

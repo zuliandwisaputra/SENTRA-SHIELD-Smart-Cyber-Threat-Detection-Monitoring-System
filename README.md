@@ -16,7 +16,7 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 | 1a | Lab Docker, agent Python, API agent (F1, F2) | ✅ Selesai |
 | 1b | Mesin deteksi, Attack Story, skor (F3, F4, F5) | ✅ Selesai |
 | 1c | Dashboard live, respons berjenjang & blokir (F6, F7) | ✅ Selesai |
-| 2 | Uji Kesiapan, Sensor Buta, Kampanye, audit log, LAPSIT, Penjaga Situs (F8–F13) | 🔄 Sedang dikerjakan: F8, F9, F10, F11 selesai |
+| 2 | Uji Kesiapan, Sensor Buta, Kampanye, audit log, LAPSIT, Penjaga Situs (F8–F13) | 🔄 Sedang dikerjakan: F8–F12 selesai, F13 berikutnya |
 | 3 | Mode demo read-only, landing page (F15); Telegram (F14) bila sempat | ⏳ |
 
 ### Sudah jalan vs peta jalan
@@ -41,7 +41,9 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 | Sensor Buta: heartbeat hilang > 30 detik → agent BUTA + insiden Tinggi; sumber log rutin yang diam → peringatan; agent hidup kembali tercatat | ✅ Sudah jalan di lab (alarm 39 detik setelah agent dimatikan) |
 | Kampanye lintas satuan: IP yang sama menyerang ≥ 2 satuan dalam 24 jam → skor ×1,3, blokir serentak sekali setuju | ✅ Sudah jalan di lab (penyerang terputus dari dua satuan 7,2 detik setelah disetujui dari HP) |
 | Uji Kesiapan: 11 skenario aman ke host sendiri (R01–R07, R09–R12), matriks hasil, cakupan, rata-rata waktu deteksi, riwayat | ✅ Sudah jalan di lab: cakupan 11/11, rata-rata 4,2 detik, tanpa insiden palsu |
-| LAPSIT, Penjaga Situs, dan seterusnya | ⏳ Fase 2–3 |
+| LAPSIT: tombol Buat LAPSIT di Detail Insiden; LLM lokal (Ollama `qwen2.5:3b`) dengan prompt fakta JSON, setiap temuan mengutip `[EV-n]`, sitasi/IP karangan dibuang; cadangan template bila Ollama tidak ada atau > 60 detik; PDF dengan SHA-256 isi di kaki halaman; ekspor tercatat di audit | ✅ Sudah jalan di lab: template ±1 detik; jalur LLM diuji dengan Ollama tiruan (batas waktu 60 detik → template terbukti). Model asli belum diuji di sandbox pengembangan (unduhan model diblokir), perlu dicoba di laptop |
+| Halaman Pengaturan (durasi blokir default, alamat/model/batas waktu Ollama, periksa koneksi) | ✅ Sudah jalan |
+| Penjaga Situs, dan seterusnya | ⏳ Fase 2–3 |
 | Mode Latihan (replay), impor IOC offline | 🗺️ Peta jalan (di luar lingkup lomba) |
 
 ## Menjalankan lab demo (disarankan)
@@ -69,6 +71,18 @@ bash lab/cek-lab.sh
 Buka **https://localhost:8443**. Sertifikat dibuat CA lab sendiri, jadi lanjutkan saja peringatan browser. Skenario serangan, topologi, dan reset ada di [lab/README.md](lab/README.md).
 
 **Sistem berjalan offline setelah image Docker dan model LLM ditarik sekali.** Build pertama membutuhkan internet untuk image dasar, apt, composer, dan npm.
+
+LLM lokal untuk LAPSIT bersifat opsional (tanpa LLM, LAPSIT dibuat dari template). Menyiapkannya sekali (±4–5 GB, butuh RAM tambahan ±3 GB):
+
+```bash
+docker compose -f lab/docker-compose.yml --profile llm up -d
+```
+
+```bash
+docker compose -f lab/docker-compose.yml exec ollama ollama pull qwen2.5:3b
+```
+
+Setelah itu selalu sertakan `--profile llm` saat `up` dan `down`. `down -v` **tanpa** `--profile llm` (setelah `--profile llm down`) menghapus data lab tetapi tidak menghapus model.
 
 ### Akun lab bawaan
 
@@ -142,7 +156,9 @@ Setelah langkah test di atas: `php artisan serve`, lalu buka http://127.0.0.1:80
 ## Pernyataan karya dasar
 
 Proyek ini dibangun di atas perangkat lunak sumber terbuka yang sudah ada:
-- Berlisensi MIT: kerangka aplikasi Laravel, Laravel Breeze (scaffolding login, tampilan Livewire/Volt), Livewire, Laravel Sanctum, Laravel Reverb, Tailwind CSS, Chart.js, Laravel Echo, dan pusher-js.
+- Berlisensi MIT: kerangka aplikasi Laravel, Laravel Breeze (scaffolding login, tampilan Livewire/Volt), Livewire, Laravel Sanctum, Laravel Reverb, Tailwind CSS, Chart.js, Laravel Echo, pusher-js, dan barryvdh/laravel-dompdf.
+- Berlisensi LGPL (dipakai sebagai pustaka, tidak diubah): Dompdf beserta php-font-lib dan php-svg-lib, untuk PDF LAPSIT. Font DejaVu ikut paket Dompdf.
+- Dijalankan terpisah sebagai layanan opsional: Ollama (MIT) dan model Qwen2.5-3B (lisensi model dari pembuatnya), untuk draf LAPSIT.
 - Hanya dipakai di lab (lisensi masing-masing): pymodbus untuk PLC simulasi serta nmap, hydra, dan sqlmap untuk penyerang.
 
 Logika SENTRA SHIELD (agent, deteksi, korelasi, skor, respons, Uji Kesiapan, dan seterusnya) ditulis untuk lomba ini.

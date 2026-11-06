@@ -39,7 +39,7 @@ Kolom berikut melengkapi "kolom utama" bagian 8 agar fitur PRD bisa berjalan:
 - Aturan ambang menghasilkan satu deteksi per (aturan, satuan, IP) per jendela waktu. Aturan pola menghasilkan satu deteksi per event yang cocok. Skor dihitung per aturan unik.
 - Blokir dari insiden membuat satu baris `actions` per agent di satuan itu. Blokir kampanye: satu usulan dan satu persetujuan untuk N baris.
 - Agent memasang blokir di nftables set dengan `timeout`, sehingga blokir terbuka sendiri walau Core mati.
-- Uji Kesiapan memakai penanda tetap (header `X-Sentra-Readiness`, user SSH `sentra-uji`, file `.sentra_uji_*`). Event uji bertanda `is_test` dan hasilnya hanya masuk `readiness_results`. Ada 11 skenario (R01–R07, R09–R12); R08 tidak dipakai karena butuh akun SSH yang benar-benar bisa login.
+- Uji Kesiapan: agent menandai event `is_test` hanya bila tidak bisa dipalsukan dari luar host: berasal dari loopback **dan** memuat token acak per uji (user agent `SENTRA-UJI/<token>`; log akses nginx tidak mencatat header lain), user SSH `sentra-uji` dari loopback, port uji 64990–65009 dari loopback, file `.sentra_uji_<token>`, atau perubahan metadata halaman utama yang isinya terbukti sama. Event uji tidak pernah menjadi insiden; hasilnya hanya masuk `readiness_results`. Ada 11 skenario (R01–R07, R09–R12); R08 tidak dipakai karena butuh akun SSH yang benar-benar bisa login.
 - Sensor Modbus pasif: mengendus TCP/502 dengan raw socket dan mem-parse PDU.
 - LAPSIT memakai model `qwen2.5:3b`, diproses async; sitasi `[EV-…]` yang tidak ada di bukti dibuang.
 - Siaran realtime dikirim per batch, bukan per event.
@@ -87,3 +87,14 @@ Atas permintaan pemilik proyek, karena laptop demo memakai Windows 11 + Docker D
 - **Status tindakan:** usulan yang ditarik pengusul berstatus **Dibatalkan**. Blokir yang dibuka lewat rollback Komandan juga berstatus **Dibatalkan** (dengan catatan perintah buka-nya) setelah agent melaporkan berhasil. **Kedaluwarsa** hanya untuk blokir yang durasinya habis (keputusan B9), ditandai scheduler tiap 10 detik.
 - **Halaman Tindakan** (riwayat + filter "blokir aktif") ditambahkan sebagai tujuan klik kartu "Blokir aktif" di Beranda, sesuai prinsip "setiap angka bisa diklik ke data sumbernya".
 - Durasi blokir yang bisa dipilih: 15 menit, 1 jam (bawaan), 6 jam, 24 jam.
+
+## Keputusan teknis Fase 2
+
+- **Uji Kesiapan (F8):** skenario dibagi ke agent yang sumber telemetrinya aktif (mis. R11 ke sensor OT). R12 dijalankan dengan agent menjeda heartbeat 45 detik setelah mengirim penanda bertoken; SensorWatch mencatat deteksi uji tanpa menyatakan agent BUTA, dan penanda dihapus begitu heartbeat normal kembali. Waktu deteksi diukur dari waktu mulai tiap skenario yang dilaporkan agent.
+- **Audit Log (F11):** hasil setiap Verifikasi Rantai ikut dicatat (siapa, kapan, utuh/rusak di baris berapa). Demo bisa melihat halaman tetapi tidak menekan Verifikasi, sesuai keputusan "Demo tanpa aksi apa pun".
+- **LAPSIT (F12) diproses di antrean terpisah** (`lapsit`, worker sendiri), sehingga panggilan LLM sampai 60 detik tidak menahan mesin deteksi. Diuji di lab: insiden baru tetap muncul ±3 detik saat LAPSIT sedang menunggu LLM.
+- **Keluaran LLM dipaksa berbentuk JSON** (structured output Ollama: situasi, temuan, penilaian, saran) lalu divalidasi: sitasi `[EV-n]` yang tidak ada di bukti dibuang, butir temuan tanpa sitasi sah dibuang, kalimat yang menyebut IP di luar fakta insiden dibuang. Bila tidak ada temuan yang lolos, LAPSIT dibuat dari template. Jumlah kalimat yang dibuang tertulis di LAPSIT.
+- **Bagian "Tindakan yang sudah diambil" selalu disusun dari data**, bukan dari LLM, agar status blokir tidak pernah dikarang.
+- **Isi LAPSIT disimpan sebagai teks biasa**; SHA-256 teks itu dicetak di kaki setiap halaman PDF, dan SHA-256 file PDF disimpan di `reports.sha256` serta audit log (keputusan B10). Unduhan PDF tercatat sebagai `lapsit_diekspor`.
+- **Pengaturan batas waktu LLM dibatasi 10–120 detik**; job LAPSIT berbatas 240 detik dan `retry_after` antrean 300 detik, sehingga job yang lama tidak diambil dua kali.
+- **Prompt dibuat kecil untuk LLM di CPU:** JSON padat, paling banyak 24 event bukti (setiap aturan pasti terwakili), panjang jawaban dibatasi, model tetap dimuat 30 menit.

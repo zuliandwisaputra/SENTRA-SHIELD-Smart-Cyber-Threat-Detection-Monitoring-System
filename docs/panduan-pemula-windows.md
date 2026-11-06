@@ -274,8 +274,20 @@ Semua dilakukan dengan **klik dua kali** file di folder `lab\windows`:
 | `reset-lab.bat` | Menghapus semua data lab lalu menyalakan dari nol (sebelum latihan demo) | ±1 menit |
 | `perbarui-kode.bat` | Mengambil versi terbaru dari pengembang | Beberapa detik |
 | `uji-kernel.bat` | Uji kemampuan log firewall dan blokir (Bagian 7) | 1–10 menit |
+| `siapkan-llm.bat` | **Opsional, sekali saja.** Mengunduh LLM lokal (Ollama + model `qwen2.5:3b`, ±4–5 GB) untuk LAPSIT. Tanpa ini LAPSIT tetap jalan memakai template | 10–30 menit (tergantung internet) |
 
 **Setelah `perbarui-kode.bat`, jalankan `mulai-lab.bat` lagi** agar perubahan ikut terpasang.
+
+### LLM lokal untuk LAPSIT (opsional)
+
+LAPSIT (Laporan Situasi) bisa disusun oleh LLM lokal yang berjalan di laptopmu sendiri; data tidak dikirim ke internet.
+
+1. Pastikan lab sudah pernah jalan (`mulai-lab.bat`) dan internet tersambung.
+2. Klik dua kali **`siapkan-llm.bat`**, tekan Enter, tunggu sampai muncul **[OK] LLM lokal siap**.
+3. Mulai sekarang `mulai-lab.bat` otomatis ikut menyalakan LLM. `reset-lab.bat` tidak menghapus model, jadi tidak perlu mengunduh ulang.
+4. Cek: login `admin@sentra.lab` → klik nama pengguna di kanan atas → **Pengaturan** → **Periksa koneksi Ollama**. Harus muncul *Tersambung. Model qwen2.5:3b tersedia.*
+
+LLM butuh RAM tambahan ±3 GB. Di laptop tanpa GPU, satu LAPSIT bisa butuh 30–90 detik. Bila lebih dari batas waktu (bawaan 60 detik), LAPSIT otomatis dibuat dari template dan alasannya tertulis di LAPSIT. Batas waktu bisa dinaikkan sampai 120 detik di halaman Pengaturan.
 
 ### Membuka dashboard
 
@@ -315,6 +327,7 @@ Di kanan atas dashboard ada tanda kecil:
 **H-1:**
 
 - [ ] Jalankan `perbarui-kode.bat` lalu `mulai-lab.bat` **saat masih ada internet**, supaya semua image sudah terunduh.
+- [ ] Bila memakai LLM: `siapkan-llm.bat` sudah selesai, lalu buat satu LAPSIT percobaan dan catat berapa detik munculnya.
 - [ ] Latihan penuh `reset-lab.bat` → `jalankan-demo.bat` minimal **3 kali tanpa gagal**.
 - [ ] Siapkan video demo cadangan di laptop dan flashdisk.
 

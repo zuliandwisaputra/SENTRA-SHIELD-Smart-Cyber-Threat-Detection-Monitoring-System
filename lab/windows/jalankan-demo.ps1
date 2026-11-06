@@ -65,6 +65,9 @@ if ($kode -eq '200') {
 } else {
     Tulis-Ok "Koneksi penyerang ke Kodim A TERPUTUS (kode $kode). Blokir nftables bekerja."
 }
+Tulis-Info '3) LAPSIT: login sebagai analis@sentra.lab, buka insiden yang sama, klik "Buat LAPSIT".'
+Tulis-Info '   LAPSIT terbit (LLM lokal bila sudah disiapkan, selain itu template); klik "Unduh PDF".'
+Tulis-Info '   Setiap temuan mengutip event bukti [EV-n]; hash SHA-256 tercetak di kaki halaman PDF.'
 Tunggu-Enter
 
 # 3:40 Sensor Buta

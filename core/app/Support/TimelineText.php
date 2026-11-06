@@ -28,6 +28,8 @@ final class TimelineText
             'tindakan_disetujui' => sprintf('%s menyetujui blokir %s.', $who, $d['ip'] ?? '?'),
             'tindakan_ditolak' => sprintf('%s menolak blokir %s: "%s".', $who, $d['ip'] ?? '?', $d['alasan'] ?? ''),
             'usulan_dibatalkan' => sprintf('%s membatalkan usulan tindakan.', $who),
+            'lapsit_dibuat' => sprintf('LAPSIT %s terbit (%s), disusun untuk %s.', $d['nomor'] ?? '', ($d['penyusun'] ?? '') === 'llm' ? 'LLM lokal '.($d['model'] ?? '') : 'template', $who),
+            'lapsit_diekspor' => sprintf('%s mengekspor LAPSIT %s ke PDF.', $who, $d['nomor'] ?? ''),
             default => str_replace('_', ' ', ucfirst($log->action)).' oleh '.$who.'.',
         };
     }

@@ -61,6 +61,8 @@ chmod 600 "$STATE/app.key" "$STATE/reverb.env"
     echo "SESSION_SECURE_COOKIE=true"
     echo "CACHE_STORE=database"
     echo "QUEUE_CONNECTION=database"
+    # Di atas batas job LAPSIT (240 dtk) agar job yang lama tidak terambil dua kali.
+    echo "DB_QUEUE_RETRY_AFTER=300"
     echo "BROADCAST_CONNECTION=reverb"
     cat "$STATE/reverb.env"
     echo "REVERB_HOST=127.0.0.1"

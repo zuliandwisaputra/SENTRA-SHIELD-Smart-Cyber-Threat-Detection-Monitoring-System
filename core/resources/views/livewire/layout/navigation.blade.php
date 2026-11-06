@@ -31,6 +31,7 @@ new class extends Component
         // Grup "Sistem" (Admin): di layar lebar masuk menu pengguna agar bilah menu tidak melipat.
         ['route' => 'rules', 'label' => 'Aturan Deteksi', 'ability' => 'kelola-sistem', 'group' => 'sistem'],
         ['route' => 'users', 'label' => 'Pengguna', 'ability' => 'kelola-sistem', 'group' => 'sistem'],
+        ['route' => 'settings', 'label' => 'Pengaturan', 'ability' => 'kelola-sistem', 'group' => 'sistem'],
     ];
     $mainMenu = array_filter($menu, fn ($item) => ! isset($item['group']));
     $systemMenu = array_filter($menu, fn ($item) => ($item['group'] ?? null) === 'sistem');

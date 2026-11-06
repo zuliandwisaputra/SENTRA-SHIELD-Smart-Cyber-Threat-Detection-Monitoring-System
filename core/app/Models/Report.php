@@ -26,6 +26,19 @@ class Report extends Model
         return hash('sha256', $this->content);
     }
 
+    /** Nomor LAPSIT: urutan laporan ke-n untuk insiden itu. */
+    public static function numberFor(int $incidentId, int $sequence): string
+    {
+        return sprintf('LAPSIT/INS-%d/%d', $incidentId, $sequence);
+    }
+
+    public function number(): string
+    {
+        $sequence = static::query()->where('incident_id', $this->incident_id)->where('id', '<=', $this->id)->count();
+
+        return self::numberFor($this->incident_id, $sequence);
+    }
+
     public function incident(): BelongsTo
     {
         return $this->belongsTo(Incident::class);

@@ -8,7 +8,12 @@ if (-not (Pastikan-Docker)) { Selesai 1 }
 Tulis-Info 'Menyalakan container. Pertama kali bisa 5-15 menit (mengunduh dan membangun image).'
 Tulis-Info 'Berikutnya hanya sekitar 30 detik. Jangan tutup jendela ini.'
 $mulai = Get-Date
-Compose up -d --build
+if (LLM-Tersedia) {
+    Tulis-Info 'LLM lokal (Ollama) ikut dinyalakan untuk LAPSIT.'
+    Compose --profile llm up -d --build
+} else {
+    Compose up -d --build
+}
 if ($LASTEXITCODE -ne 0) {
     Tulis-Gagal 'docker compose up gagal. Baca pesan error di atas.'
     Tulis-Saran 'Lihat docs\panduan-pemula-windows.md bagian "Mengatasi error". Error internet: jalankan skrip ini lagi.'

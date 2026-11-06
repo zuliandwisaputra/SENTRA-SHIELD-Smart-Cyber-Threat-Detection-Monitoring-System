@@ -3,7 +3,8 @@
 
 Tulis-Judul 'SENTRA SHIELD - Mematikan lab'
 if (-not (Pastikan-Docker)) { Selesai 1 }
-Compose down
+# --profile llm: Ollama (bila ada) ikut dimatikan. Model tetap tersimpan.
+Compose --profile llm down
 if ($LASTEXITCODE -eq 0) {
     Tulis-Ok 'Lab dimatikan. Data tetap tersimpan. Nyalakan lagi dengan mulai-lab.bat.'
     Selesai 0

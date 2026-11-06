@@ -189,6 +189,59 @@
             @endif
         </section>
 
+        {{-- LAPSIT (FR-12) --}}
+        <section class="min-w-0 lg:col-span-3 bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6" aria-labelledby="lapsit" @if ($lapsitPending) wire:poll.3s @endif>
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                    <h3 id="lapsit" class="text-base font-semibold text-gray-100">LAPSIT</h3>
+                    <p class="text-xs text-gray-500">Laporan Situasi disusun LLM lokal dari fakta insiden (setiap temuan mengutip event bukti), atau dari template bila LLM tidak tersedia.</p>
+                </div>
+                @if ($canLapsit)
+                    <x-primary-button type="button" wire:click="createReport" wire:loading.attr="disabled" wire:target="createReport" :disabled="$lapsitPending">Buat LAPSIT</x-primary-button>
+                @endif
+            </div>
+            @if ($lapsitPending)
+                <div class="mt-3 flex items-center gap-2 rounded-md border border-sky-800 bg-sky-950/60 px-3 py-2 text-sm text-sky-200" role="status" data-testid="lapsit-disusun">
+                    <svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" class="opacity-25"/><path d="M22 12a10 10 0 0 0-10-10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+                    Menyusun LAPSIT… paling lama {{ \App\Reports\OllamaWriter::timeout() }} detik; bila LLM tidak menjawab, template dipakai.
+                </div>
+            @endif
+            @error('lapsit')
+                <div class="mt-3 rounded-md border border-red-800 bg-red-950/60 px-3 py-2 text-sm text-red-200" role="alert">{{ $message }}</div>
+            @enderror
+
+            @if ($reports->isEmpty())
+                @unless ($lapsitPending)
+                    <p class="mt-3 text-sm text-gray-500">Belum ada LAPSIT untuk insiden ini.</p>
+                @endunless
+            @else
+                <ul class="mt-4 space-y-3">
+                    @foreach ($reports as $r)
+                        <li class="rounded-md border border-gray-800 bg-gray-950/50 p-3" wire:key="lapsit-{{ $r->id }}">
+                            <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                                <span class="font-mono text-sm text-gray-100">{{ $r->number() }}</span>
+                                @if ($r->generator === \App\Enums\ReportGenerator::Llm)
+                                    <span class="rounded-full bg-violet-900/60 px-2 py-0.5 text-xs font-semibold text-violet-200 ring-1 ring-inset ring-violet-700">LLM lokal · draf</span>
+                                @else
+                                    <span class="rounded-full bg-gray-800 px-2 py-0.5 text-xs font-semibold text-gray-300 ring-1 ring-inset ring-gray-600">Template</span>
+                                @endif
+                                <span class="text-xs text-gray-400">{{ waktu_wib($r->created_at, 'd/m/Y H:i:s') }} · {{ $r->creator?->name ?? 'Sistem' }}</span>
+                                @if ($canLapsit && $r->pdf_path)
+                                    <a href="{{ route('reports.pdf', $r) }}" class="ms-auto text-sm font-semibold text-emerald-400 hover:underline">Unduh PDF</a>
+                                @endif
+                            </div>
+                            <div class="mt-1 break-all font-mono text-[11px] text-gray-500">SHA-256 PDF: {{ $r->sha256 ?? '—' }}</div>
+                            <details class="mt-2" @if ($loop->first) open @endif>
+                                <summary class="cursor-pointer select-none text-xs text-gray-400 hover:text-gray-200">Baca LAPSIT</summary>
+                                <pre class="mt-2 max-h-[32rem] overflow-auto whitespace-pre-wrap break-words rounded bg-gray-950 p-3 font-sans text-sm leading-relaxed text-gray-200">{!! preg_replace_callback('/\[EV-(\d+)\]/', fn ($m) => '<a href="'.route('events.show', (int) $m[1]).'" class="text-emerald-400 hover:underline">[EV-'.$m[1].']</a>', e($r->content)) !!}</pre>
+                                <div class="mt-1 break-all font-mono text-[11px] text-gray-500">SHA-256 isi (tercetak di kaki halaman PDF): {{ $r->contentHash() }}</div>
+                            </details>
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
+        </section>
+
         {{-- Bukti --}}
         <section class="min-w-0 lg:col-span-3 bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6" aria-labelledby="bukti">
             <div class="flex flex-wrap items-baseline justify-between gap-2">
