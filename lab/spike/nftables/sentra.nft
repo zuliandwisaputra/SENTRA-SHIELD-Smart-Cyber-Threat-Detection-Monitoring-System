@@ -1,0 +1,27 @@
+# Ruleset SENTRA (spike). Dipasang agent di host satuan.
+# - blocklist: blokir dengan durasi (timeout) -> terbuka sendiri walau Core mati.
+# - open_tcp: port yang sedang LISTEN, diperbarui agent dari /proc/net/tcp.
+# - Koneksi baru ke port tertutup dicatat lewat NFLOG group 7 (dibatasi lajunya).
+table inet sentra {
+    set blocklist4 {
+        type ipv4_addr
+        flags timeout
+    }
+
+    set open_tcp {
+        type inet_service
+        elements = { 22, 80, 9000 }
+    }
+
+    chain input {
+        type filter hook input priority -10; policy accept;
+
+        # Blokir diletakkan paling awal agar koneksi yang sudah terbuka ikut putus.
+        ip saddr @blocklist4 counter drop
+
+        iif "lo" accept
+        ct state established,related accept
+
+        tcp flags & (syn | ack) == syn tcp dport != @open_tcp limit rate 400/second burst 800 packets log group 7 prefix "SENTRA_CLOSED"
+    }
+}
