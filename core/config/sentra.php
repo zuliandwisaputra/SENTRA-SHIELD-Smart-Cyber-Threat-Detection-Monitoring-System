@@ -13,6 +13,15 @@ return [
     */
     'seed_password' => env('SENTRA_SEED_PASSWORD', 'Latihan#2026'),
 
+    /*
+    | Penjaga Situs (FR-13). Bawaan: hanya situs di jaringan privat (situs
+    | dummy milik sendiri di lab). Set true hanya untuk situs resmi satuan
+    | yang memang menjadi tanggung jawab pemasang.
+    */
+    'sites' => [
+        'allow_public' => (bool) env('SENTRA_SITES_ALLOW_PUBLIC', false),
+    ],
+
     'ollama' => [
         'url' => env('SENTRA_OLLAMA_URL', 'http://ollama:11434'),
         'model' => env('SENTRA_OLLAMA_MODEL', 'qwen2.5:3b'),
@@ -25,6 +34,8 @@ return [
     */
     'lab' => [
         'agents' => env('SENTRA_LAB_AGENTS', ''),
+        // Situs dummy lab untuk Penjaga Situs: "KODE-SATUAN=url" dipisah koma.
+        'sites' => env('SENTRA_LAB_SITES', ''),
         'enrollment_dir' => env('SENTRA_LAB_ENROLLMENT_DIR'),
     ],
 ];

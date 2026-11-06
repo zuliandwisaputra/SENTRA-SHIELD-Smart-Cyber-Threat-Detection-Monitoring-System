@@ -9,8 +9,10 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
-        // Kelas warna Tingkat Siaga/severity didefinisikan di enum PHP.
+        // Kelas warna Tingkat Siaga/severity didefinisikan di enum PHP; lencana
+        // status dan sorotan kata di beberapa komponen Livewire.
         './app/Enums/**/*.php',
+        './app/Livewire/**/*.php',
     ],
 
     theme: {

@@ -49,7 +49,11 @@ Tulis-Judul '3. Eksploitasi portal dan serangan OT'
 Serang 'sqlmap (SQL injection ke portal)' @('./skenario/03-sqlmap.sh', $KodimA)
 Serang 'unggah webshell (tertangkap FIM)' @('./skenario/05-webshell.sh', $KodimA)
 Serang 'perintah tulis Modbus ke PLC' @('python3', 'skenario/04-modbus-tulis.py', $Plc)
+Serang 'injeksi judi online ber-cloaking ke halaman utama portal' @('./skenario/06-judol-cloaking.sh', $KodimA)
+Tulis-Info 'Penjaga Situs memeriksa portal sekarang (otomatis juga tiap menit)...'
+Compose exec -T sentra-core php artisan sentra:penjaga-situs
 Tulis-Info 'Lihat Detail Insiden: tahap Eksekusi/Persistensi dan Dampak muncul, skor menjadi Kritis.'
+Tulis-Info 'Menu Penjaga Situs (analis): versi Googlebot berisi judi, versi browser tetap normal.'
 Tunggu-Enter
 
 # 3:00 Respons

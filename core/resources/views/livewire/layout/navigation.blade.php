@@ -27,6 +27,7 @@ new class extends Component
         ['route' => 'readiness', 'label' => 'Uji Kesiapan', 'ability' => 'lihat-uji-kesiapan'],
         ['route' => 'approvals', 'label' => 'Antrean Persetujuan', 'ability' => 'putuskan-tindakan', 'badge' => $pendingApprovals],
         ['route' => 'units-agents', 'label' => 'Satuan & Agent', 'ability' => 'lihat-satuan-agent'],
+        ['route' => 'sites', 'label' => 'Penjaga Situs', 'ability' => 'lihat-penjaga-situs'],
         ['route' => 'audit', 'label' => 'Audit Log', 'ability' => 'lihat-audit'],
         // Grup "Sistem" (Admin): di layar lebar masuk menu pengguna agar bilah menu tidak melipat.
         ['route' => 'rules', 'label' => 'Aturan Deteksi', 'ability' => 'kelola-sistem', 'group' => 'sistem'],

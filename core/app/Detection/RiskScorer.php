@@ -68,7 +68,9 @@ class RiskScorer
         $stageBonus = self::STAGE_BONUS * max(0, $stageCount - 1);
         $subtotal = (int) $rules->sum('poin') + $stageBonus;
 
-        [$assetMultiplier, $assetLabel, $assetHost] = $this->assetMultiplier($detections->pluck('agent_id')->filter()->unique()->all());
+        // Deteksi Penjaga Situs tidak punya agent; asetnya situs web satuan.
+        $siteWatched = $detections->contains(fn ($d) => $d->agent_id === null && in_array('site', $d->rule->sources(), true));
+        [$assetMultiplier, $assetLabel, $assetHost] = $this->assetMultiplier($detections->pluck('agent_id')->filter()->unique()->all(), $siteWatched);
         $campaignActive = $incident->campaign_id !== null;
         $campaignMultiplier = $campaignActive ? self::CAMPAIGN_MULTIPLIER : 1.0;
 
@@ -101,9 +103,11 @@ class RiskScorer
      * @param  list<int>  $agentIds
      * @return array{0: float, 1: string, 2: ?string}
      */
-    private function assetMultiplier(array $agentIds): array
+    private function assetMultiplier(array $agentIds, bool $siteWatched = false): array
     {
-        $best = [AssetType::Lainnya->multiplier(), AssetType::Lainnya->label(), null];
+        $best = $siteWatched
+            ? [AssetType::Web->multiplier(), AssetType::Web->label(), 'situs dipantau']
+            : [AssetType::Lainnya->multiplier(), AssetType::Lainnya->label(), null];
         foreach (Agent::query()->whereIn('id', $agentIds)->get() as $agent) {
             if ($agent->asset_type->multiplier() > $best[0]) {
                 $best = [$agent->asset_type->multiplier(), $agent->asset_type->label(), $agent->hostname];

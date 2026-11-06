@@ -22,3 +22,9 @@ Schedule::call(fn () => app(ReadinessService::class)->tick())
     ->name('sentra:uji-kesiapan')
     ->everyTenSeconds()
     ->withoutOverlapping();
+
+// Penjaga Situs (FR-13): situs satuan terdaftar diperiksa tiap menit.
+Schedule::command('sentra:penjaga-situs')
+    ->name('sentra:penjaga-situs')
+    ->everyMinute()
+    ->withoutOverlapping();

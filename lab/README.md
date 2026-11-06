@@ -62,6 +62,24 @@ docker compose -f lab/docker-compose.yml exec attacker ./skenario/03-sqlmap.sh 1
 docker compose -f lab/docker-compose.yml exec attacker python3 skenario/04-modbus-tulis.py 172.30.0.20
 ```
 
+```bash
+docker compose -f lab/docker-compose.yml exec attacker ./skenario/05-webshell.sh 172.30.0.11
+```
+
+Injeksi judi online ber-cloaking: dropper diunggah lewat celah unggah portal dan menyisipkan kode ke halaman utama yang hanya menampilkan halaman judi untuk Googlebot dan pengunjung dari Google. FIM menangkap perubahan file (R10); Penjaga Situs menangkap versi Googlebot/referer yang berbeda (R13).
+
+```bash
+docker compose -f lab/docker-compose.yml exec attacker ./skenario/06-judol-cloaking.sh 172.30.0.11
+```
+
+Penjaga Situs memeriksa `http://kodim-a/` dan `http://kodim-b/` tiap menit (didaftarkan otomatis saat setup). Memeriksa sekarang:
+
+```bash
+docker compose -f lab/docker-compose.yml exec sentra-core php artisan sentra:penjaga-situs
+```
+
+Halaman utama portal sengaja bisa ditulis proses web (celah latihan untuk skenario 06). Reset lab mengembalikan portal ke kondisi awal.
+
 Lalu jalankan `bash lab/cek-lab.sh` untuk melihat event yang benar-benar diterima Core per sumber.
 
 ## Spike nftables

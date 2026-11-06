@@ -71,7 +71,12 @@ class SecurityEvent extends Model
                 'created' => 'dibuat', 'modified' => 'diubah', 'deleted' => 'dihapus', default => $p['change'] ?? '?',
             }, $p['path'] ?? '?'),
             EventSource::Modbus => sprintf('FC%s %s, alamat %s, nilai %s', $p['function_code'] ?? '?', $p['function_name'] ?? '', $p['address'] ?? '?', $p['value'] ?? ($p['quantity'] ?? '?')),
-            EventSource::Site => (string) ($p['url'] ?? 'pemeriksaan situs'),
+            EventSource::Site => match ($p['temuan'] ?? null) {
+                'cloaking' => sprintf('Situs %s: versi %s memuat kata judi (%s), kemiripan dengan versi browser %d%%',
+                    $p['url'] ?? '?', implode('/', (array) ($p['varian'] ?? [])), implode(', ', array_keys((array) ($p['kata_kunci'] ?? []))), (int) round(((float) ($p['kemiripan'] ?? 0)) * 100)),
+                'defacement' => sprintf('Situs %s: halaman utama berubah di luar jadwal pembaruan', $p['url'] ?? '?'),
+                default => (string) ($p['url'] ?? 'pemeriksaan situs'),
+            },
         };
     }
 

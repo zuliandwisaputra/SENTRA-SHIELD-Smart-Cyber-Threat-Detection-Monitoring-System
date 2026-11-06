@@ -32,15 +32,28 @@ class RuleMatcher
         }
 
         if (isset($cfg['watch_paths'])) {
+            // R10 versi Penjaga Situs: SiteWatch sudah memeriksa baseline dan jadwal pembaruan situs.
+            if ($event->source->value === 'site') {
+                return ($payload['temuan'] ?? null) === 'defacement';
+            }
+
             return $event->source->value === 'fim'
                 && in_array($payload['path'] ?? null, $cfg['watch_paths'], true)
                 && in_array($payload['change'] ?? null, $cfg['changes'] ?? ['modified'], true)
-                && ! $this->insideUpdateWindow($cfg['update_windows'] ?? [], $event->occurred_at);
+                && ! self::insideUpdateWindow($cfg['update_windows'] ?? [], $event->occurred_at);
         }
 
         if (isset($cfg['function_codes'])) {
             return in_array((int) ($payload['function_code'] ?? -1), array_map('intval', $cfg['function_codes']), true)
                 && ! in_array($event->src_ip, $cfg['hmi_allowlist'] ?? [], true);
+        }
+
+        if (isset($cfg['keywords'], $cfg['similarity_threshold'])) {
+            // R13: versi Googlebot/referer berbeda dari versi browser dan memuat kata kunci judi.
+            return $event->source->value === 'site'
+                && ($payload['temuan'] ?? null) === 'cloaking'
+                && (float) ($payload['kemiripan'] ?? 1) < (float) $cfg['similarity_threshold']
+                && ! empty($payload['kata_kunci']);
         }
 
         // Aturan dengan requires_rule (R08) hanya butuh kondisi "match";
@@ -105,7 +118,7 @@ class RuleMatcher
      *
      * @param  list<array<string, mixed>>  $windows
      */
-    private function insideUpdateWindow(array $windows, ?Carbon $time): bool
+    public static function insideUpdateWindow(array $windows, ?Carbon $time): bool
     {
         if ($time === null || $windows === []) {
             return false;

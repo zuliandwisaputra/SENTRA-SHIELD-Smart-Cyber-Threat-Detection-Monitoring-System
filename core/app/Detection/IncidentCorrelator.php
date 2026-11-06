@@ -2,6 +2,7 @@
 
 namespace App\Detection;
 
+use App\Enums\EventSource;
 use App\Enums\IncidentStatus;
 use App\Enums\Severity;
 use App\Models\Detection;
@@ -107,8 +108,17 @@ class IncidentCorrelator
     {
         $unit = Unit::query()->whereKey($detection->unit_id)->value('name');
 
-        return $detection->src_ip
-            ? "Serangan dari {$detection->src_ip} terhadap {$unit}"
-            : "Aktivitas mencurigakan pada file di {$unit}";
+        if ($detection->src_ip) {
+            return "Serangan dari {$detection->src_ip} terhadap {$unit}";
+        }
+        if ($detection->event?->source === EventSource::Site) {
+            $host = parse_url((string) ($detection->event->payload['url'] ?? ''), PHP_URL_HOST) ?: 'situs';
+
+            return ($detection->event->payload['temuan'] ?? '') === 'cloaking'
+                ? "Injeksi judi online pada situs {$host} ({$unit})"
+                : "Perubahan halaman utama situs {$host} ({$unit})";
+        }
+
+        return "Aktivitas mencurigakan pada file di {$unit}";
     }
 }

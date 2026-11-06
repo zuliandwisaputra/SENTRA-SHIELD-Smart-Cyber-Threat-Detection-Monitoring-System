@@ -24,6 +24,7 @@ dataset('matriks_prd', [
     'Halaman Satuan dan Agent' => ['lihat-satuan-agent', [false, true, false, true]],
     'Halaman Uji Kesiapan' => ['lihat-uji-kesiapan', [false, true, false, true]],
     'Halaman Penjaga Situs' => ['lihat-penjaga-situs', [false, true, false, false]],
+    'Kelola situs Penjaga Situs' => ['kelola-penjaga-situs', [false, true, false, false]],
 ]);
 
 test('gate sesuai matriks hak akses PRD', function (string $ability, array $expected) {
@@ -40,7 +41,7 @@ test('akun demo hanya bisa melihat, tanpa aksi apa pun', function () {
     $demo = User::factory()->role(Role::Demo)->create();
     $gate = Gate::forUser($demo);
 
-    foreach (['ubah-status-insiden', 'usul-tindakan', 'putuskan-tindakan', 'kelola-lapsit', 'jalankan-uji-kesiapan', 'kelola-sistem', 'verifikasi-audit'] as $action) {
+    foreach (['ubah-status-insiden', 'usul-tindakan', 'putuskan-tindakan', 'kelola-lapsit', 'jalankan-uji-kesiapan', 'kelola-sistem', 'verifikasi-audit', 'kelola-penjaga-situs'] as $action) {
         expect($gate->allows($action))->toBeFalse("demo tidak boleh {$action}");
     }
     expect($gate->allows('lihat-dashboard'))->toBeTrue();

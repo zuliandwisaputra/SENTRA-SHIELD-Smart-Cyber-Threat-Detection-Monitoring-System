@@ -29,6 +29,7 @@ final class TimelineText
             'tindakan_ditolak' => sprintf('%s menolak blokir %s: "%s".', $who, $d['ip'] ?? '?', $d['alasan'] ?? ''),
             'usulan_dibatalkan' => sprintf('%s membatalkan usulan tindakan.', $who),
             'lapsit_dibuat' => sprintf('LAPSIT %s terbit (%s), disusun untuk %s.', $d['nomor'] ?? '', ($d['penyusun'] ?? '') === 'llm' ? 'LLM lokal '.($d['model'] ?? '') : 'template', $who),
+            'baseline_situs_diperbarui' => sprintf('Baseline situs %s diperbarui (perubahan di dalam jadwal pembaruan).', $d['url'] ?? ''),
             'lapsit_diekspor' => sprintf('%s mengekspor LAPSIT %s ke PDF.', $who, $d['nomor'] ?? ''),
             default => str_replace('_', ' ', ucfirst($log->action)).' oleh '.$who.'.',
         };

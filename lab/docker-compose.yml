@@ -63,6 +63,8 @@ services:
       SENTRA_SEED_PASSWORD: ${SENTRA_SEED_PASSWORD:-Latihan#2026}
       # Agent lab: hostname:KODE-SATUAN:jenis_aset (kode pendaftaran acak dibuat otomatis).
       SENTRA_LAB_AGENTS: kodim-a:KODIM-LAT-A:web,kodim-b:KODIM-LAT-B:web,plc-sim:KODIM-LAT-A:ot
+      # Situs dummy yang dijaga Penjaga Situs (portal LINGKUNGAN LATIHAN).
+      SENTRA_LAB_SITES: KODIM-LAT-A=http://kodim-a/,KODIM-LAT-B=http://kodim-b/
     volumes:
       - core-state:/var/lib/sentra
       - core-storage:/var/www/core/storage/app

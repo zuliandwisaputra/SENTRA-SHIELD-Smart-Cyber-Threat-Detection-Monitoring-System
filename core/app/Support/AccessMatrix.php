@@ -30,6 +30,8 @@ final class AccessMatrix
         'lihat-satuan-agent' => [Role::Admin, Role::Analis],
         'lihat-uji-kesiapan' => [Role::Analis, Role::Admin, Role::Demo],
         'lihat-penjaga-situs' => [Role::Analis, Role::Demo],
+        // Halaman Penjaga Situs hanya untuk Analis: Analis juga mengelola daftar situsnya.
+        'kelola-penjaga-situs' => [Role::Analis],
     ];
 
     public static function allows(Role $role, string $ability): bool

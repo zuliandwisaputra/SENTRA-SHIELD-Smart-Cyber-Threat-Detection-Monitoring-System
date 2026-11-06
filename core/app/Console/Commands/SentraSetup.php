@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Enums\AgentStatus;
 use App\Enums\AssetType;
 use App\Models\Agent;
+use App\Models\MonitoredSite;
 use App\Models\Unit;
 use App\Services\AgentEnrollment;
 use Illuminate\Console\Command;
@@ -28,6 +29,7 @@ class SentraSetup extends Command
         $this->call('db:seed', ['--force' => true]);
 
         $this->provisionLabAgents($enrollment);
+        $this->provisionLabSites();
 
         if (! $this->option('no-optimize')) {
             $this->call('optimize');
@@ -36,6 +38,27 @@ class SentraSetup extends Command
         $this->components->info('SENTRA Core siap.');
 
         return self::SUCCESS;
+    }
+
+    /** Daftarkan situs dummy lab ke Penjaga Situs (sekali; tidak menimpa yang sudah ada). */
+    private function provisionLabSites(): void
+    {
+        $spec = trim((string) config('sentra.lab.sites'));
+        if ($spec === '') {
+            return;
+        }
+        $this->components->info('Situs lab (Penjaga Situs)');
+        foreach (array_filter(array_map('trim', explode(',', $spec))) as $entry) {
+            [$unitCode, $url] = array_pad(explode('=', $entry, 2), 2, '');
+            $unit = Unit::where('code', $unitCode)->first();
+            if ($unit === null || ! filter_var($url, FILTER_VALIDATE_URL)) {
+                $this->components->warn("Lewati {$entry}: satuan atau URL tidak valid");
+
+                continue;
+            }
+            $site = MonitoredSite::firstOrCreate(['url' => $url], ['unit_id' => $unit->id]);
+            $this->components->twoColumnDetail($url, $site->wasRecentlyCreated ? 'didaftarkan' : 'sudah terdaftar');
+        }
     }
 
     private function provisionLabAgents(AgentEnrollment $enrollment): void

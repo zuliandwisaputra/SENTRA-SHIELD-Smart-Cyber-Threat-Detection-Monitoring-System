@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['site_id', 'check_uuid', 'variant', 'hash', 'similarity', 'gambling_hits', 'flagged', 'checked_at'])]
+#[Fillable(['site_id', 'check_uuid', 'variant', 'http_status', 'hash', 'similarity', 'gambling_hits', 'keywords', 'flagged', 'excerpt', 'error', 'checked_at'])]
 class SiteCheck extends Model
 {
     /** Simpan pecahan detik (kolom DATETIME(3)/(6)). */
@@ -21,6 +21,8 @@ class SiteCheck extends Model
             'variant' => SiteVariant::class,
             'similarity' => 'float',
             'gambling_hits' => 'integer',
+            'http_status' => 'integer',
+            'keywords' => 'array',
             'flagged' => 'boolean',
             'checked_at' => 'datetime',
         ];

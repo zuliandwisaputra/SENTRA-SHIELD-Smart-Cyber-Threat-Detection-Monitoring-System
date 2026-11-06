@@ -15,6 +15,7 @@ use App\Livewire\Dashboard\CommandDashboard;
 use App\Livewire\Incidents\IncidentList;
 use App\Livewire\Incidents\IncidentShow;
 use App\Livewire\Readiness\ReadinessPage;
+use App\Livewire\Sites\SiteWatchPage;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/beranda');
@@ -45,6 +46,10 @@ Route::middleware('auth')->group(function () {
     Route::get('uji-kesiapan', ReadinessPage::class)
         ->middleware('can:lihat-uji-kesiapan')
         ->name('readiness');
+
+    Route::get('penjaga-situs', SiteWatchPage::class)
+        ->middleware('can:lihat-penjaga-situs')
+        ->name('sites');
 
     Route::get('audit', AuditLogPage::class)
         ->middleware('can:lihat-audit')

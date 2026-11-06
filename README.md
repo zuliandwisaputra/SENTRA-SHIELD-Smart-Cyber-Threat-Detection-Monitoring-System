@@ -16,8 +16,8 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 | 1a | Lab Docker, agent Python, API agent (F1, F2) | ✅ Selesai |
 | 1b | Mesin deteksi, Attack Story, skor (F3, F4, F5) | ✅ Selesai |
 | 1c | Dashboard live, respons berjenjang & blokir (F6, F7) | ✅ Selesai |
-| 2 | Uji Kesiapan, Sensor Buta, Kampanye, audit log, LAPSIT, Penjaga Situs (F8–F13) | 🔄 Sedang dikerjakan: F8–F12 selesai, F13 berikutnya |
-| 3 | Mode demo read-only, landing page (F15); Telegram (F14) bila sempat | ⏳ |
+| 2 | Uji Kesiapan, Sensor Buta, Kampanye, audit log, LAPSIT, Penjaga Situs (F8–F13) | ✅ Selesai |
+| 3 | Mode demo read-only, landing page (F15); Telegram (F14) bila sempat | ⏳ Berikutnya, setelah stabilisasi dan perbaikan dari tes Windows |
 
 ### Sudah jalan vs peta jalan
 
@@ -43,7 +43,8 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 | Uji Kesiapan: 11 skenario aman ke host sendiri (R01–R07, R09–R12), matriks hasil, cakupan, rata-rata waktu deteksi, riwayat | ✅ Sudah jalan di lab: cakupan 11/11, rata-rata 4,2 detik, tanpa insiden palsu |
 | LAPSIT: tombol Buat LAPSIT di Detail Insiden; LLM lokal (Ollama `qwen2.5:3b`) dengan prompt fakta JSON, setiap temuan mengutip `[EV-n]`, sitasi/IP karangan dibuang; cadangan template bila Ollama tidak ada atau > 60 detik; PDF dengan SHA-256 isi di kaki halaman; ekspor tercatat di audit | ✅ Sudah jalan di lab: template ±1 detik; jalur LLM diuji dengan Ollama tiruan (batas waktu 60 detik → template terbukti). Model asli belum diuji di sandbox pengembangan (unduhan model diblokir), perlu dicoba di laptop |
 | Halaman Pengaturan (durasi blokir default, alamat/model/batas waktu Ollama, periksa koneksi) | ✅ Sudah jalan |
-| Penjaga Situs, dan seterusnya | ⏳ Fase 2–3 |
+| Penjaga Situs: situs satuan diperiksa tiap menit dalam 3 varian (browser, Googlebot, referer Google); isi berbeda + kata judi → R13 injeksi judi ber-cloaking; hash halaman utama berubah di luar jadwal → R10; perbandingan isi per varian dengan kata judi disorot | ✅ Sudah jalan di lab: injeksi judol ke portal Kodim A → versi Googlebot kemiripan 7%, 8 kata judi → R13 tertaut ke insiden yang sama dengan R10 dari FIM |
+| Akun Demo read-only (sudah ada sejak Fase 0); landing page statis `site/` + video + screenshot (F15, tanpa VPS); Telegram (F14) bila sempat | ⏳ Fase 3 |
 | Mode Latihan (replay), impor IOC offline | 🗺️ Peta jalan (di luar lingkup lomba) |
 
 ## Menjalankan lab demo (disarankan)
