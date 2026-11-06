@@ -16,7 +16,7 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 | 1a | Lab Docker, agent Python, API agent (F1, F2) | ✅ Selesai |
 | 1b | Mesin deteksi, Attack Story, skor (F3, F4, F5) | ✅ Selesai |
 | 1c | Dashboard live, respons berjenjang & blokir (F6, F7) | ✅ Selesai |
-| 2 | Uji Kesiapan, Sensor Buta, Kampanye, audit log, LAPSIT, Penjaga Situs (F8–F13) | 🔄 Sedang dikerjakan: F8, F9, F10 selesai |
+| 2 | Uji Kesiapan, Sensor Buta, Kampanye, audit log, LAPSIT, Penjaga Situs (F8–F13) | 🔄 Sedang dikerjakan: F8, F9, F10, F11 selesai |
 | 3 | Mode demo read-only, landing page (F15); Telegram (F14) bila sempat | ⏳ |
 
 ### Sudah jalan vs peta jalan
@@ -30,7 +30,7 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 | Kode pendaftaran sekali pakai, cabut token → agent langsung ditolak | ✅ Sudah jalan |
 | Respons berjenjang: Operator/Analis usul blokir → Komandan setuju/tolak (dari HP) → agent memblokir di nftables | ✅ Sudah jalan di lab: penyerang terputus 2,7 detik setelah disetujui |
 | Rollback oleh Komandan, blokir Kedaluwarsa otomatis, riwayat tindakan | ✅ Sudah jalan |
-| Audit log berantai hash (login, aksi admin, eksekusi perintah) | ✅ Pencatatan jalan; halaman Verifikasi di Fase 2 |
+| Audit log berantai hash (login, ubah status, usul, setuju, eksekusi, aksi admin) + halaman Audit Log dengan filter dan tombol Verifikasi Rantai | ✅ Sudah jalan: baris yang diubah atau dihapus langsung di database ditunjukkan nomor barisnya (diuji di lab) |
 | Halaman Satuan & Agent, Pengguna; Beranda: pohon satuan + Tingkat Siaga | ✅ Sudah jalan |
 | Lima peran sesuai matriks hak akses PRD; Operator hanya melihat satuannya | ✅ Sudah jalan |
 | Mesin deteksi R01–R11 (pola + ambang), daftar putih IP, aturan bisa diubah Admin | ✅ Sudah jalan |
@@ -41,7 +41,7 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 | Sensor Buta: heartbeat hilang > 30 detik → agent BUTA + insiden Tinggi; sumber log rutin yang diam → peringatan; agent hidup kembali tercatat | ✅ Sudah jalan di lab (alarm 39 detik setelah agent dimatikan) |
 | Kampanye lintas satuan: IP yang sama menyerang ≥ 2 satuan dalam 24 jam → skor ×1,3, blokir serentak sekali setuju | ✅ Sudah jalan di lab (penyerang terputus dari dua satuan 7,2 detik setelah disetujui dari HP) |
 | Uji Kesiapan: 11 skenario aman ke host sendiri (R01–R07, R09–R12), matriks hasil, cakupan, rata-rata waktu deteksi, riwayat | ✅ Sudah jalan di lab: cakupan 11/11, rata-rata 4,2 detik, tanpa insiden palsu |
-| Halaman audit log + Verifikasi Rantai, LAPSIT, Penjaga Situs, dan seterusnya | ⏳ Fase 2–3 |
+| LAPSIT, Penjaga Situs, dan seterusnya | ⏳ Fase 2–3 |
 | Mode Latihan (replay), impor IOC offline | 🗺️ Peta jalan (di luar lingkup lomba) |
 
 ## Menjalankan lab demo (disarankan)

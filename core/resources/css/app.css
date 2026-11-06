@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Indikator pembaruan di menu: titik hijau = WebSocket, kuning = polling 3 detik. */
+[data-sentra-live]::before {
+    content: '';
+    display: inline-block;
+    width: 0.4rem;
+    height: 0.4rem;
+    margin-right: 0.35rem;
+    border-radius: 9999px;
+    vertical-align: middle;
+    background: #fbbf24;
+}
+[data-sentra-live][data-mode='live']::before {
+    background: #34d399;
+}

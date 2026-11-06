@@ -18,6 +18,7 @@ dataset('matriks_prd', [
     'Jalankan Uji Kesiapan' => ['jalankan-uji-kesiapan', [false, true, false, true]],
     'Kelola agent, pengguna, aturan' => ['kelola-sistem', [false, false, false, true]],
     'Lihat dan verifikasi audit log' => ['lihat-audit', [false, true, true, true]],
+    'Verifikasi rantai audit log' => ['verifikasi-audit', [false, true, true, true]],
     // Bagian 11: akses halaman
     'Halaman Kampanye' => ['lihat-kampanye', [false, true, true, false]],
     'Halaman Satuan dan Agent' => ['lihat-satuan-agent', [false, true, false, true]],
@@ -39,7 +40,7 @@ test('akun demo hanya bisa melihat, tanpa aksi apa pun', function () {
     $demo = User::factory()->role(Role::Demo)->create();
     $gate = Gate::forUser($demo);
 
-    foreach (['ubah-status-insiden', 'usul-tindakan', 'putuskan-tindakan', 'kelola-lapsit', 'jalankan-uji-kesiapan', 'kelola-sistem'] as $action) {
+    foreach (['ubah-status-insiden', 'usul-tindakan', 'putuskan-tindakan', 'kelola-lapsit', 'jalankan-uji-kesiapan', 'kelola-sistem', 'verifikasi-audit'] as $action) {
         expect($gate->allows($action))->toBeFalse("demo tidak boleh {$action}");
     }
     expect($gate->allows('lihat-dashboard'))->toBeTrue();

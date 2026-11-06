@@ -23,6 +23,7 @@ final class AccessMatrix
         'jalankan-uji-kesiapan' => [Role::Analis, Role::Admin],
         'kelola-sistem' => [Role::Admin],
         'lihat-audit' => [Role::Analis, Role::Komandan, Role::Admin, Role::Demo],
+        'verifikasi-audit' => [Role::Analis, Role::Komandan, Role::Admin],
 
         // Bagian 11: akses halaman
         'lihat-kampanye' => [Role::Analis, Role::Komandan, Role::Demo],

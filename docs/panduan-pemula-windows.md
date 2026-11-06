@@ -296,10 +296,10 @@ Semua dilakukan dengan **klik dua kali** file di folder `lab\windows`:
 
 ### Tanda dashboard live
 
-Di kanan atas dashboard ada tulisan:
+Di kanan atas dashboard ada tanda kecil:
 
-- **Live (WebSocket)**: data muncul seketika, normalnya kurang dari 2 detik.
-- **Polling 3 detik**: WebSocket tidak tersambung, tetapi dashboard tetap diperbarui otomatis tiap 3 detik. Demo tetap bisa jalan.
+- **Live** (titik hijau): tersambung lewat WebSocket, data muncul seketika, normalnya kurang dari 2 detik.
+- **Polling** (titik kuning): WebSocket tidak tersambung, tetapi dashboard tetap diperbarui otomatis tiap 3 detik. Demo tetap bisa jalan.
 
 ### Membuka dashboard dari HP (untuk adegan Komandan menyetujui)
 

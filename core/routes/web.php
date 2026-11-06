@@ -6,6 +6,7 @@ use App\Livewire\Actions\ApprovalQueue;
 use App\Livewire\Admin\Rules;
 use App\Livewire\Admin\UnitsAgents;
 use App\Livewire\Admin\Users;
+use App\Livewire\Audit\AuditLogPage;
 use App\Livewire\Campaigns\CampaignList;
 use App\Livewire\Campaigns\CampaignShow;
 use App\Livewire\Dashboard\CommandDashboard;
@@ -39,6 +40,10 @@ Route::middleware('auth')->group(function () {
     Route::get('uji-kesiapan', ReadinessPage::class)
         ->middleware('can:lihat-uji-kesiapan')
         ->name('readiness');
+
+    Route::get('audit', AuditLogPage::class)
+        ->middleware('can:lihat-audit')
+        ->name('audit');
 
     Route::get('tindakan', ActionHistory::class)
         ->middleware('can:lihat-dashboard')

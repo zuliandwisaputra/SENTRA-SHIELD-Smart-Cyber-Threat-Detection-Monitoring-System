@@ -36,7 +36,7 @@ function setMode(next) {
     mode = next;
     document.querySelectorAll('[data-sentra-live]').forEach((el) => {
         el.dataset.mode = next;
-        el.textContent = next === 'live' ? 'Live (WebSocket)' : 'Polling 3 detik';
+        el.textContent = next === 'live' ? 'Live' : 'Polling';
         el.title = next === 'live'
             ? 'Pembaruan langsung lewat WebSocket Laravel Reverb'
             : 'WebSocket tidak tersambung; dashboard diperbarui tiap 3 detik';
