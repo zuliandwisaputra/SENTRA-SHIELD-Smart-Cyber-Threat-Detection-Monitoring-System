@@ -12,3 +12,4 @@ storage/framework/views/*
 storage/pail
 .phpunit.cache
 tests
+bootstrap/cache/*.php

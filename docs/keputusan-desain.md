@@ -55,3 +55,13 @@ Keputusan berikut tidak menyimpang dari PRD; isinya pilihan implementasi yang pe
 - **Sensor Modbus pasif** (AF_PACKET) hanya mencatat perintah tulis FC 5, 6, 15, 16. ACK TCP kosong diabaikan agar perintah tulis berikutnya tidak dianggap retransmisi (regresi yang ditemukan saat uji lab 6 Nov).
 - **Event disimpan satu per satu dalam satu transaksi** agar ID setiap event diketahui pasti dan bisa diteruskan ke mesin deteksi (Fase 1b).
 - **Image lab memakai Ubuntu 24.04** (PHP 8.3 dan Python 3.12 bawaan, nginx 1.24) untuk semua container, sehingga hanya satu image dasar yang perlu ditarik.
+
+## Keputusan teknis Fase 1b
+
+- **Deteksi berjalan di job antrean** (`ProcessEvents`) yang dipicu setiap batch event dari agent. Worker antrean di lab hanya satu proses, sehingga batch diproses berurutan dan korelasi tidak saling balapan.
+- **Jendela waktu aturan ambang memakai waktu kejadian event** (`occurred_at`), bukan waktu tiba di Core. Event yang tertahan di antrean agent lalu dikirim ulang tetap dihitung di jendela yang benar.
+- **Aturan pola menghasilkan satu deteksi per event yang cocok** (event = bukti), tetapi skor menghitung tiap aturan sekali. Aturan ambang menghasilkan satu deteksi per (aturan, satuan, IP) per jendela.
+- **Pola web dicocokkan setelah URL-decode dua kali**, agar `%27`, `%2527`, dan `+` tetap tertangkap.
+- **sqlmap ikut memicu R05 (XSS) dan R06 (LFI).** Request "heuristik WAF/IPS" bawaan sqlmap memuat `<script>` dan `../../../etc/passwd`. Ini deteksi yang sah, bukan false positive, dan buktinya bisa dibuka di Detail Event.
+- **Skor dibulatkan ke bilangan bulat terdekat** setelah dikali pengali, misalnya 142,5 menjadi 143. Rincian di layar menampilkan rumus lengkapnya.
+- **Daftar putih IP disimpan di Pengaturan** (`ip_whitelist`) dan bisa diubah Admin di halaman Aturan Deteksi. Mendukung IP tunggal dan CIDR.

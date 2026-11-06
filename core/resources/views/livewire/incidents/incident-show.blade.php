@@ -3,7 +3,7 @@
         <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8 flex flex-wrap items-start justify-between gap-4">
             <div>
                 <a href="{{ route('incidents.index') }}" wire:navigate class="text-xs text-gray-400 hover:underline">&larr; Daftar Insiden</a>
-                <h2 class="mt-1 font-semibold text-xl text-gray-100 leading-tight">#{{ $inc->id }} {{ $inc->title }}</h2>
+                <h2 class="mt-1 font-semibold text-xl text-gray-100 leading-tight break-words">#{{ $inc->id }} {{ $inc->title }}</h2>
                 <p class="mt-1 text-sm text-gray-400">
                     {{ $inc->unit->name }}
                     @if ($inc->src_ip) · IP sumber <span class="font-mono text-gray-200">{{ $inc->src_ip }}</span> @endif
@@ -31,16 +31,16 @@
         </div>
     </header>
 
-    <div class="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-6 lg:grid-cols-3">
+    <div class="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
         {{-- Attack Story --}}
-        <section class="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6" aria-labelledby="attack-story">
+        <section class="min-w-0 lg:col-span-2 bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6" aria-labelledby="attack-story">
             <h3 id="attack-story" class="text-base font-semibold text-gray-100">Attack Story</h3>
             <p class="text-xs text-gray-500">Alur serangan menurut tahap kill chain, dengan teknik MITRE ATT&amp;CK dan event buktinya.</p>
 
             <ol class="mt-5 relative border-s border-gray-700 ms-3 space-y-6">
                 @foreach ($stages as $item)
                     @php $reached = $item['rules']->isNotEmpty(); @endphp
-                    <li class="ms-6">
+                    <li class="ms-6 min-w-0">
                         <span class="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full ring-4 ring-gray-900 {{ $reached ? 'bg-red-600 text-white' : 'bg-gray-700 text-gray-400' }} text-xs font-bold">{{ $item['stage']->order() }}</span>
                         <h4 class="font-semibold {{ $reached ? 'text-gray-100' : 'text-gray-500' }}">{{ $item['stage']->label() }}</h4>
                         @if (! $reached)
@@ -51,12 +51,12 @@
                                 <div class="flex flex-wrap items-center gap-2">
                                     <span class="rounded bg-gray-800 px-1.5 py-0.5 font-mono text-xs text-gray-300">{{ $r->rule->code }}</span>
                                     <span class="font-medium text-gray-100">{{ $r->rule->name }}</span>
-                                    <span class="text-xs text-gray-400">{{ $r->rule->attack_id }} {{ $r->rule->attack_name }}</span>
+                                    <span class="text-xs text-gray-400 break-words">{{ $r->rule->attack_id }} {{ $r->rule->attack_name }}</span>
                                 </div>
-                                <div class="mt-1 text-xs text-gray-400">
+                                <div class="mt-1 text-xs text-gray-400 break-words">
                                     {{ waktu_wib(\Illuminate\Support\Carbon::parse($r->pertama), 'H:i:s') }} ·
                                     <button wire:click="filterRule('{{ $r->rule->code }}')" class="text-emerald-400 hover:underline">{{ $r->jumlah }} deteksi</button> ·
-                                    bukti pertama <a href="{{ route('events.show', $r->event_pertama) }}" class="font-mono text-emerald-400 hover:underline">EV-{{ $r->event_pertama }}</a>
+                                    bukti pertama <a href="{{ route('events.show', $r->event_pertama) }}" class="whitespace-nowrap font-mono text-emerald-400 hover:underline">EV-{{ $r->event_pertama }}</a>
                                     @if ($r->atribusi === 'waktu' && $inc->src_ip)
                                         · <span class="rounded bg-yellow-900/60 px-1.5 py-0.5 text-yellow-300" title="Event FIM tidak memuat IP; dikaitkan ke insiden yang aktif pada waktu yang sama">Atribusi berdasarkan waktu</span>
                                     @endif
@@ -69,7 +69,7 @@
         </section>
 
         {{-- Rincian skor --}}
-        <section class="bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6" aria-labelledby="rincian-skor">
+        <section class="min-w-0 bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6" aria-labelledby="rincian-skor">
             <h3 id="rincian-skor" class="text-base font-semibold text-gray-100">Rincian skor</h3>
             <p class="text-xs text-gray-500">S = (Σ bobot aturan unik + 20·(T−1)) × m<sub>aset</sub> × m<sub>kampanye</sub></p>
             <ul class="mt-4 space-y-1.5 text-sm">
@@ -93,7 +93,7 @@
         </section>
 
         {{-- Bukti --}}
-        <section class="lg:col-span-3 bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6" aria-labelledby="bukti">
+        <section class="min-w-0 lg:col-span-3 bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6" aria-labelledby="bukti">
             <div class="flex flex-wrap items-baseline justify-between gap-2">
                 <h3 id="bukti" class="text-base font-semibold text-gray-100">Event bukti</h3>
                 @if ($ruleFilter !== '')
@@ -112,7 +112,7 @@
                                 <td class="py-2 pe-4">@if ($d->event_id)<a href="{{ route('events.show', $d->event_id) }}" class="font-mono text-emerald-400 hover:underline">EV-{{ $d->event_id }}</a>@endif</td>
                                 <td class="py-2 pe-4 whitespace-nowrap text-gray-300"><span class="font-mono text-xs">{{ $d->rule->code }}</span> {{ $d->rule->name }}</td>
                                 <td class="py-2 pe-4 text-gray-400">{{ $d->event?->source->label() }}</td>
-                                <td class="py-2 text-gray-300 break-all">{{ $d->event?->summary() }}</td>
+                                <td class="py-2 text-gray-300"><span class="line-clamp-2 break-all" title="{{ $d->event?->summary() }}">{{ $d->event?->summary() }}</span></td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -63,7 +63,7 @@ class SecurityEvent extends Model
         $p = $this->payload ?? [];
 
         return match ($this->source) {
-            EventSource::Web => trim(sprintf('%s %s%s -> %s', $p['method'] ?? '', $p['path'] ?? '', ($p['query'] ?? '') !== '' ? '?'.$p['query'] : '', $p['status'] ?? '?'))
+            EventSource::Web => trim(sprintf('%s %s%s -> %s', $p['method'] ?? '', $p['path'] ?? '', ($p['query'] ?? '') !== '' ? '?'.mb_strimwidth(urldecode((string) $p['query']), 0, 120, '...') : '', $p['status'] ?? '?'))
                 .(($p['user_agent'] ?? '') !== '' ? ' ('.mb_strimwidth($p['user_agent'], 0, 40, '...').')' : ''),
             EventSource::Ssh => sprintf('Login %s, user %s%s', ($p['outcome'] ?? '') === 'success' ? 'BERHASIL' : 'gagal', $p['user'] ?? '?', ! empty($p['invalid_user']) ? ' (user tidak ada)' : ''),
             EventSource::Firewall => sprintf('Koneksi ke port tertutup %s/%s', $this->dst_port ?? '?', $p['protocol'] ?? 'tcp'),

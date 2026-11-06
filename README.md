@@ -14,8 +14,8 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 |---|---|---|
 | 0 | Fondasi repo, skema database, peran & hak akses, data master | ✅ Selesai |
 | 1a | Lab Docker, agent Python, API agent (F1, F2) | ✅ Selesai |
-| 1b | Mesin deteksi, Attack Story, skor (F3, F4, F5) | ⏳ Berikutnya |
-| 1c | Dashboard live, respons berjenjang & blokir (F6, F7) | ⏳ |
+| 1b | Mesin deteksi, Attack Story, skor (F3, F4, F5) | ✅ Selesai |
+| 1c | Dashboard live, respons berjenjang & blokir (F6, F7) | ⏳ Berikutnya |
 | 2 | Uji Kesiapan, Sensor Buta, Kampanye, audit log, LAPSIT, Penjaga Situs (F8–F13) | ⏳ |
 | 3 | Mode demo read-only, landing page (F15); Telegram (F14) bila sempat | ⏳ |
 
@@ -32,12 +32,18 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 | Audit log berantai hash (login, aksi admin, eksekusi perintah) | ✅ Pencatatan jalan; halaman Verifikasi di Fase 2 |
 | Halaman Satuan & Agent, Pengguna; Beranda: pohon satuan + Tingkat Siaga | ✅ Sudah jalan |
 | Lima peran sesuai matriks hak akses PRD; Operator hanya melihat satuannya | ✅ Sudah jalan |
-| Deteksi, korelasi, skor, dashboard live, dan seterusnya | ⏳ Fase 1b–3 |
+| Mesin deteksi R01–R11 (pola + ambang), daftar putih IP, aturan bisa diubah Admin | ✅ Sudah jalan |
+| Korelasi Attack Story: nmap + hydra + sqlmap dari satu IP = 1 insiden dengan tahap kill chain dan ATT&CK | ✅ Sudah jalan di lab (insiden muncul ±6 detik setelah serangan dimulai) |
+| Skor yang bisa dijelaskan + rincian per komponen; severity dan Tingkat Siaga satuan otomatis | ✅ Sudah jalan (contoh PRD = 240 Kritis diuji otomatis) |
+| Daftar Insiden, Detail Insiden, Detail Event (setiap angka bisa diklik ke buktinya) | ✅ Sudah jalan (pembaruan tiap 3 detik; WebSocket di Fase 1c) |
+| Dashboard live (Reverb), usul/setuju blokir, kampanye, Sensor Buta, dan seterusnya | ⏳ Fase 1c–3 |
 | Mode Latihan (replay), impor IOC offline | 🗺️ Peta jalan (di luar lingkup lomba) |
 
 ## Menjalankan lab demo (disarankan)
 
-Kebutuhan: Docker dengan Compose v2 (Docker Desktop atau Docker Engine), RAM kosong ±3 GB, port `8443` bebas.
+**Pengguna Windows:** ikuti [panduan pemula Windows](docs/panduan-pemula-windows.md), lalu klik dua kali `lab\windows\mulai-lab.bat`. Tidak perlu mengetik perintah.
+
+Linux/macOS — kebutuhan: Docker dengan Compose v2 (Docker Desktop atau Docker Engine), RAM kosong ±3 GB, port `8443` bebas.
 
 ```bash
 git clone -b claude/pensive-galileo-eow7qv https://github.com/zuliandwisaputra17-stack/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System.git
@@ -122,6 +128,7 @@ Setelah langkah test di atas: `php artisan serve`, lalu buka http://127.0.0.1:80
 
 ## Dokumentasi
 
+- [Panduan pemula Windows](docs/panduan-pemula-windows.md): pasang WSL, Docker Desktop, dan Git, lalu jalankan lab dengan skrip klik-dua-kali di `lab\windows`.
 - [Keputusan desain](docs/keputusan-desain.md): hal yang menyimpang dari atau memperjelas PRD, beserta alasannya.
 - [Lab demo](lab/README.md): topologi, skenario serangan, reset.
 - [Agent](agent/README.md): sumber telemetri, perintah daftar tetap, pemasangan di host nyata.
