@@ -18,7 +18,9 @@ new class extends Component
     // Menu halaman ditambahkan per fase, sesuai halaman yang sudah benar-benar ada.
     $menu = [
         ['route' => 'dashboard', 'label' => 'Beranda Komando', 'ability' => 'lihat-dashboard'],
+        ['route' => 'incidents.index', 'label' => 'Insiden', 'ability' => 'lihat-dashboard', 'active' => 'incidents.*'],
         ['route' => 'units-agents', 'label' => 'Satuan & Agent', 'ability' => 'lihat-satuan-agent'],
+        ['route' => 'rules', 'label' => 'Aturan Deteksi', 'ability' => 'kelola-sistem'],
         ['route' => 'users', 'label' => 'Pengguna', 'ability' => 'kelola-sistem'],
     ];
 @endphp
@@ -37,7 +39,7 @@ new class extends Component
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @foreach ($menu as $item)
                         @can($item['ability'])
-                            <x-nav-link :href="route($item['route'])" :active="request()->routeIs($item['route'])" wire:navigate>
+                            <x-nav-link :href="route($item['route'])" :active="request()->routeIs($item['active'] ?? $item['route'])" wire:navigate>
                                 {{ $item['label'] }}
                             </x-nav-link>
                         @endcan
@@ -91,7 +93,7 @@ new class extends Component
         <div class="pt-2 pb-3 space-y-1">
             @foreach ($menu as $item)
                 @can($item['ability'])
-                    <x-responsive-nav-link :href="route($item['route'])" :active="request()->routeIs($item['route'])" wire:navigate>
+                    <x-responsive-nav-link :href="route($item['route'])" :active="request()->routeIs($item['active'] ?? $item['route'])" wire:navigate>
                         {{ $item['label'] }}
                     </x-responsive-nav-link>
                 @endcan

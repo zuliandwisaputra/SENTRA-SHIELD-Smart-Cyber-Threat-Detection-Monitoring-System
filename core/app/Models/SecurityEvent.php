@@ -57,6 +57,24 @@ class SecurityEvent extends Model
         return 'EV-'.$this->id;
     }
 
+    /** Ringkasan satu baris untuk tabel bukti. */
+    public function summary(): string
+    {
+        $p = $this->payload ?? [];
+
+        return match ($this->source) {
+            EventSource::Web => trim(sprintf('%s %s%s -> %s', $p['method'] ?? '', $p['path'] ?? '', ($p['query'] ?? '') !== '' ? '?'.$p['query'] : '', $p['status'] ?? '?'))
+                .(($p['user_agent'] ?? '') !== '' ? ' ('.mb_strimwidth($p['user_agent'], 0, 40, '...').')' : ''),
+            EventSource::Ssh => sprintf('Login %s, user %s%s', ($p['outcome'] ?? '') === 'success' ? 'BERHASIL' : 'gagal', $p['user'] ?? '?', ! empty($p['invalid_user']) ? ' (user tidak ada)' : ''),
+            EventSource::Firewall => sprintf('Koneksi ke port tertutup %s/%s', $this->dst_port ?? '?', $p['protocol'] ?? 'tcp'),
+            EventSource::Fim => sprintf('File %s: %s', match ($p['change'] ?? '') {
+                'created' => 'dibuat', 'modified' => 'diubah', 'deleted' => 'dihapus', default => $p['change'] ?? '?',
+            }, $p['path'] ?? '?'),
+            EventSource::Modbus => sprintf('FC%s %s, alamat %s, nilai %s', $p['function_code'] ?? '?', $p['function_name'] ?? '', $p['address'] ?? '?', $p['value'] ?? ($p['quantity'] ?? '?')),
+            EventSource::Site => (string) ($p['url'] ?? 'pemeriksaan situs'),
+        };
+    }
+
     public function agent(): BelongsTo
     {
         return $this->belongsTo(Agent::class);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Agent;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\ProcessEvents;
 use App\Models\Agent;
 use App\Services\EventIngestor;
 use Illuminate\Http\JsonResponse;
@@ -33,6 +34,7 @@ class EventController extends Controller
         ]);
 
         $ids = $ingestor->ingest($agent, $data['events']);
+        ProcessEvents::dispatch($ids);
 
         return response()->json(['accepted' => count($ids)]);
     }
