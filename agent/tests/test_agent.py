@@ -17,8 +17,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import sentra_agent as sa  # noqa: E402
 
 
-def ipv4_tcp_packet(src, dst, sport, dport, payload=b"", seq=1000):
-    tcp = struct.pack("!HHIIBBHHH", sport, dport, seq, 0, 5 << 4, 0x18, 65535, 0, 0)
+def ipv4_tcp_packet(src, dst, sport, dport, payload=b"", seq=1000, flags=0x18):
+    tcp = struct.pack("!HHIIBBHHH", sport, dport, seq, 0, 5 << 4, flags, 65535, 0, 0)
     total = 20 + len(tcp) + len(payload)
     ip = struct.pack("!BBHHHBBH4s4s", 0x45, 0, total, 1, 0, 64, 6, 0, socket.inet_aton(src), socket.inet_aton(dst))
     return ip + tcp + payload
@@ -117,6 +117,86 @@ class ParserTest(unittest.TestCase):
         self.assertEqual(pkts[0]["prefix"], "SENTRA_CLOSED")
         self.assertEqual(pkts[0]["packet"]["dst_port"], 23)
         self.assertEqual(pkts[0]["packet"]["src_ip"], "172.30.0.66")
+
+
+class FirewallFallbackTest(unittest.TestCase):
+    """Cadangan R01 bila kernel (mis. WSL2) tidak mendukung NFLOG."""
+
+    def test_syn_to_closed_port_is_logged(self):
+        syn = ipv4_tcp_packet("172.30.0.66", "172.30.0.12", 40000, 23, flags=0x02)
+        info = sa.closed_port_syn(syn, {22, 80}, set())
+        self.assertEqual(info["src_ip"], "172.30.0.66")
+        self.assertEqual(info["dst_port"], 23)
+
+    def test_ignored_packets(self):
+        open_ports, blocked = {22, 80}, {"172.30.0.99"}
+        cases = {
+            "SYN ke port terbuka": ipv4_tcp_packet("172.30.0.66", "172.30.0.12", 40000, 80, flags=0x02),
+            "SYN+ACK (balasan)": ipv4_tcp_packet("172.30.0.66", "172.30.0.12", 40000, 23, flags=0x12),
+            "ACK biasa": ipv4_tcp_packet("172.30.0.66", "172.30.0.12", 40000, 23, flags=0x10),
+            "IP sedang diblokir": ipv4_tcp_packet("172.30.0.99", "172.30.0.12", 40000, 23, flags=0x02),
+            "loopback": ipv4_tcp_packet("127.0.0.1", "127.0.0.1", 40000, 23, flags=0x02),
+        }
+        for name, pkt in cases.items():
+            self.assertIsNone(sa.closed_port_syn(pkt, open_ports, blocked), name)
+
+    def test_rate_limiter_matches_nft_limit(self):
+        limiter = sa.RateLimiter(rate_per_s=400, burst=800)
+        now = limiter.last
+        allowed = sum(limiter.allow(now) for _ in range(1000))
+        self.assertEqual(allowed, 800)
+        self.assertTrue(limiter.allow(now + 0.01))  # 0,01 dtk x 400/dtk = 4 token baru
+
+    def _collector(self, runner, mode="auto"):
+        agent = type("A", (), {})()
+        agent.nft = sa.Nft(runner)
+        agent.stopping = threading.Event()
+        agent.stopping.set()  # thread penyegar port langsung berhenti
+        col = sa.FirewallCollector.__new__(sa.FirewallCollector)
+        col.agent, col.cfg = agent, {"mode": mode, "nflog_group": 7, "manage_nftables": True, "log_rate_per_s": 400}
+        return col
+
+    def test_auto_falls_back_when_kernel_rejects_log_rule(self):
+        calls = []
+
+        def runner(args, stdin=None):
+            calls.append(stdin or "")
+            if stdin and "log group" in stdin:
+                return 1, "Error: Could not process rule: No such file or directory"
+            return 0, ""
+
+        mode, sock = self._collector(runner).choose_mode()
+        self.assertEqual(mode, "packet")
+        self.assertIsNone(sock)
+        self.assertIn("log group", calls[0])
+        self.assertNotIn("log group", calls[1], "ruleset dimuat ulang tanpa aturan log")
+        self.assertIn("@blocklist4", calls[1], "blokir tetap terpasang")
+
+    def test_auto_falls_back_when_nflog_socket_unavailable(self):
+        original = sa.open_nflog
+        sa.open_nflog = lambda group: (_ for _ in ()).throw(OSError(93, "Protocol not supported"))
+        try:
+            mode, _ = self._collector(lambda args, stdin=None: (0, "")).choose_mode()
+            self.assertEqual(mode, "packet")
+            with self.assertRaises(OSError):
+                self._collector(lambda args, stdin=None: (0, ""), mode="nflog").choose_mode()
+        finally:
+            sa.open_nflog = original
+
+    def test_packet_mode_loads_ruleset_without_log_rule(self):
+        scripts = []
+        mode, _ = self._collector(lambda args, stdin=None: (scripts.append(stdin), (0, ""))[1], mode="packet").choose_mode()
+        self.assertEqual(mode, "packet")
+        self.assertNotIn("log group", scripts[0])
+
+    def test_agent_remembers_blocked_ips(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg = sa.deep_merge(sa.DEFAULT_CONFIG, {"core_url": "http://127.0.0.1:9", "state_dir": tmp})
+            agent = sa.Agent(cfg, nft=sa.Nft(FakeNft()))
+            agent.remember_block({"type": "block_ip", "params": {"ip": "172.30.0.66", "duration_s": 60}})
+            self.assertEqual(agent.blocked_ips(), {"172.30.0.66"})
+            agent.remember_block({"type": "unblock_ip", "params": {"ip": "172.30.0.66"}})
+            self.assertEqual(agent.blocked_ips(), set())
 
 
 class QueueTest(unittest.TestCase):

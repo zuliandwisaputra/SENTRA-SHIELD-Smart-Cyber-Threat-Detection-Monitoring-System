@@ -1,7 +1,8 @@
 # Uji kernel Docker di laptop ini (spike nftables, sama dengan run_spike.sh):
-#   1) koneksi ke port tertutup tercatat lewat NFLOG,
-#   2) blokir IP memutus koneksi baru dan yang sudah terbuka,
-#   3) blokir terbuka sendiri saat durasi habis.
+#   1) ruleset blokir nftables bisa dipasang,
+#   2) koneksi ke port tertutup tercatat lewat NFLOG atau cadangan raw socket,
+#   3) blokir IP memutus koneksi baru dan yang sudah terbuka,
+#   4) blokir terbuka sendiri saat durasi habis.
 # Hasil disimpan di lab\windows\log\hasil-uji-kernel.txt untuk dikirim ke pengembang.
 . (Join-Path $PSScriptRoot '_umum.ps1')
 
@@ -48,20 +49,31 @@ docker network create --subnet $subnet $net | Out-Null
 docker run -d --name sentra-spike-target --network $net --ip $target --cap-add NET_ADMIN sentra-spike/target | Out-Null
 docker run -d --name sentra-spike-attacker --network $net --ip $penyerang sentra-spike/attacker | Out-Null
 
-Tulis-Info 'Uji 1: log port tertutup lewat NFLOG'
+Tulis-Info 'Uji 1: ruleset blokir nftables'
 docker exec sentra-spike-target nft -f /spike/sentra.nft
-Hasil 'ruleset nftables terpasang di dalam container' ($LASTEXITCODE -eq 0)
+Hasil 'ruleset blokir nftables terpasang di dalam container' ($LASTEXITCODE -eq 0)
+
+Tulis-Info 'Uji 2: koneksi ke port tertutup tercatat (bahan R01)'
 docker exec -d sentra-spike-target sh -c 'python3 /spike/slow_server.py'
-docker exec -d sentra-spike-target sh -c 'python3 /spike/nflog_reader.py 7 > /spike/nflog.jsonl 2> /spike/nflog.err'
+docker exec -d sentra-spike-target sh -c 'python3 /spike/packet_reader.py > /spike/raw.jsonl 2> /spike/raw.err'
+docker exec sentra-spike-target nft -f /spike/sentra-log.nft
+$aturanNflog = ($LASTEXITCODE -eq 0)
+if ($aturanNflog) {
+    docker exec -d sentra-spike-target sh -c 'python3 /spike/nflog_reader.py 7 > /spike/nflog.jsonl 2> /spike/nflog.err'
+}
 Start-Sleep -Seconds 1
 docker exec sentra-spike-attacker nmap -sS -Pn -n -p 1-200 $target | Out-Null
 Start-Sleep -Seconds 1
-$jumlah = Angka (docker exec sentra-spike-target grep -c $penyerang /spike/nflog.jsonl)
-Tulis-Info "   paket port tertutup tercatat dari ${penyerang}: $jumlah"
-Hasil 'minimal 15 port tertutup tercatat (ambang R01)' ($jumlah -ge 15)
-if ($jumlah -lt 15) { docker exec sentra-spike-target cat /spike/nflog.err }
+$nNflog = 0
+if ($aturanNflog) { $nNflog = Angka (docker exec sentra-spike-target grep -c $penyerang /spike/nflog.jsonl) }
+$nRaw = Angka (docker exec sentra-spike-target grep -c $penyerang /spike/raw.jsonl)
+$script:nflogOk = ($nNflog -ge 15)
+$script:rawOk = ($nRaw -ge 15)
+if ($script:nflogOk) { Tulis-Ok "NFLOG: $nNflog port tertutup tercatat" } else { Tulis-Info "   [INFO] NFLOG tidak didukung kernel ini (tercatat $nNflog)" }
+if ($script:rawOk) { Tulis-Ok "cadangan raw socket: $nRaw port tertutup tercatat" } else { Tulis-Info "   [INFO] cadangan raw socket hanya mencatat $nRaw port" }
+Hasil 'pemindaian port terdeteksi (NFLOG atau cadangan raw socket)' ($script:nflogOk -or $script:rawOk)
 
-Tulis-Info 'Uji 2: blokir memutus koneksi'
+Tulis-Info 'Uji 3: blokir memutus koneksi'
 docker exec -d sentra-spike-attacker sh -c "nc $target 9000 > /tmp/stream.log 2>&1"
 Start-Sleep -Seconds 2
 docker exec sentra-spike-attacker nc -w 2 -z $target 9000 *> $null
@@ -75,7 +87,7 @@ Hasil "koneksi yang sudah terbuka berhenti menerima data ($sebelum -> $sesudah b
 docker exec sentra-spike-attacker nc -w 2 -z $target 9000 *> $null
 Hasil 'koneksi baru dari penyerang ditolak' ($LASTEXITCODE -ne 0)
 
-Tulis-Info 'Uji 3: blokir terbuka sendiri saat durasi habis (tunggu 15 detik)'
+Tulis-Info 'Uji 4: blokir terbuka sendiri saat durasi habis (tunggu 15 detik)'
 Start-Sleep -Seconds 12
 docker exec sentra-spike-attacker nc -w 2 -z $target 9000 *> $null
 Hasil 'setelah durasi habis penyerang bisa terhubung lagi' ($LASTEXITCODE -eq 0)
@@ -83,6 +95,12 @@ Hasil 'setelah durasi habis penyerang bisa terhubung lagi' ($LASTEXITCODE -eq 0)
 Bersihkan
 Write-Host ''
 Write-Host ("  Hasil: $script:lulus lulus, $script:gagal gagal") -ForegroundColor Cyan
+if ($script:gagal -eq 0) {
+    if ($script:nflogOk) { Tulis-Ok 'SIAP DEMO: agent memakai NFLOG.' }
+    else { Tulis-Ok 'SIAP DEMO: agent otomatis memakai cadangan raw socket (NFLOG tidak didukung).' }
+} else {
+    Tulis-Gagal 'BELUM SIAP.'
+}
 Tulis-Info "Kirim file ini ke pengembang: $logFile"
 Stop-Transcript | Out-Null
 if ($script:gagal -eq 0) { Selesai 0 } else { Selesai 1 }

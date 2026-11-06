@@ -28,7 +28,7 @@ cfg = {
     "sources": {
         "web": {"enabled": "web" in enabled, "path": "/var/log/nginx/access.log"},
         "ssh": {"enabled": "ssh" in enabled, "path": "/var/log/auth.log"},
-        "firewall": {"enabled": "firewall" in enabled, "nflog_group": 7, "manage_nftables": True},
+        "firewall": {"enabled": "firewall" in enabled, "mode": os.environ.get("AGENT_FIREWALL_MODE", "auto"), "nflog_group": 7, "manage_nftables": True},
         "fim": {"enabled": "fim" in enabled, "paths": ["/var/www/html"], "interval_s": 2},
         "modbus": {"enabled": "modbus" in enabled, "port": 502},
     },

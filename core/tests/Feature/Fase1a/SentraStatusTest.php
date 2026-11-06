@@ -28,3 +28,11 @@ test('sentra:status gagal bila agent online kurang dari target', function () {
         ->expectsOutputToContain('HASIL: GAGAL - agent online 0 dari 3.')
         ->assertFailed();
 });
+
+test('sentra:status menampilkan mode log firewall', function () {
+    Agent::factory()->create(['hostname' => 'kodim-b', 'sources' => ['firewall' => ['status' => 'ok', 'detail' => 'raw socket (cadangan NFLOG)']]]);
+
+    $this->artisan('sentra:status')
+        ->expectsOutputToContain('firewall=ok(raw socket)')
+        ->assertSuccessful();
+});

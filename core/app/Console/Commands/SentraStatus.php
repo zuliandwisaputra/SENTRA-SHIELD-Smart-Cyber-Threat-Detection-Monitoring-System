@@ -41,7 +41,7 @@ class SentraStatus extends Command
         foreach ($agents as $agent) {
             $sources = collect($agent->sources ?? [])
                 ->reject(fn ($s) => ($s['status'] ?? '') === 'disabled')
-                ->map(fn ($s, $name) => $name.'='.($s['status'] ?? '?'))
+                ->map(fn ($s, $name) => $name.'='.($s['status'] ?? '?').$this->firewallMode($name, $s))
                 ->implode(' ');
             $this->line(sprintf(
                 '  %-9s %-9s %-16s heartbeat %-18s %s',
@@ -93,6 +93,16 @@ class SentraStatus extends Command
         $this->line("HASIL: LULUS - {$online} agent online.");
 
         return self::SUCCESS;
+    }
+
+    /** Mode log port tertutup: NFLOG atau cadangan raw socket (kernel tanpa NFLOG). */
+    private function firewallMode(string $name, array $source): string
+    {
+        if ($name !== 'firewall' || ($source['status'] ?? '') !== 'ok') {
+            return '';
+        }
+
+        return str_contains((string) ($source['detail'] ?? ''), 'raw socket') ? '(raw socket)' : '(nflog)';
     }
 
     private function onlineCount(): int

@@ -3,5 +3,5 @@ FROM ${BASE_IMAGE}
 RUN apt-get update && apt-get install -y --no-install-recommends python3 nftables iproute2 \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /spike
-COPY nflog_reader.py slow_server.py sentra.nft ./
+COPY nflog_reader.py packet_reader.py slow_server.py sentra.nft sentra-log.nft ./
 CMD ["sleep", "infinity"]

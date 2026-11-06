@@ -62,7 +62,7 @@ DEFAULT_CONFIG = {
     "sources": {
         "web": {"enabled": True, "path": "/var/log/nginx/access.log"},
         "ssh": {"enabled": True, "path": "/var/log/auth.log"},
-        "firewall": {"enabled": True, "nflog_group": 7, "manage_nftables": True, "log_rate_per_s": 400},
+        "firewall": {"enabled": True, "mode": "auto", "nflog_group": 7, "manage_nftables": True, "log_rate_per_s": 400},
         "fim": {"enabled": True, "paths": ["/var/www/html"], "interval_s": 2, "max_sample_bytes": 4096},
         "modbus": {"enabled": False, "port": 502},
     },
@@ -322,6 +322,7 @@ def parse_ipv4(packet: bytes) -> dict | None:
         info["src_port"], info["dst_port"] = struct.unpack_from("!HH", packet, ihl)
     if proto == 6 and len(packet) >= ihl + 20:
         info["tcp_seq"] = struct.unpack_from("!I", packet, ihl + 4)[0]
+        info["tcp_flags"] = packet[ihl + 13]
         info["l4_payload_offset"] = ihl + (packet[ihl + 12] >> 4) * 4
     return info
 
@@ -377,9 +378,15 @@ class Nft:
         proc = subprocess.run(args, input=stdin, capture_output=True, text=True, timeout=10, check=False)
         return proc.returncode, (proc.stdout + proc.stderr).strip()
 
-    def ensure_ruleset(self, nflog_group: int, rate_per_s: int) -> tuple[int, str]:
+    def ensure_ruleset(self, nflog_group: int, rate_per_s: int, with_log: bool = True) -> tuple[int, str]:
         # Tabel dan set hanya ditambahkan bila belum ada; chain di-flush lalu
         # diisi ulang. Elemen blokir yang masih aktif tetap bertahan saat agent restart.
+        # with_log=False: tanpa aturan NFLOG (kernel tidak mendukung) -> blokir tetap jalan.
+        log_rule = (
+            f'tcp flags & (syn | ack) == syn tcp dport != @open_tcp limit rate {int(rate_per_s)}/second '
+            f'burst {int(rate_per_s) * 2} packets log group {int(nflog_group)} prefix "SENTRA_CLOSED"'
+            if with_log else "# log port tertutup memakai cadangan raw socket"
+        )
         script = f"""
 table inet {NFT_TABLE} {{
     set blocklist4 {{ type ipv4_addr; flags timeout; }}
@@ -394,7 +401,7 @@ table inet {NFT_TABLE} {{
         ip6 saddr @blocklist6 counter drop
         iif "lo" accept
         ct state established,related accept
-        tcp flags & (syn | ack) == syn tcp dport != @open_tcp limit rate {int(rate_per_s)}/second burst {int(rate_per_s) * 2} packets log group {int(nflog_group)} prefix "SENTRA_CLOSED"
+        {log_rule}
     }}
 }}
 """
@@ -560,20 +567,109 @@ class SshCollector(LogCollector):
     parser = staticmethod(parse_ssh_line)
 
 
-class FirewallCollector(Collector):
-    name_key = "firewall"
+class RateLimiter:
+    """Token bucket sederhana (padanan `limit rate` nftables)."""
 
-    def loop(self) -> None:
-        nft = self.agent.nft
+    def __init__(self, rate_per_s: float, burst: int):
+        self.rate = float(rate_per_s)
+        self.capacity = float(burst)
+        self.tokens = float(burst)
+        self.last = time.monotonic()
+
+    def allow(self, now: float | None = None) -> bool:
+        now = time.monotonic() if now is None else now
+        self.tokens = min(self.capacity, self.tokens + (now - self.last) * self.rate)
+        self.last = now
+        if self.tokens >= 1:
+            self.tokens -= 1
+            return True
+        return False
+
+
+TCP_SYN = 0x02
+TCP_ACK = 0x10
+
+
+def closed_port_syn(packet: bytes, open_ports: set[int], blocked: set[str]) -> dict | None:
+    """Cadangan NFLOG: paket TCP SYN (tanpa ACK) ke port yang tidak LISTEN.
+    IP loopback dan IP yang sedang diblokir agent diabaikan (padanan aturan
+    nftables: blokir dievaluasi sebelum log)."""
+    info = parse_ipv4(packet)
+    if not info or info.get("protocol") != "tcp" or "tcp_flags" not in info:
+        return None
+    if info["tcp_flags"] & (TCP_SYN | TCP_ACK) != TCP_SYN:
+        return None
+    if info["dst_port"] in open_ports or info["src_ip"] in blocked or info["src_ip"].startswith("127."):
+        return None
+    return info
+
+
+class FirewallCollector(Collector):
+    """Log koneksi ke port tertutup (bahan R01).
+
+    mode "auto" (bawaan): pakai NFLOG; bila kernel menolak aturan `log group`
+    atau socket NFLOG, otomatis pindah ke cadangan raw socket (AF_PACKET).
+    mode "nflog" / "packet": paksa salah satu.
+    """
+
+    name_key = "firewall"
+    ETH_P_IP = 0x0800
+    PACKET_OUTGOING = 4
+
+    def choose_mode(self) -> tuple[str, socket.socket | None]:
+        mode = self.cfg.get("mode", "auto")
+        if mode not in ("auto", "nflog", "packet"):
+            raise ValueError(f"mode firewall tidak dikenal: {mode}")
+        group = int(self.cfg["nflog_group"])
+        rate = int(self.cfg.get("log_rate_per_s", 400))
+
         if self.cfg.get("manage_nftables", True):
-            code, out = nft.ensure_ruleset(self.cfg["nflog_group"], self.cfg.get("log_rate_per_s", 400))
+            code, out = self.agent.nft.ensure_ruleset(group, rate, with_log=mode != "packet")
+            if code != 0 and mode == "auto":
+                LOG.warning("kernel menolak aturan log nftables (%s); pakai cadangan raw socket", out)
+                mode = "packet"
+                code, out = self.agent.nft.ensure_ruleset(group, rate, with_log=False)
             if code != 0:
                 raise RuntimeError(f"gagal memasang ruleset nftables: {out}")
-            refresher = threading.Thread(target=self._refresh_open_ports, daemon=True, name="nft-open-ports")
-            refresher.start()
-        sock = open_nflog(int(self.cfg["nflog_group"]))
+            threading.Thread(target=self._refresh_open_ports, daemon=True, name="nft-open-ports").start()
+
+        if mode in ("auto", "nflog"):
+            try:
+                return "nflog", open_nflog(group)
+            except OSError as exc:
+                if mode == "nflog":
+                    raise
+                LOG.warning("socket NFLOG tidak tersedia (%s); pakai cadangan raw socket", exc)
+        return "packet", None
+
+    def loop(self) -> None:
+        mode, sock = self.choose_mode()
+        if mode == "nflog":
+            self.state, self.detail = "ok", f"nflog group {self.cfg['nflog_group']}"
+            self.run_nflog(sock)
+        else:
+            self.state, self.detail = "ok", "raw socket (cadangan NFLOG)"
+            self.run_packet()
+
+    def emit_closed_port(self, info: dict, prefix: str) -> None:
+        self.emit({
+            "source": "firewall",
+            "occurred_at": utc_now_iso(),
+            "src_ip": info["src_ip"],
+            "dst_port": info["dst_port"],
+            "payload": {
+                "action": "port_tertutup",
+                "protocol": info["protocol"],
+                "src_port": info.get("src_port"),
+                "dst_ip": info["dst_ip"],
+                "prefix": prefix,
+            },
+            "raw": f"{prefix} {info['protocol']} {info['src_ip']}:{info.get('src_port')} -> {info['dst_ip']}:{info['dst_port']}",
+            "is_test": False,
+        })
+
+    def run_nflog(self, sock: socket.socket) -> None:
         sock.settimeout(1.0)
-        self.state, self.detail = "ok", f"nflog group {self.cfg['nflog_group']}"
         while not self.agent.stopping.is_set():
             try:
                 data = sock.recv(65536)
@@ -584,23 +680,28 @@ class FirewallCollector(Collector):
                 continue
             for pkt in parse_nflog_messages(data):
                 info = pkt["packet"]
-                if not info or "dst_port" not in info:
-                    continue
-                self.emit({
-                    "source": "firewall",
-                    "occurred_at": utc_now_iso(),
-                    "src_ip": info["src_ip"],
-                    "dst_port": info["dst_port"],
-                    "payload": {
-                        "action": "port_tertutup",
-                        "protocol": info["protocol"],
-                        "src_port": info.get("src_port"),
-                        "dst_ip": info["dst_ip"],
-                        "prefix": pkt["prefix"],
-                    },
-                    "raw": f"{pkt['prefix']} {info['protocol']} {info['src_ip']}:{info.get('src_port')} -> {info['dst_ip']}:{info['dst_port']}",
-                    "is_test": False,
-                })
+                if info and "dst_port" in info:
+                    self.emit_closed_port(info, pkt["prefix"] or "SENTRA_CLOSED")
+
+    def run_packet(self) -> None:
+        sock = socket.socket(socket.AF_PACKET, socket.SOCK_DGRAM, socket.htons(self.ETH_P_IP))
+        sock.settimeout(1.0)
+        rate = int(self.cfg.get("log_rate_per_s", 400))
+        limiter = RateLimiter(rate, rate * 2)
+        open_ports = listening_tcp_ports()
+        refreshed = time.monotonic()
+        while not self.agent.stopping.is_set():
+            if time.monotonic() - refreshed > 5:
+                open_ports, refreshed = listening_tcp_ports(), time.monotonic()
+            try:
+                packet, addr = sock.recvfrom(65535)
+            except socket.timeout:
+                continue
+            if addr[0] == "lo" or addr[2] == self.PACKET_OUTGOING:
+                continue
+            info = closed_port_syn(packet, open_ports, self.agent.blocked_ips())
+            if info and limiter.allow():
+                self.emit_closed_port(info, "SENTRA_CLOSED_RAW")
 
     def _refresh_open_ports(self) -> None:
         last: set[int] | None = None
@@ -803,6 +904,8 @@ class Agent:
         self.collectors: dict[str, Collector] = {}
         self.revoked = False
         self.done_commands: collections.OrderedDict = collections.OrderedDict()
+        self._blocked: dict[str, float] = {}
+        self._blocked_lock = threading.Lock()
         self.hostname = cfg.get("hostname") or socket.gethostname()
 
     # -- pendaftaran ------------------------------------------------------
@@ -929,6 +1032,8 @@ class Agent:
             started = utc_now_iso()
             ok, message = self.executor.execute(command)
             LOG.info("perintah #%s %s: %s", cid, command.get("type"), message)
+            if ok:
+                self.remember_block(command)
             result = {"status": "success" if ok else "failed", "message": message, "executed_at": started}
             self.done_commands[cid] = result
             if len(self.done_commands) > 500:
@@ -937,6 +1042,23 @@ class Agent:
             self.client.request("POST", f"/commands/{int(cid)}/result", result)
         except (CoreError, TypeError, ValueError) as exc:
             LOG.warning("gagal melaporkan hasil perintah #%s: %s", cid, exc)
+
+    def remember_block(self, command: dict) -> None:
+        """Catat IP yang diblokir agar cadangan raw socket tidak mencatat ulang paketnya."""
+        params = command.get("params") or {}
+        ip = str(params.get("ip", ""))
+        with self._blocked_lock:
+            if command.get("type") == "block_ip":
+                self._blocked[ip] = time.monotonic() + int(params.get("duration_s", 3600))
+            elif command.get("type") == "unblock_ip":
+                self._blocked.pop(ip, None)
+
+    def blocked_ips(self) -> set[str]:
+        now = time.monotonic()
+        with self._blocked_lock:
+            for ip in [ip for ip, until in self._blocked.items() if until <= now]:
+                del self._blocked[ip]
+            return set(self._blocked)
 
     def run(self) -> None:
         while not self.ensure_registered():
