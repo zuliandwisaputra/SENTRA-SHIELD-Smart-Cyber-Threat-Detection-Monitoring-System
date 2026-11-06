@@ -97,6 +97,16 @@ class ParserTest(unittest.TestCase):
         other_port = ipv4_tcp_packet("172.30.0.66", "172.31.0.20", 40000, 80, mbap(6, b"\0\1\0\2"), seq=5)
         self.assertIsNone(sa.ModbusCollector.packet_event(other_port, 502, seen))
 
+    def test_modbus_pure_ack_does_not_hide_next_write(self):
+        # Regresi lab 6 Nov: ACK kosong (seq=S) lalu FC6 (seq=S) -> FC6 harus tetap tercatat.
+        seen = collections.OrderedDict()
+        ack = ipv4_tcp_packet("172.30.0.66", "172.30.0.20", 40001, 502, b"", seq=5000)
+        write = ipv4_tcp_packet("172.30.0.66", "172.30.0.20", 40001, 502, mbap(6, struct.pack("!HH", 0, 999)), seq=5000)
+        self.assertIsNone(sa.ModbusCollector.packet_event(ack, 502, seen))
+        ev = sa.ModbusCollector.packet_event(write, 502, seen)
+        self.assertIsNotNone(ev)
+        self.assertEqual(ev["payload"]["value"], 999)
+
     def test_nflog_message_parsing(self):
         payload = ipv4_tcp_packet("172.30.0.66", "172.30.0.10", 41000, 23)
         attrs = sa._nl_attr(10, b"SENTRA_CLOSED\0") + sa._nl_attr(9, payload)

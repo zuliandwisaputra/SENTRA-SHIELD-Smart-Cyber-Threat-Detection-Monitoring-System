@@ -44,3 +44,14 @@ Kolom berikut melengkapi "kolom utama" bagian 8 agar fitur PRD bisa berjalan:
 - LAPSIT memakai model `qwen2.5:3b`, diproses async; sitasi `[EV-…]` yang tidak ada di bukti dibuang.
 - Siaran realtime dikirim per batch, bukan per event.
 - Agent memverifikasi sertifikat HTTPS dengan CA lab; verifikasi tidak pernah dimatikan.
+
+## Keputusan teknis Fase 1a
+
+Keputusan berikut tidak menyimpang dari PRD; isinya pilihan implementasi yang perlu diketahui juri teknis.
+
+- **Log firewall lewat NFLOG, bukan `log prefix`.** Kernel membuang log nftables dari network namespace container (`nf_log_all_netns=0`). Agent memasang aturan `log group 7` untuk koneksi ke port tertutup, lalu membacanya langsung lewat socket netlink (pustaka standar). Laju log dibatasi 400 paket/detik. Bukti ada di `lab/spike/nftables/`.
+- **Blokir memakai nftables set dengan `timeout`.** Blokir terbuka sendiri walau Core mati. Aturan blokir diletakkan sebelum `ct state established accept`, sehingga koneksi yang sudah terbuka ikut putus. Set dipertahankan saat agent restart.
+- **Kode pendaftaran agent lab dibuat acak saat setup**, lalu dibagikan lewat volume `lab-pki`. Tidak ada kode atau token tetap di repo. Kunci privat CA dan server tetap di volume state Core; hanya `ca.crt` yang dibagikan.
+- **Sensor Modbus pasif** (AF_PACKET) hanya mencatat perintah tulis FC 5, 6, 15, 16. ACK TCP kosong diabaikan agar perintah tulis berikutnya tidak dianggap retransmisi (regresi yang ditemukan saat uji lab 6 Nov).
+- **Event disimpan satu per satu dalam satu transaksi** agar ID setiap event diketahui pasti dan bisa diteruskan ke mesin deteksi (Fase 1b).
+- **Image lab memakai Ubuntu 24.04** (PHP 8.3 dan Python 3.12 bawaan, nginx 1.24) untuk semua container, sehingga hanya satu image dasar yang perlu ditarik.

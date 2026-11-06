@@ -714,13 +714,18 @@ class ModbusCollector(Collector):
         info = parse_ipv4(packet)
         if not info or info.get("dst_port") != port or "l4_payload_offset" not in info:
             return None
-        key = (info["src_ip"], info.get("src_port"), info.get("tcp_seq"))
+        data = packet[info["l4_payload_offset"]:]
+        if not data:
+            # ACK murni tanpa data memakai nomor urut yang sama dengan segmen
+            # data berikutnya; jangan dicatat agar segmen itu tidak dianggap retransmisi.
+            return None
+        key = (info["src_ip"], info.get("src_port"), info.get("tcp_seq"), hashlib.sha1(data).digest())
         if key in seen:  # retransmisi
             return None
         seen[key] = True
         if len(seen) > 2048:
             seen.popitem(last=False)
-        write = parse_modbus_write(packet[info["l4_payload_offset"]:])
+        write = parse_modbus_write(data)
         if not write:
             return None
         write["dst_ip"] = info["dst_ip"]

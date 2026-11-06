@@ -53,7 +53,7 @@
                                 </td>
                                 <td class="py-2 pe-4">
                                     <div class="flex flex-wrap gap-1">
-                                        @forelse ($agent->sources ?? [] as $name => $source)
+                                        @forelse (collect($agent->sources ?? [])->reject(fn ($s) => ($s['status'] ?? '') === 'disabled') as $name => $source)
                                             <span title="{{ $source['detail'] ?? '' }}" class="rounded px-1.5 py-0.5 text-xs {{ ($source['status'] ?? '') === 'ok' ? 'bg-emerald-900/50 text-emerald-300' : 'bg-red-900/50 text-red-300' }}">{{ $name }}: {{ $source['status'] ?? '?' }}</span>
                                         @empty
                                             <span class="text-xs text-gray-500">—</span>

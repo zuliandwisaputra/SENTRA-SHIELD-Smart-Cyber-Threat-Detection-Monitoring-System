@@ -146,3 +146,19 @@ test('admin tidak bisa menurunkan perannya sendiri', function () {
 
     expect($admin->fresh()->role)->toBe(Role::Admin);
 });
+
+test('hanya sumber log aktif yang ditampilkan', function () {
+    Agent::factory()->create([
+        'hostname' => 'plc-uji',
+        'sources' => [
+            'modbus' => ['status' => 'ok', 'detail' => 'tcp/502'],
+            'web' => ['status' => 'disabled', 'detail' => ''],
+            'firewall' => ['status' => 'error', 'detail' => 'nft gagal'],
+        ],
+    ]);
+
+    Livewire::actingAs(akun('analis@sentra.lab'))->test(UnitsAgents::class)
+        ->assertSee('modbus: ok')
+        ->assertSee('firewall: error')
+        ->assertDontSee('web: disabled');
+});
