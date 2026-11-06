@@ -18,6 +18,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 ])]
 class Incident extends Model
 {
+    /** Simpan pecahan detik (kolom DATETIME(3)/(6)). */
+    protected $dateFormat = 'Y-m-d H:i:s.v';
+
     use HasFactory;
 
     protected function casts(): array

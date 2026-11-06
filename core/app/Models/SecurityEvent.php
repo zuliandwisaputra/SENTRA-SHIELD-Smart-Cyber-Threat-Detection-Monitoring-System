@@ -20,6 +20,9 @@ use LogicException;
 ])]
 class SecurityEvent extends Model
 {
+    /** Simpan pecahan detik (kolom DATETIME(3)/(6)). */
+    protected $dateFormat = 'Y-m-d H:i:s.v';
+
     use HasFactory;
 
     protected $table = 'events';

@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 ])]
 class Detection extends Model
 {
+    /** Simpan pecahan detik (kolom DATETIME(3)/(6)). */
+    protected $dateFormat = 'Y-m-d H:i:s.v';
+
     public $timestamps = false;
 
     protected function casts(): array

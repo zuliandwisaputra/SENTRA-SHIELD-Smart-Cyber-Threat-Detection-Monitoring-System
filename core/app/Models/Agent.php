@@ -22,6 +22,9 @@ use Laravel\Sanctum\HasApiTokens;
 #[Hidden(['enrollment_code_hash'])]
 class Agent extends Model
 {
+    /** Simpan pecahan detik (kolom DATETIME(3)/(6)). */
+    protected $dateFormat = 'Y-m-d H:i:s.v';
+
     use HasApiTokens, HasFactory;
 
     protected function casts(): array

@@ -14,6 +14,9 @@ use LogicException;
 #[Fillable(['user_id', 'action', 'subject_type', 'subject_id', 'data', 'prev_hash', 'hash', 'created_at'])]
 class AuditLog extends Model
 {
+    /** Simpan pecahan detik (kolom DATETIME(3)/(6)). */
+    protected $dateFormat = 'Y-m-d H:i:s.u';
+
     public const UPDATED_AT = null;
 
     protected function casts(): array

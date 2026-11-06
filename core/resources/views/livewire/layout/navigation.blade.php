@@ -18,6 +18,8 @@ new class extends Component
     // Menu halaman ditambahkan per fase, sesuai halaman yang sudah benar-benar ada.
     $menu = [
         ['route' => 'dashboard', 'label' => 'Beranda Komando', 'ability' => 'lihat-dashboard'],
+        ['route' => 'units-agents', 'label' => 'Satuan & Agent', 'ability' => 'lihat-satuan-agent'],
+        ['route' => 'users', 'label' => 'Pengguna', 'ability' => 'kelola-sistem'],
     ];
 @endphp
 

@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable(['started_by', 'agent_id', 'status', 'coverage', 'avg_ttd_ms', 'started_at', 'finished_at'])]
 class ReadinessRun extends Model
 {
+    /** Simpan pecahan detik (kolom DATETIME(3)/(6)). */
+    protected $dateFormat = 'Y-m-d H:i:s.v';
+
     protected function casts(): array
     {
         return [

@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['run_id', 'scenario', 'rule_id', 'detected', 'ttd_ms', 'started_at'])]
 class ReadinessResult extends Model
 {
+    /** Simpan pecahan detik (kolom DATETIME(3)/(6)). */
+    protected $dateFormat = 'Y-m-d H:i:s.v';
+
     protected function casts(): array
     {
         return [

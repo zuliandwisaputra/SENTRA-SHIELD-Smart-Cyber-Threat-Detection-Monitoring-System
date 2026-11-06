@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable(['src_ip', 'unit_count', 'first_seen_at', 'last_seen_at', 'status'])]
 class Campaign extends Model
 {
+    /** Simpan pecahan detik (kolom DATETIME(3)/(6)). */
+    protected $dateFormat = 'Y-m-d H:i:s.v';
+
     protected function casts(): array
     {
         return [
