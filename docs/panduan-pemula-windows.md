@@ -294,6 +294,13 @@ Semua dilakukan dengan **klik dua kali** file di folder `lab\windows`:
 | `operator.b@sentra.lab` | Operator Kodim B |
 | `demo@sentra.lab` | Demo (hanya lihat) |
 
+### Tanda dashboard live
+
+Di kanan atas dashboard ada tulisan:
+
+- **Live (WebSocket)**: data muncul seketika, normalnya kurang dari 2 detik.
+- **Polling 3 detik**: WebSocket tidak tersambung, tetapi dashboard tetap diperbarui otomatis tiap 3 detik. Demo tetap bisa jalan.
+
 ### Membuka dashboard dari HP (untuk adegan Komandan menyetujui)
 
 1. HP dan laptop harus tersambung ke jaringan yang sama. **Di lokasi lomba, pakai hotspot HP-mu sendiri**, bukan Wi-Fi umum. Akun lab memakai kata sandi bawaan, jadi jangan sampai orang lain di Wi-Fi yang sama bisa membuka dashboard.

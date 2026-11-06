@@ -78,3 +78,12 @@ Atas permintaan pemilik proyek, karena laptop demo memakai Windows 11 + Docker D
 
 - Cast `datetime:Y-m-d H:i:s.v` dibaca Laravel sebagai `custom_datetime`, sehingga milidetik terpotong saat disimpan lewat Eloquent. Semua model kini memakai cast `datetime` dengan `$dateFormat` berpresisi milidetik.
 - Query builder memformat batas tanggal tanpa milidetik, sehingga event dalam detik yang sama bisa keluar dari jendela waktu aturan ambang (nmap memindai ratusan port dalam < 1 detik). Semua batas jendela deteksi dan korelasi kini diikat sebagai teks bermilidetik (`App\Support\DbTime`). Test regresi: 20 port dalam 0,1 detik tetap memicu R01, 10 login gagal dalam 0,1 detik tetap memicu R07.
+
+## Keputusan teknis Fase 1c
+
+- **Siaran WebSocket hanya membawa sinyal** (jenis perubahan + ID satuan), tidak pernah data insiden atau event. Setiap halaman Livewire mengambil ulang datanya sesuai hak akses pengguna, sehingga Operator tidak bisa menerima data satuan lain lewat WebSocket. Channel `private-sentra.dashboard` hanya untuk pengguna yang boleh melihat dashboard.
+- **Kunci publik Reverb dibaca saat runtime dari meta tag.** Kunci dibuat acak saat lab pertama kali jalan, jadi tidak bisa ditanam saat build aset. Koneksi dicek ulang setiap navigasi SPA Livewire (login/logout tidak memuat ulang halaman). Bila WebSocket tidak tersambung, browser meminta pembaruan tiap 3 detik.
+- **Kegagalan Reverb tidak boleh menggagalkan ingest event** (`LiveUpdate` menelan kegagalan siaran; diuji otomatis).
+- **Status tindakan:** usulan yang ditarik pengusul berstatus **Dibatalkan**. Blokir yang dibuka lewat rollback Komandan juga berstatus **Dibatalkan** (dengan catatan perintah buka-nya) setelah agent melaporkan berhasil. **Kedaluwarsa** hanya untuk blokir yang durasinya habis (keputusan B9), ditandai scheduler tiap 10 detik.
+- **Halaman Tindakan** (riwayat + filter "blokir aktif") ditambahkan sebagai tujuan klik kartu "Blokir aktif" di Beranda, sesuai prinsip "setiap angka bisa diklik ke data sumbernya".
+- Durasi blokir yang bisa dipilih: 15 menit, 1 jam (bawaan), 6 jam, 24 jam.

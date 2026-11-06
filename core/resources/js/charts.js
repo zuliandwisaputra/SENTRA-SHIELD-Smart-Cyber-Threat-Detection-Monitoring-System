@@ -20,6 +20,7 @@ document.addEventListener('alpine:init', () => {
                 type: 'bar',
                 data: { labels: series.labels, datasets: [{ data: series.counts }] },
                 options: {
+                    locale: 'id-ID',
                     responsive: true,
                     maintainAspectRatio: false,
                     animation: false,

@@ -15,8 +15,8 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 | 0 | Fondasi repo, skema database, peran & hak akses, data master | ✅ Selesai |
 | 1a | Lab Docker, agent Python, API agent (F1, F2) | ✅ Selesai |
 | 1b | Mesin deteksi, Attack Story, skor (F3, F4, F5) | ✅ Selesai |
-| 1c | Dashboard live, respons berjenjang & blokir (F6, F7) | ⏳ Berikutnya |
-| 2 | Uji Kesiapan, Sensor Buta, Kampanye, audit log, LAPSIT, Penjaga Situs (F8–F13) | ⏳ |
+| 1c | Dashboard live, respons berjenjang & blokir (F6, F7) | ✅ Selesai |
+| 2 | Uji Kesiapan, Sensor Buta, Kampanye, audit log, LAPSIT, Penjaga Situs (F8–F13) | ⏳ Berikutnya |
 | 3 | Mode demo read-only, landing page (F15); Telegram (F14) bila sempat | ⏳ |
 
 ### Sudah jalan vs peta jalan
@@ -28,15 +28,17 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 | Antrean lokal 10.000 event saat Core putus, batch 1 detik, heartbeat 10 detik | ✅ Sudah jalan |
 | API agent sesuai PRD bagian 9 (HTTPS, token Sanctum ter-hash, 401/422/429) | ✅ Sudah jalan |
 | Kode pendaftaran sekali pakai, cabut token → agent langsung ditolak | ✅ Sudah jalan |
-| Blokir IP sungguhan via nftables (perintah daftar tetap, terbuka sendiri saat durasi habis) | ✅ Jalur Core → agent → nftables jalan (1,7 detik); tombol usul/setuju di Fase 1c |
+| Respons berjenjang: Operator/Analis usul blokir → Komandan setuju/tolak (dari HP) → agent memblokir di nftables | ✅ Sudah jalan di lab: penyerang terputus 2,7 detik setelah disetujui |
+| Rollback oleh Komandan, blokir Kedaluwarsa otomatis, riwayat tindakan | ✅ Sudah jalan |
 | Audit log berantai hash (login, aksi admin, eksekusi perintah) | ✅ Pencatatan jalan; halaman Verifikasi di Fase 2 |
 | Halaman Satuan & Agent, Pengguna; Beranda: pohon satuan + Tingkat Siaga | ✅ Sudah jalan |
 | Lima peran sesuai matriks hak akses PRD; Operator hanya melihat satuannya | ✅ Sudah jalan |
 | Mesin deteksi R01–R11 (pola + ambang), daftar putih IP, aturan bisa diubah Admin | ✅ Sudah jalan |
 | Korelasi Attack Story: nmap + hydra + sqlmap dari satu IP = 1 insiden dengan tahap kill chain dan ATT&CK | ✅ Sudah jalan di lab (insiden muncul ±6 detik setelah serangan dimulai) |
 | Skor yang bisa dijelaskan + rincian per komponen; severity dan Tingkat Siaga satuan otomatis | ✅ Sudah jalan (contoh PRD = 240 Kritis diuji otomatis) |
-| Daftar Insiden, Detail Insiden, Detail Event (setiap angka bisa diklik ke buktinya) | ✅ Sudah jalan (pembaruan tiap 3 detik; WebSocket di Fase 1c) |
-| Dashboard live (Reverb), usul/setuju blokir, kampanye, Sensor Buta, dan seterusnya | ⏳ Fase 1c–3 |
+| Daftar Insiden, Detail Insiden, Detail Event (setiap angka bisa diklik ke buktinya) | ✅ Sudah jalan |
+| Beranda Komando live: metrik, feed event, grafik event per menit, pohon satuan | ✅ Sudah jalan: WebSocket Reverb (event → tampil ±2 detik), cadangan polling 3 detik |
+| Kampanye lintas satuan, Sensor Buta, Uji Kesiapan, LAPSIT, Penjaga Situs, dan seterusnya | ⏳ Fase 2–3 |
 | Mode Latihan (replay), impor IOC offline | 🗺️ Peta jalan (di luar lingkup lomba) |
 
 ## Menjalankan lab demo (disarankan)

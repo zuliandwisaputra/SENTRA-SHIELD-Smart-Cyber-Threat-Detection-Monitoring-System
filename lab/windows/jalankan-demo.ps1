@@ -54,8 +54,9 @@ Tunggu-Enter
 
 # 3:00 Respons
 Tulis-Judul '4. Respons berjenjang: Operator mengusulkan, Komandan menyetujui'
-Tulis-Info '1) Login sebagai operator.a@sentra.lab, buka insiden, klik Usulkan Tindakan (blokir IP).'
-Tulis-Info '2) Login sebagai komandan@sentra.lab (bisa dari HP), buka Antrean Persetujuan, klik Setujui.'
+Tulis-Info '1) Login sebagai operator.a@sentra.lab. Menu Insiden > klik insiden dari 172.30.0.66.'
+Tulis-Info '   Di bagian "Tindakan respons" pilih durasi lalu klik "Usulkan blokir IP".'
+Tulis-Info '2) Login sebagai komandan@sentra.lab (bisa dari HP). Menu Antrean Persetujuan > klik Setujui.'
 Tunggu-Enter 'Setelah Komandan menyetujui, tekan Enter untuk menguji koneksi penyerang'
 $kode = ('' + (Compose exec -T attacker curl -s -m 4 -o /dev/null -w '%{http_code}' "http://$KodimA/")).Trim()
 if ($kode -eq '200') {

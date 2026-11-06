@@ -43,9 +43,22 @@ function setMode(next) {
     });
 }
 
+function disconnect() {
+    if (window.Echo) {
+        window.Echo.disconnect();
+        window.Echo = undefined;
+    }
+    setMode('polling');
+}
+
 function connect() {
     const key = meta('reverb-key');
     if (!key || !meta('sentra-user')) {
+        // Halaman tamu (login) atau setelah logout: jangan ada koneksi.
+        disconnect();
+        return;
+    }
+    if (window.Echo) {
         return;
     }
     const https = window.location.protocol === 'https:';
@@ -68,12 +81,18 @@ function connect() {
             if (current === 'connected') refreshSoon();
         });
     } catch (e) {
+        console.warn('SENTRA: WebSocket tidak tersedia, memakai polling 3 detik.', e);
         setMode('polling');
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => setMode(mode));
-document.addEventListener('livewire:navigated', () => setMode(mode));
+// Login/logout dan pindah halaman memakai navigasi SPA Livewire (wire:navigate):
+// modul ini tidak dijalankan ulang, jadi koneksi dicek setiap selesai navigasi.
+document.addEventListener('livewire:navigated', () => {
+    connect();
+    setMode(mode);
+});
 setInterval(() => {
     if (mode !== 'live') refresh();
 }, POLL_MS);
