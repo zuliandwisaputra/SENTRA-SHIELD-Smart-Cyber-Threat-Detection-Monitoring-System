@@ -23,7 +23,7 @@ class Detection extends Model
         return [
             'weight' => 'integer',
             'attribution' => DetectionAttribution::class,
-            'detected_at' => 'datetime:Y-m-d H:i:s.v',
+            'detected_at' => 'datetime',
         ];
     }
 

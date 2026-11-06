@@ -36,8 +36,8 @@ class SecurityEvent extends Model
             'payload' => 'array',
             'is_test' => 'boolean',
             'dst_port' => 'integer',
-            'occurred_at' => 'datetime:Y-m-d H:i:s.v',
-            'created_at' => 'datetime:Y-m-d H:i:s.v',
+            'occurred_at' => 'datetime',
+            'created_at' => 'datetime',
         ];
     }
 

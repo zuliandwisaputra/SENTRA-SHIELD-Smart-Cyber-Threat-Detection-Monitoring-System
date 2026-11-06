@@ -239,18 +239,23 @@ Uji ini memastikan Docker di laptopmu bisa **mencatat pemindaian port** dan **me
 2. Di folder `lab\windows`, klik dua kali **`uji-kernel.bat`**.
 3. Tunggu. Pertama kali bisa 3–10 menit karena mengunduh image.
 
-**Yang harus terlihat** di akhir:
+**Yang harus terlihat** di akhir, kira-kira seperti ini:
 
 ```
-  [OK] ruleset nftables terpasang di dalam container
-  [OK] minimal 15 port tertutup tercatat (ambang R01)
+  [OK] ruleset blokir nftables terpasang di dalam container
+  [OK] NFLOG: 198 port tertutup tercatat
+  [OK] cadangan raw socket: 198 port tertutup tercatat
+  [OK] pemindaian port terdeteksi (NFLOG atau cadangan raw socket)
   [OK] sebelum blokir: penyerang bisa terhubung
   [OK] koneksi yang sudah terbuka berhenti menerima data (...)
   [OK] koneksi baru dari penyerang ditolak
   [OK] setelah durasi habis penyerang bisa terhubung lagi
 
   Hasil: 6 lulus, 0 gagal
+  [OK] SIAP DEMO: agent memakai NFLOG.
 ```
+
+Kalau baris NFLOG berbunyi `[INFO] NFLOG tidak didukung kernel ini`, **itu tidak apa-apa** asalkan baris "cadangan raw socket" berstatus `[OK]` dan kesimpulannya **SIAP DEMO**. Agent otomatis memakai cara cadangan, dan deteksi pemindaian port tetap jalan.
 
 4. **Kirim file** `lab\windows\log\hasil-uji-kernel.txt` ke pengembang, baik hasilnya lulus maupun gagal.
 
@@ -445,9 +450,13 @@ Lab butuh sekitar 3 GB. Jangan set di bawah `3GB`.
 
 File skrip rusak karena format akhir baris Windows. Ini terjadi kalau kode diambil lewat **Download ZIP** atau file dibuka dan disimpan di editor Windows. Hapus folder `sentra-shield`, lalu ambil ulang dengan `git clone` (Bagian 6).
 
-### `uji-kernel` gagal di "minimal 15 port tertutup tercatat"
+### `uji-kernel` menulis "NFLOG tidak didukung kernel ini"
 
-Kernel Docker di laptopmu mungkin tidak mendukung NFLOG. Ini **bukan kesalahanmu**. Kirim file `lab\windows\log\hasil-uji-kernel.txt` ke pengembang; agent akan disiapkan memakai cara cadangan.
+Normal di sebagian versi WSL2. Selama kesimpulannya **SIAP DEMO**, agent otomatis memakai cadangan raw socket. Saat lab menyala, `cek-lab.bat` akan menampilkan `firewall=ok(raw socket)` untuk agent tersebut.
+
+### `uji-kernel` berakhir dengan "BELUM SIAP"
+
+Ini **bukan kesalahanmu**. Kirim file `lab\windows\log\hasil-uji-kernel.txt` ke pengembang.
 
 ### Antivirus memblokir atau menghapus file di folder `lab`
 

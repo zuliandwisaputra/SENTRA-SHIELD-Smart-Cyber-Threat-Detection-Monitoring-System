@@ -65,3 +65,16 @@ Keputusan berikut tidak menyimpang dari PRD; isinya pilihan implementasi yang pe
 - **sqlmap ikut memicu R05 (XSS) dan R06 (LFI).** Request "heuristik WAF/IPS" bawaan sqlmap memuat `<script>` dan `../../../etc/passwd`. Ini deteksi yang sah, bukan false positive, dan buktinya bisa dibuka di Detail Event.
 - **Skor dibulatkan ke bilangan bulat terdekat** setelah dikali pengali, misalnya 142,5 menjadi 143. Rincian di layar menampilkan rumus lengkapnya.
 - **Daftar putih IP disimpan di Pengaturan** (`ip_whitelist`) dan bisa diubah Admin di halaman Aturan Deteksi. Mendukung IP tunggal dan CIDR.
+
+## Cadangan R01 untuk kernel tanpa NFLOG (6 Nov)
+
+Atas permintaan pemilik proyek, karena laptop demo memakai Windows 11 + Docker Desktop (WSL2).
+
+- Agent memakai mode firewall `auto`: coba NFLOG dulu. Bila kernel menolak aturan `log group` atau socket NFLOG tidak tersedia, ruleset nftables dimuat ulang **tanpa** aturan log, sehingga blokir tetap jalan. Port tertutup lalu dicatat lewat raw socket (AF_PACKET, pustaka standar): paket TCP SYN tanpa ACK ke port yang tidak LISTEN, dengan batas laju yang sama (400/detik, burst 800).
+- Raw socket melihat paket sebelum firewall. Karena itu agent mengabaikan IP yang sedang ia blokir, padanan aturan nftables yang memeriksa blokir sebelum log.
+- `uji-kernel.bat` / `run_spike.sh` menguji kedua cara dan menyimpulkan "SIAP DEMO" beserta modenya. `cek-lab` menampilkan `firewall=ok(nflog)` atau `ok(raw socket)`.
+
+## Perbaikan presisi waktu (ditemukan saat uji cadangan di lab, 6 Nov)
+
+- Cast `datetime:Y-m-d H:i:s.v` dibaca Laravel sebagai `custom_datetime`, sehingga milidetik terpotong saat disimpan lewat Eloquent. Semua model kini memakai cast `datetime` dengan `$dateFormat` berpresisi milidetik.
+- Query builder memformat batas tanggal tanpa milidetik, sehingga event dalam detik yang sama bisa keluar dari jendela waktu aturan ambang (nmap memindai ratusan port dalam < 1 detik). Semua batas jendela deteksi dan korelasi kini diikat sebagai teks bermilidetik (`App\Support\DbTime`). Test regresi: 20 port dalam 0,1 detik tetap memicu R01, 10 login gagal dalam 0,1 detik tetap memicu R07.

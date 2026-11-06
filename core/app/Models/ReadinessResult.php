@@ -17,7 +17,7 @@ class ReadinessResult extends Model
         return [
             'detected' => 'boolean',
             'ttd_ms' => 'integer',
-            'started_at' => 'datetime:Y-m-d H:i:s.v',
+            'started_at' => 'datetime',
         ];
     }
 

@@ -22,7 +22,7 @@ class SiteCheck extends Model
             'similarity' => 'float',
             'gambling_hits' => 'integer',
             'flagged' => 'boolean',
-            'checked_at' => 'datetime:Y-m-d H:i:s.v',
+            'checked_at' => 'datetime',
         ];
     }
 

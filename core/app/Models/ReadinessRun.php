@@ -20,8 +20,8 @@ class ReadinessRun extends Model
             'status' => ReadinessStatus::class,
             'coverage' => 'float',
             'avg_ttd_ms' => 'integer',
-            'started_at' => 'datetime:Y-m-d H:i:s.v',
-            'finished_at' => 'datetime:Y-m-d H:i:s.v',
+            'started_at' => 'datetime',
+            'finished_at' => 'datetime',
         ];
     }
 

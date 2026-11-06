@@ -31,8 +31,8 @@ class Incident extends Model
             'score_breakdown' => 'array',
             'severity' => Severity::class,
             'status' => IncidentStatus::class,
-            'first_seen_at' => 'datetime:Y-m-d H:i:s.v',
-            'last_seen_at' => 'datetime:Y-m-d H:i:s.v',
+            'first_seen_at' => 'datetime',
+            'last_seen_at' => 'datetime',
         ];
     }
 

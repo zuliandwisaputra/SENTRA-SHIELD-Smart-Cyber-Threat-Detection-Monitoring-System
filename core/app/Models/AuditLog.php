@@ -23,7 +23,7 @@ class AuditLog extends Model
     {
         return [
             'data' => 'array',
-            'created_at' => 'datetime:Y-m-d H:i:s.u',
+            'created_at' => 'datetime',
         ];
     }
 

@@ -102,7 +102,13 @@ class SentraStatus extends Command
             return '';
         }
 
-        return str_contains((string) ($source['detail'] ?? ''), 'raw socket') ? '(raw socket)' : '(nflog)';
+        $detail = (string) ($source['detail'] ?? '');
+
+        return match (true) {
+            str_contains($detail, 'raw socket') => '(raw socket)',
+            str_contains($detail, 'nflog') => '(nflog)',
+            default => '',
+        };
     }
 
     private function onlineCount(): int

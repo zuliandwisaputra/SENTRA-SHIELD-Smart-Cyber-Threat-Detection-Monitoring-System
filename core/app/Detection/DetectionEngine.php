@@ -7,6 +7,7 @@ use App\Enums\RuleType;
 use App\Models\Detection;
 use App\Models\DetectionRule;
 use App\Models\SecurityEvent;
+use App\Support\DbTime;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -120,7 +121,7 @@ class DetectionEngine
             ->where('src_ip', $event->src_ip)
             ->whereHas('event', fn ($q) => $q
                 ->where('is_test', $event->is_test)
-                ->whereBetween('occurred_at', [$event->occurred_at->copy()->subSeconds($within), $event->occurred_at]))
+                ->whereBetween('occurred_at', [DbTime::of($event->occurred_at->copy()->subSeconds($within)), DbTime::of($event->occurred_at)]))
             ->exists();
     }
 
@@ -134,7 +135,8 @@ class DetectionEngine
             return false;
         }
 
-        $from = $event->occurred_at->copy()->subSeconds((int) $cfg['window_s']);
+        $from = DbTime::of($event->occurred_at->copy()->subSeconds((int) $cfg['window_s']));
+        $until = DbTime::of($event->occurred_at);
 
         // Sudah terdeteksi di jendela ini: jangan buat deteksi ganda.
         $suppressed = Detection::query()
@@ -152,7 +154,7 @@ class DetectionEngine
             ->where('src_ip', $event->src_ip)
             ->where('source', $event->source)
             ->where('is_test', $event->is_test)
-            ->whereBetween('occurred_at', [$from, $event->occurred_at]);
+            ->whereBetween('occurred_at', [$from, $until]);
         foreach ($cfg['match'] ?? [] as $key => $value) {
             $query->where("payload->{$key}", $value);
         }

@@ -6,7 +6,7 @@ Sensor ringan untuk host satuan. **Zero dependency**: satu file `sentra_agent.py
 |---|---|---|
 | `web` | tail log akses nginx/apache (format combined), tahan rotasi | IP, method, path, query, status, user agent |
 | `ssh` | tail `auth.log` / log sshd | login gagal & berhasil, user, IP |
-| `firewall` | nftables `log group` (NFLOG) dibaca lewat netlink; agent memasang aturan log port tertutup sendiri | IP sumber, port tujuan |
+| `firewall` | nftables `log group` (NFLOG) dibaca lewat netlink; agent memasang aturan log port tertutup sendiri. **Cadangan otomatis:** bila kernel tidak mendukung NFLOG (mis. sebagian WSL2), SYN ke port tertutup dicatat lewat raw socket | IP sumber, port tujuan |
 | `fim` | pemindaian berkala folder web | file baru/berubah/dihapus + SHA-256 + cuplikan isi |
 | `modbus` | sensor pasif raw socket (AF_PACKET) pada TCP/502 | perintah tulis FC 5, 6, 15, 16 + IP pengirim |
 
@@ -16,6 +16,7 @@ Perilaku sesuai PRD:
 - Saat Core tidak terjangkau, event ditahan di antrean SQLite lokal hingga 10.000 baris, lalu dikirim ulang.
 - Perintah hanya dari daftar tetap: `block_ip`, `unblock_ip`, `run_test`. Parameter divalidasi (IP lewat modul `ipaddress`, durasi 60–86.400 detik), dan `nft` dipanggil dengan argumen tetap, tanpa shell.
 - Blokir memakai nftables set dengan `timeout`, sehingga blokir terbuka sendiri walau Core mati, dan tetap bertahan saat agent restart.
+- Mode firewall `auto` (bawaan) memilih NFLOG atau cadangan raw socket; bisa dipaksa dengan `"mode": "nflog"` atau `"packet"`. Di lab: variabel `AGENT_FIREWALL_MODE`.
 - Token disimpan di `state_dir/token` dengan izin `0600`. Komunikasi ke Core wajib HTTPS (verifikasi CA).
 
 ## Pemasangan di host nyata

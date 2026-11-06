@@ -18,8 +18,8 @@ class Campaign extends Model
         return [
             'unit_count' => 'integer',
             'status' => CampaignStatus::class,
-            'first_seen_at' => 'datetime:Y-m-d H:i:s.v',
-            'last_seen_at' => 'datetime:Y-m-d H:i:s.v',
+            'first_seen_at' => 'datetime',
+            'last_seen_at' => 'datetime',
         ];
     }
 

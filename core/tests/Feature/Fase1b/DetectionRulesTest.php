@@ -5,6 +5,7 @@ use App\Models\Detection;
 use App\Models\DetectionRule;
 use App\Models\Incident;
 use App\Models\Setting;
+use Illuminate\Support\Carbon;
 
 require_once __DIR__.'/helpers.php';
 
@@ -163,4 +164,20 @@ test('event Uji Kesiapan dihitung terpisah dan tidak menjadi insiden', function 
     expect(kodeAturan($d))->toBe(['R02'])
         ->and($d[0]->fresh()->incident_id)->toBeNull()
         ->and(Incident::count())->toBe(0);
+});
+
+test('regresi: pemindaian cepat dalam satu detik yang sama tetap terdeteksi', function () {
+    // nmap memindai ratusan port dalam < 1 detik; batas jendela harus memakai milidetik.
+    $t = Carbon::parse('2026-11-12 02:14:03.100', 'UTC');
+    $events = [];
+    for ($i = 0; $i < 20; $i++) {
+        $events[] = eventLab($this->web, 'firewall', ['action' => 'port_tertutup'], PENYERANG, 4000 + $i, $t->copy()->addMilliseconds($i * 5));
+    }
+    expect(kodeAturan(deteksi(...$events)))->toBe(['R01']);
+
+    $ssh = [];
+    for ($i = 0; $i < 10; $i++) {
+        $ssh[] = eventLab($this->web, 'ssh', ['outcome' => 'failed', 'user' => 'root'], PENYERANG, 22, $t->copy()->addMilliseconds(600 + $i * 10));
+    }
+    expect(kodeAturan(deteksi(...$ssh)))->toBe(['R07']);
 });

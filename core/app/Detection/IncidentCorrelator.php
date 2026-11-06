@@ -7,6 +7,7 @@ use App\Enums\Severity;
 use App\Models\Detection;
 use App\Models\Incident;
 use App\Models\Unit;
+use App\Support\DbTime;
 
 /**
  * Korelasi deteksi menjadi insiden / Attack Story (FR-04, PRD bagian 10).
@@ -28,7 +29,7 @@ class IncidentCorrelator
     public function attach(Detection $detection): Incident
     {
         $time = $detection->event?->occurred_at ?? $detection->detected_at;
-        $since = $time->copy()->subMinutes(self::WINDOW_MINUTES);
+        $since = DbTime::of($time->copy()->subMinutes(self::WINDOW_MINUTES));
 
         $open = Incident::query()->open()
             ->where('unit_id', $detection->unit_id)
