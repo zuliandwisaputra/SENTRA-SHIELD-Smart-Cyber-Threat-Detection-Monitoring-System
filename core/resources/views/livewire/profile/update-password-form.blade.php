@@ -40,11 +40,11 @@ new class extends Component
 
 <section>
     <header>
-        <h2 class="text-lg font-medium text-gray-100">
+        <h2 class="text-lg font-medium text-ink">
             Ganti kata sandi
         </h2>
 
-        <p class="mt-1 text-sm text-gray-400">
+        <p class="mt-1 text-sm text-ink-3">
             Gunakan kata sandi yang panjang dan acak agar akun tetap aman.
         </p>
     </header>
