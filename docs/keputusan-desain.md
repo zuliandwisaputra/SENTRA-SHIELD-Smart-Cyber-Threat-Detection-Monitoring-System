@@ -73,6 +73,7 @@ Atas permintaan pemilik proyek, karena laptop demo memakai Windows 11 + Docker D
 - Agent memakai mode firewall `auto`: coba NFLOG dulu. Bila kernel menolak aturan `log group` atau socket NFLOG tidak tersedia, ruleset nftables dimuat ulang **tanpa** aturan log, sehingga blokir tetap jalan. Port tertutup lalu dicatat lewat raw socket (AF_PACKET, pustaka standar): paket TCP SYN tanpa ACK ke port yang tidak LISTEN, dengan batas laju yang sama (400/detik, burst 800).
 - Raw socket melihat paket sebelum firewall. Karena itu agent mengabaikan IP yang sedang ia blokir, padanan aturan nftables yang memeriksa blokir sebelum log.
 - `uji-kernel.bat` / `run_spike.sh` menguji kedua cara dan menyimpulkan "SIAP DEMO" beserta modenya. `cek-lab` menampilkan `firewall=ok(nflog)` atau `ok(raw socket)`.
+- **Hasil di laptop demo (7 Nov):** Windows 11, Docker 29.9.2, kernel WSL2 `6.18.54.1-microsoft-standard-WSL2`. Hasil 6 lulus, 0 gagal: ruleset blokir terpasang, NFLOG mencatat 198 port tertutup (cadangan raw socket juga 198), koneksi yang sudah terbuka berhenti menerima data saat diblokir, koneksi baru ditolak, dan blokir terbuka sendiri setelah durasi habis. Agent di laptop demo memakai NFLOG; cadangan raw socket tetap tersedia.
 
 ## Perbaikan presisi waktu (ditemukan saat uji cadangan di lab, 6 Nov)
 

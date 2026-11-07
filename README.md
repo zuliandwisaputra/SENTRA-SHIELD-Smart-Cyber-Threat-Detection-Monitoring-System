@@ -24,7 +24,7 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 | Kemampuan | Status |
 |---|---|
 | Lab satu perintah: `docker compose up -d` → 3 agent terdaftar otomatis dan mengirim heartbeat | ✅ Sudah jalan (19–56 detik dari volume kosong di mesin pengembang, di luar waktu build) |
-| Agent Python tanpa dependensi: log web, SSH, firewall (NFLOG), FIM, sensor Modbus pasif | ✅ Sudah jalan, diuji dengan nmap, hydra, sqlmap, dan tulis Modbus dari container penyerang |
+| Agent Python tanpa dependensi: log web, SSH, firewall (NFLOG), FIM, sensor Modbus pasif | ✅ Sudah jalan, diuji dengan nmap, hydra, sqlmap, dan tulis Modbus dari container penyerang. Uji kernel di laptop demo (Windows 11, WSL2): NFLOG dan blokir nftables lulus 6/6 |
 | Antrean lokal 10.000 event saat Core putus, batch 1 detik, heartbeat 10 detik | ✅ Sudah jalan |
 | API agent sesuai PRD bagian 9 (HTTPS, token Sanctum ter-hash, 401/422/429) | ✅ Sudah jalan |
 | Kode pendaftaran sekali pakai, cabut token → agent langsung ditolak | ✅ Sudah jalan |

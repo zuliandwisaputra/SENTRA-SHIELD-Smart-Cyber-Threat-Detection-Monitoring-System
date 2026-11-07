@@ -22,9 +22,15 @@ $script:gagal = 0
 function Hasil([string]$Nama, [bool]$Ok) {
     if ($Ok) { Tulis-Ok $Nama; $script:lulus++ } else { Tulis-Gagal $Nama; $script:gagal++ }
 }
+# Jalankan perintah docker tanpa menampilkan keluarannya. Lewat cmd agar pesan
+# stderr docker/nc (mis. "Connection ... succeeded!") tidak tercatat sebagai
+# error merah di transcript Windows PowerShell 5.1. Kode keluar tetap di $LASTEXITCODE.
+function Docker-Diam([string]$Perintah) {
+    cmd /c "docker $Perintah >nul 2>&1"
+}
 function Bersihkan {
-    docker rm -f sentra-spike-target sentra-spike-attacker *> $null
-    docker network rm $net *> $null
+    Docker-Diam 'rm -f sentra-spike-target sentra-spike-attacker'
+    Docker-Diam "network rm $net"
 }
 function Angka($Keluaran) {
     $n = 0
@@ -76,7 +82,7 @@ Hasil 'pemindaian port terdeteksi (NFLOG atau cadangan raw socket)' ($script:nfl
 Tulis-Info 'Uji 3: blokir memutus koneksi'
 docker exec -d sentra-spike-attacker sh -c "nc $target 9000 > /tmp/stream.log 2>&1"
 Start-Sleep -Seconds 2
-docker exec sentra-spike-attacker nc -w 2 -z $target 9000 *> $null
+Docker-Diam "exec sentra-spike-attacker nc -w 2 -z $target 9000"
 Hasil 'sebelum blokir: penyerang bisa terhubung' ($LASTEXITCODE -eq 0)
 docker exec sentra-spike-target nft add element inet sentra blocklist4 "{ $penyerang timeout 15s }"
 Start-Sleep -Seconds 1
@@ -84,12 +90,12 @@ $sebelum = Angka (docker exec sentra-spike-attacker sh -c 'wc -l < /tmp/stream.l
 Start-Sleep -Seconds 3
 $sesudah = Angka (docker exec sentra-spike-attacker sh -c 'wc -l < /tmp/stream.log')
 Hasil "koneksi yang sudah terbuka berhenti menerima data ($sebelum -> $sesudah baris)" ($sebelum -gt 0 -and $sebelum -eq $sesudah)
-docker exec sentra-spike-attacker nc -w 2 -z $target 9000 *> $null
+Docker-Diam "exec sentra-spike-attacker nc -w 2 -z $target 9000"
 Hasil 'koneksi baru dari penyerang ditolak' ($LASTEXITCODE -ne 0)
 
 Tulis-Info 'Uji 4: blokir terbuka sendiri saat durasi habis (tunggu 15 detik)'
 Start-Sleep -Seconds 12
-docker exec sentra-spike-attacker nc -w 2 -z $target 9000 *> $null
+Docker-Diam "exec sentra-spike-attacker nc -w 2 -z $target 9000"
 Hasil 'setelah durasi habis penyerang bisa terhubung lagi' ($LASTEXITCODE -eq 0)
 
 Bersihkan
