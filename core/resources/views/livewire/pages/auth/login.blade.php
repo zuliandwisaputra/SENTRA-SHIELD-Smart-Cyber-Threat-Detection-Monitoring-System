@@ -22,10 +22,7 @@ new #[Layout('layouts.guest')] class extends Component
 }; ?>
 
 <div>
-    <div class="mb-6">
-        <p class="label-caps flex items-center gap-1.5"><x-icon name="fingerprint" class="size-3.5" />Akses operator</p>
-        <h2 class="mt-2 font-display text-2xl font-semibold tracking-wide">Masuk ke Pusat Komando</h2>
-    </div>
+    <h2 class="mb-6 flex items-center gap-2.5 font-display text-2xl font-semibold tracking-wide"><x-icon name="fingerprint" class="size-6 text-accent" />Masuk ke Pusat Komando</h2>
 
     <x-auth-session-status class="mb-4" :status="session('status')" />
 

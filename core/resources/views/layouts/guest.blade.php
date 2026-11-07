@@ -54,9 +54,9 @@
                     </div>
                     <p class="mt-8 max-w-xl text-lg leading-relaxed text-ink-2">Sensor di tiap satuan, satu insiden yang bisa dijelaskan, dan respons yang mengikuti rantai komando.</p>
                     <dl class="mt-8 hidden max-w-xl grid-cols-3 gap-6 border-t border-line pt-5 sm:grid">
-                        <div><dt class="label-caps">Nyata</dt><dd class="mt-1 text-sm text-ink-2">Deteksi dari telemetri asli</dd></div>
-                        <div><dt class="label-caps">Terukur</dt><dd class="mt-1 text-sm text-ink-2">Uji Kesiapan dalam angka</dd></div>
-                        <div><dt class="label-caps">Siap pakai</dt><dd class="mt-1 text-sm text-ink-2">Satu perintah, tanpa internet</dd></div>
+                        <div><dt class="font-display text-[15px] font-semibold text-ink">Nyata</dt><dd class="mt-1 text-sm text-ink-2">Deteksi dari telemetri asli</dd></div>
+                        <div><dt class="font-display text-[15px] font-semibold text-ink">Terukur</dt><dd class="mt-1 text-sm text-ink-2">Uji Kesiapan dalam angka</dd></div>
+                        <div><dt class="font-display text-[15px] font-semibold text-ink">Siap pakai</dt><dd class="mt-1 text-sm text-ink-2">Satu perintah, tanpa internet</dd></div>
                     </dl>
                 </section>
 

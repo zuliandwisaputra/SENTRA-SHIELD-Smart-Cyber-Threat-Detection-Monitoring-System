@@ -50,11 +50,11 @@ new class extends Component
                     </span>
                 </a>
 
-                <div class="ms-6 hidden gap-5 xl:flex">
+                <div class="ms-5 hidden gap-4 xl:flex 2xl:ms-6 2xl:gap-5">
                     @foreach ($mainMenu as $item)
                         @can($item['ability'])
                             <x-nav-link :href="route($item['route'])" :active="request()->routeIs($item['active'] ?? $item['route'])" wire:navigate>
-                                <x-icon :name="$item['icon']" class="size-4" />{{ $item['label'] }}
+                                <x-icon :name="$item['icon']" class="hidden size-4 min-[1400px]:block" />{{ $item['label'] }}
                                 @if (! empty($item['badge']))
                                     <span class="ms-0.5 grid min-w-5 place-items-center rounded-chip bg-accent px-1 font-mono text-xs font-semibold text-accent-ink" aria-label="{{ $item['badge'] }} menunggu">{{ $item['badge'] }}</span>
                                 @endif
@@ -68,9 +68,9 @@ new class extends Component
                 <span data-sentra-live class="inline-flex h-7 items-center whitespace-nowrap rounded-chip border border-line-strong bg-base px-2 font-display text-xs font-medium uppercase tracking-[0.12em] text-ink-2" role="status" title="WebSocket belum tersambung; diperbarui tiap 3 detik">Polling</span>
                 <x-dropdown align="right" width="w-56">
                     <x-slot name="trigger">
-                        <button class="flex items-center gap-2.5 rounded-control px-2 py-1.5 text-start transition-colors duration-150 hover:bg-raised focus:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+                        <button aria-label="Menu pengguna {{ $user->name }}" class="flex items-center gap-2.5 rounded-control px-2 py-1.5 text-start transition-colors duration-150 hover:bg-raised focus:outline-none focus-visible:ring-2 focus-visible:ring-accent">
                             <span class="grid size-8 place-items-center rounded-full border border-line-strong bg-inset font-display text-sm font-semibold text-ink-2" aria-hidden="true">{{ mb_strtoupper(mb_substr($user->name, 0, 1)) }}</span>
-                            <span class="leading-tight">
+                            <span class="hidden leading-tight 2xl:block">
                                 <span class="block text-sm font-medium text-ink" x-data="{{ json_encode(['name' => $user->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></span>
                                 <span class="block text-xs text-ink-3">{{ $user->role->label() }}</span>
                             </span>

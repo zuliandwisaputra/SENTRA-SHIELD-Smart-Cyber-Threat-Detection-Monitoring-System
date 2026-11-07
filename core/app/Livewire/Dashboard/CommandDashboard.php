@@ -70,7 +70,7 @@ class CommandDashboard extends Component
             'agentBlind' => $agents->where('status', AgentStatus::Buta)->count(),
             'blockCount' => $blocks->count(),
             'blockIps' => $blocks->pluck('params.ip')->unique()->count(),
-            'feed' => $scope(SecurityEvent::query())->with(['unit', 'agent', 'detections.rule'])
+            'feed' => $scope(SecurityEvent::query())->with(['unit', 'agent', 'detections.rule', 'detections.incident:id,severity'])
                 ->where('is_test', false)->orderByDesc('id')->limit(12)->get(),
             'canSeeAgents' => $user->can('lihat-satuan-agent'),
             'sourceWarnings' => app(SensorWatch::class)->sourceWarnings($units)->count(),

@@ -13,7 +13,7 @@ const ikon = [
     'user', 'waypoints', 'wifi-off', 'workflow', 'x', 'zap',
     'arrow-up-right', 'building-2', 'bug', 'chart-column', 'chart-line', 'circle-dot', 'cpu', 'git-commit-horizontal',
     'layers', 'loader-circle', 'log-in', 'map-pin', 'monitor', 'plug', 'scroll-text', 'shield-x', 'signal',
-    'smartphone', 'user-check', 'users',
+    'smartphone', 'user-check', 'users', 'arrow-left', 'chevron-left',
 ];
 
 const peta = ikon.map((nama) => {

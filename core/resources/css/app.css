@@ -87,14 +87,15 @@
         @apply flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-line px-4 py-3 sm:px-5;
     }
     .panel-title {
-        @apply font-display text-[15px] font-semibold uppercase tracking-[0.08em] text-ink;
+        @apply font-display text-[17px] font-semibold tracking-[0.01em] text-ink;
     }
     .label-caps {
         @apply font-display text-[12px] font-medium uppercase tracking-[0.1em] text-ink-3;
     }
-    /* Angka besar (KPI, skor): rapat, tabular, terbaca dari proyektor. */
+    /* Angka besar (KPI, skor): rapat, terbaca dari proyektor. Angka proporsional;
+       tabular hanya untuk kolom yang harus rata (tabel, sumbu). */
     .num {
-        @apply font-display font-semibold tabular-nums leading-none tracking-tight;
+        @apply font-display font-semibold leading-none tracking-tight;
     }
     /* Data teknis: IP, hash, [EV-n], kode aturan, teknik ATT&CK. */
     .data {
@@ -123,6 +124,35 @@
         background: linear-gradient(90deg, rgb(var(--inset)) 0%, rgb(var(--raised)) 50%, rgb(var(--inset)) 100%);
         background-size: 200% 100%;
         @apply animate-kilau rounded-chip;
+    }
+    /* Topologi satuan: garis penghubung induk -> anak (siku), ditarik dari pusat ikon induk. */
+    .topo ul {
+        margin-left: 1.8rem;
+        padding-left: 1rem;
+    }
+    .topo ul > li {
+        position: relative;
+        padding-top: 0.5rem;
+    }
+    .topo ul > li::before {
+        content: '';
+        position: absolute;
+        left: -1rem;
+        top: 0;
+        bottom: 0;
+        border-left: 1px solid rgb(var(--line-strong));
+    }
+    .topo ul > li:last-child::before {
+        bottom: auto;
+        height: 2.2rem;
+    }
+    .topo ul > li::after {
+        content: '';
+        position: absolute;
+        left: -1rem;
+        top: 2.2rem;
+        width: 1rem;
+        border-top: 1px solid rgb(var(--line-strong));
     }
     /* Latar halus "radar": grid tipis untuk layar login. */
     .latar-grid {
