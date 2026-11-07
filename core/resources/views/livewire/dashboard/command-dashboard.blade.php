@@ -22,6 +22,8 @@
         'siaga' => ['ikon' => 'triangle-alert', 'teks' => 'text-siaga', 'garis' => 'bg-siaga', 'kotak' => 'border-siaga/60 bg-siaga/10 text-siaga', 'nyala' => 'bg-siaga text-accent-ink shadow-[0_0_24px_-4px_rgb(var(--siaga)/0.75)]', 'lampu' => 'bg-siaga/40'],
         'awas' => ['ikon' => 'siren', 'teks' => 'text-awas', 'garis' => 'bg-awas', 'kotak' => 'border-awas/60 bg-awas/10 text-awas', 'nyala' => 'bg-awas text-accent-ink shadow-[0_0_24px_-4px_rgb(var(--awas)/0.75)]', 'lampu' => 'bg-awas/40'],
     ];
+    // Ukuran kata status mengikuti panjang kata agar muat di proyektor 1280 px dan HP 390 px.
+    $ukuranKata = ['aman' => 'text-[60px] sm:text-[80px] 2xl:text-[92px]', 'awas' => 'text-[60px] sm:text-[80px] 2xl:text-[92px]', 'siaga' => 'text-[52px] sm:text-[70px] 2xl:text-[84px]', 'waspada' => 'text-[42px] sm:text-[56px] xl:text-[50px] 2xl:text-[68px]'];
     $ikonSumber = ['web' => 'globe', 'ssh' => 'terminal', 'firewall' => 'shield', 'fim' => 'file-lock', 'modbus' => 'factory', 'site' => 'scan-search'];
     $eselon = ['kodam' => 'XX', 'korem' => 'X', 'kodim' => 'II'];
     $agentLain = max(0, $agentTotal - $agentOnline - $agentBlind);
@@ -46,10 +48,10 @@
                         @php $p = $papan[$tingkat->value]; @endphp
                         <div role="status" aria-live="polite" aria-atomic="true">
                             <div class="flex items-center gap-4">
-                                <span class="grid size-16 shrink-0 place-items-center rounded-control border-2 sm:size-20 {{ $p['kotak'] }}">
-                                    <x-icon :name="$p['ikon']" stroke="1.6" class="size-9 sm:size-11" />
+                                <span class="grid size-14 shrink-0 place-items-center rounded-control border-2 sm:size-[4.5rem] {{ $p['kotak'] }}">
+                                    <x-icon :name="$p['ikon']" stroke="1.6" class="size-8 sm:size-10" />
                                 </span>
-                                <p class="min-w-0 font-stensil text-[64px] uppercase leading-[0.9] tracking-[0.06em] sm:text-[92px] {{ $p['teks'] }}">{{ $tingkat->label() }}</p>
+                                <p class="min-w-0 font-stensil uppercase leading-[0.9] tracking-[0.05em] {{ $ukuranKata[$tingkat->value] }} {{ $p['teks'] }}">{{ $tingkat->label() }}</p>
                             </div>
                             <p class="mt-4 text-[17px] text-ink-2">
                                 @if ($sumber->isNotEmpty())
