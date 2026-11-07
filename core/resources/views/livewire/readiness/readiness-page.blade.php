@@ -7,7 +7,7 @@
         @if ($canRun)
             <form wire:submit="run" class="panel flex flex-wrap items-end gap-3 p-4 sm:p-5">
                 <div class="min-w-0 flex-1 basis-64 sm:flex-none">
-                    <label for="satuan" class="block text-sm text-ink-2">Satuan yang diuji</label>
+                    <label for="satuan" class="label-caps block">Satuan yang diuji</label>
                     <select id="satuan" wire:model="unitId" class="mt-1.5 h-10 w-full text-sm sm:w-80">
                         @foreach ($units as $u)
                             <option value="{{ $u->id }}">{{ $u->name }} ({{ $u->agents_count }} agent online)</option>
@@ -30,32 +30,53 @@
                 $menunggu = $running ? $total - $detected->count() : 0;
                 $persen = $total > 0 ? $detected->count() / $total : 0;
                 $ttdMaks = max(1, (int) $results->max('ttd_ms'));
-                // Cincin cakupan: keliling lingkaran r=52 ≈ 326,7.
-                $keliling = 2 * M_PI * 52;
+                // Dial instrumen: satu segmen per skenario (hijau terdeteksi, bata lolos, khaki menunggu).
+                $segmen = max(1, $total);
+                $busur = 360 / $segmen;
+                $titik = function (float $sudut, float $jari) {
+                    $rad = deg2rad($sudut - 90);
+
+                    return round(60 + $jari * cos($rad), 2).' '.round(60 + $jari * sin($rad), 2);
+                };
             @endphp
             <div class="grid gap-4 xl:grid-cols-12 xl:items-start">
                 {{-- Angka terpenting: cakupan deteksi. --}}
-                <section class="panel min-w-0 p-5 sm:p-6 xl:col-span-4" aria-labelledby="hasil-uji">
-                    <h3 id="hasil-uji" class="panel-title">Uji #{{ $run->id }} · {{ $run->unit?->name }}</h3>
-                    <p class="mt-1 text-xs text-ink-3">Dimulai {{ waktu_wib($run->started_at, 'd/m/Y H:i:s') }} oleh {{ $run->starter?->name }} · {{ $running ? 'sedang berjalan…' : 'selesai '.waktu_wib($run->finished_at, 'H:i:s') }}</p>
+                <section class="panel min-w-0 xl:col-span-4" aria-labelledby="hasil-uji">
+                    <span class="penggaris-x" aria-hidden="true"></span>
+                    <header class="panel-head">
+                        <div class="min-w-0">
+                            <p class="flex items-baseline gap-2" aria-hidden="true"><span class="nomor-bagian">01 //</span><span class="font-stensil text-[19px] uppercase leading-none tracking-[0.08em] text-ink">Kesiapan</span></p>
+                            <h3 id="hasil-uji" class="mt-1 text-sm font-semibold text-ink-2">Uji #{{ $run->id }} · {{ $run->unit?->name }}</h3>
+                            <p class="mt-0.5 text-xs text-ink-3">Dimulai {{ waktu_wib($run->started_at, 'd/m/Y H:i:s') }} oleh {{ $run->starter?->name }} · {{ $running ? 'sedang berjalan…' : 'selesai '.waktu_wib($run->finished_at, 'H:i:s') }}</p>
+                        </div>
+                        <x-ui.stempel :tone="$running ? 'waspada' : ($lolos > 0 ? 'awas' : 'aman')" size="sm">Uji {{ $run->status->label() }}</x-ui.stempel>
+                    </header>
 
-                    <div class="mt-5 flex flex-wrap items-center gap-6">
-                        <div class="relative size-44 shrink-0" role="img" aria-label="Cakupan deteksi {{ $detected->count() }} dari {{ $total }} skenario">
-                            <svg viewBox="0 0 120 120" class="size-full -rotate-90" aria-hidden="true">
-                                <circle cx="60" cy="60" r="52" fill="none" stroke="rgb(var(--inset))" stroke-width="10" />
-                                <circle cx="60" cy="60" r="52" fill="none" stroke="rgb(var(--accent))" stroke-width="10" stroke-linecap="round"
-                                    stroke-dasharray="{{ round($keliling * $persen, 2) }} {{ round($keliling, 2) }}" class="transition-[stroke-dasharray] duration-700 ease-sentra" />
+                    <div class="flex flex-wrap items-center gap-6 p-5 sm:p-6">
+                        <div class="relative size-48 shrink-0" role="img" aria-label="Cakupan deteksi {{ $detected->count() }} dari {{ $total }} skenario">
+                            <svg viewBox="0 0 120 120" class="size-full" aria-hidden="true">
+                                <circle cx="60" cy="60" r="58" fill="none" class="stroke-accent/30" stroke-width="1" />
+                                @for ($k = 0; $k < 60; $k++)
+                                    <path d="M{{ $titik($k * 6, 58) }}L{{ $titik($k * 6, $k % 5 === 0 ? 53 : 55.5) }}" class="stroke-accent/50" stroke-width="{{ $k % 5 === 0 ? 1.2 : 0.6 }}" />
+                                @endfor
+                                @foreach ($results->values() as $k => $hasil)
+                                    @php
+                                        $a0 = $k * $busur + 2; $a1 = ($k + 1) * $busur - 2;
+                                        $warna = $hasil->detected ? 'stroke-aman' : ($running ? 'stroke-accent/40' : 'stroke-awas');
+                                    @endphp
+                                    <path d="M{{ $titik($a0, 45) }}A45 45 0 0 1 {{ $titik($a1, 45) }}" fill="none" stroke-width="9" class="{{ $warna }}" />
+                                @endforeach
                             </svg>
                             <div class="absolute inset-0 flex flex-col items-center justify-center">
                                 <span class="num text-[44px] text-ink" data-testid="cakupan">{{ $detected->count() }}/{{ $total }}</span>
-                                <span class="mt-1 text-sm text-ink-3">
+                                <span class="mt-1 text-sm font-semibold uppercase tracking-[0.1em] text-ink-3">
                                     @if (! $running && $total > 0){{ round($persen * 100) }}% @endif cakupan
                                 </span>
                             </div>
                         </div>
-                        <dl class="min-w-0 flex-1 space-y-3">
+                        <dl class="min-w-[11rem] flex-1 space-y-3">
                             <div>
-                                <dt class="text-sm text-ink-2">Cakupan deteksi</dt>
+                                <dt class="label-caps">Cakupan deteksi</dt>
                                 <dd class="mt-0.5 flex flex-wrap gap-1.5">
                                     <x-ui.badge tone="aman" icon="circle-check">{{ $detected->count() }} terdeteksi</x-ui.badge>
                                     @if ($lolos > 0)<x-ui.badge tone="awas" icon="circle-x">{{ $lolos }} lolos</x-ui.badge>@endif
@@ -63,15 +84,15 @@
                                 </dd>
                             </div>
                             <div>
-                                <dt class="text-sm text-ink-2">Rata-rata waktu deteksi</dt>
-                                <dd class="mt-0.5 flex items-baseline gap-1.5"><span class="num text-[40px] text-ink">{{ $detected->isNotEmpty() ? number_format($detected->avg('ttd_ms') / 1000, 1, ',', '.') : '—' }}</span><span class="font-display text-lg text-ink-3">dtk</span></dd>
+                                <dt class="label-caps">Rata-rata waktu deteksi</dt>
+                                <dd class="mt-1 flex items-baseline gap-1.5"><span class="num text-[48px] text-ink">{{ $detected->isNotEmpty() ? number_format($detected->avg('ttd_ms') / 1000, 1, ',', '.') : '—' }}</span><span class="font-display text-lg text-ink-3">dtk</span></dd>
                             </div>
                         </dl>
                     </div>
                 </section>
 
                 {{-- Matriks skenario --}}
-                <x-ui.panel title="Matriks skenario" icon="list-checks" class="xl:col-span-8"
+                <x-ui.panel nomor="02" kode="Matriks latihan" title="Matriks skenario" icon="list-checks" class="xl:col-span-8"
                     subtitle="Satu skenario aman per aturan; batang menunjukkan waktu sampai deteksi muncul di Core.">
                     <ul class="grid gap-2.5 sm:grid-cols-2 2xl:grid-cols-3">
                         @foreach ($results as $r)
@@ -97,7 +118,7 @@
                                         </div>
                                         <div class="mt-1.5 h-1 rounded-full bg-inset" aria-hidden="true">
                                             @if ($r->ttd_ms !== null)
-                                                <div class="h-1 rounded-full bg-[#2F9DCB]" style="width: {{ max(2, round($r->ttd_ms / $ttdMaks * 100, 1)) }}%"></div>
+                                                <div class="h-1 rounded-full bg-[#9E8E58]" style="width: {{ max(2, round($r->ttd_ms / $ttdMaks * 100, 1)) }}%"></div>
                                             @endif
                                         </div>
                                     </div>
@@ -112,7 +133,7 @@
         @endif
 
         @if ($history->isNotEmpty())
-            <x-ui.panel title="Riwayat" icon="history" heading-id="riwayat" :flush="true">
+            <x-ui.panel nomor="03" kode="Arsip latihan" title="Riwayat" icon="history" heading-id="riwayat" :flush="true">
                 <ul class="text-sm">
                     @foreach ($history as $h)
                         <li @class(['flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-line/70 px-4 py-2.5 last:border-b-0 sm:px-5', 'bg-raised/60' => $h->id === $run?->id]) wire:key="riwayat-{{ $h->id }}">
