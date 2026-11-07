@@ -10,7 +10,7 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="bg-base font-sans text-ink antialiased">
+    <body class="bg-canvas font-sans text-ink antialiased">
         <div class="relative flex min-h-screen flex-col overflow-hidden">
             {{-- Latar: grid tipis + cincin radar. Dekoratif, tidak memuat informasi. --}}
             <div class="latar-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_30%_40%,black_20%,transparent_75%)]" aria-hidden="true"></div>

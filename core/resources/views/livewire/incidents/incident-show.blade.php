@@ -352,7 +352,7 @@
                         <div class="flex items-baseline justify-between gap-3 border-t border-line-strong pt-2"><dt class="font-semibold text-ink">Total</dt><dd class="flex items-center gap-2"><span class="num text-2xl {{ $sevTeks }}">{{ $inc->score }}</span><span class="text-sm font-semibold text-ink">· {{ $inc->severity->label() }}</span></dd></div>
                     </dl>
                     @isset($breakdown['rumus'])
-                        <p class="mt-3 break-words rounded-control bg-base px-3 py-2 font-mono text-xs text-ink-2">{{ $breakdown['rumus'] }}</p>
+                        <p class="mt-3 break-words rounded-control bg-canvas px-3 py-2 font-mono text-xs text-ink-2">{{ $breakdown['rumus'] }}</p>
                     @endisset
                     {{-- Skala severity dengan penanda posisi skor. --}}
                     @php

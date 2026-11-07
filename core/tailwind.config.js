@@ -24,7 +24,8 @@ export default {
     theme: {
         extend: {
             colors: {
-                base: token('base'),
+                // 'canvas', bukan 'base': nama 'base' bentrok dengan utilitas ukuran huruf text-base.
+                canvas: token('base'),
                 panel: token('panel'),
                 raised: token('raised'),
                 inset: token('inset'),

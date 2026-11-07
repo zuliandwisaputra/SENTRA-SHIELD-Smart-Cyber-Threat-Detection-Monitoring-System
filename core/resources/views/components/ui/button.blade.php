@@ -16,7 +16,7 @@
         'md' => 'h-10 px-4 text-sm gap-2',
         'lg' => 'min-h-14 px-6 text-base gap-2.5',
     ][$size] ?? '';
-    $kelas = 'inline-flex select-none items-center justify-center rounded-control font-semibold tracking-wide transition-colors duration-150 ease-sentra focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base disabled:cursor-not-allowed disabled:opacity-50 '.$varian.' '.$ukuran;
+    $kelas = 'inline-flex select-none items-center justify-center rounded-control font-semibold tracking-wide transition-colors duration-150 ease-sentra focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:cursor-not-allowed disabled:opacity-50 '.$varian.' '.$ukuran;
 @endphp
 @if ($href)
     <a href="{{ $href }}" {{ $attributes->merge(['class' => $kelas]) }}>

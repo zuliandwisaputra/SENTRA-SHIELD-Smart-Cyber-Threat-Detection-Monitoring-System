@@ -47,7 +47,7 @@
         font-feature-settings: 'kern' 1;
     }
     body {
-        @apply bg-base text-ink font-sans;
+        @apply bg-canvas text-ink font-sans;
     }
     h1, h2, h3 {
         text-wrap: balance;
@@ -70,11 +70,11 @@
     }
     /* Formulir (plugin forms) memakai token. */
     [type='text'], [type='email'], [type='password'], [type='number'], [type='date'], [type='search'], [type='url'], select, textarea {
-        @apply rounded-control border-line-control bg-base text-ink placeholder:text-ink-3 focus:border-accent focus:ring-accent/40;
+        @apply rounded-control border-line-control bg-canvas text-ink placeholder:text-ink-3 focus:border-accent focus:ring-accent/40;
         color-scheme: dark;
     }
     [type='checkbox'] {
-        @apply rounded-chip border-line-control bg-base text-accent focus:ring-accent/40 focus:ring-offset-panel;
+        @apply rounded-chip border-line-control bg-canvas text-accent focus:ring-accent/40 focus:ring-offset-panel;
     }
 }
 

@@ -14,7 +14,7 @@
         {{-- Tanpa font/CDN eksternal: aplikasi harus berjalan penuh tanpa internet. --}}
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased bg-base text-ink">
+    <body class="font-sans antialiased bg-canvas text-ink">
         <div class="min-h-screen">
             {{-- FR-15: data lab ditandai DATA LATIHAN; akun Demo hanya melihat. --}}
             @if (config('sentra.lab.training_label') || auth()->user()?->role === \App\Enums\Role::Demo)

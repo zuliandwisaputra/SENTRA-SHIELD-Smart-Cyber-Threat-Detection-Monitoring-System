@@ -141,20 +141,20 @@ class SiteWatchPage extends Component
     public static function status(?Collection $checks): array
     {
         if ($checks === null || $checks->isEmpty()) {
-            return ['Belum diperiksa', 'bg-gray-800 text-gray-300 ring-gray-600'];
+            return ['Belum diperiksa', 'bg-inset text-ink-2 ring-line-strong'];
         }
         $browser = $checks->firstWhere('variant', SiteVariant::Browser);
         if ($checks->contains(fn ($c) => $c->variant !== SiteVariant::Browser && $c->flagged)) {
-            return ['Cloaking judi', 'bg-red-900/70 text-red-200 ring-red-600'];
+            return ['Cloaking judi', 'bg-awas/15 text-awas ring-awas/50'];
         }
         if ($browser?->flagged) {
-            return ['Halaman utama berubah', 'bg-red-900/70 text-red-200 ring-red-600'];
+            return ['Halaman utama berubah', 'bg-awas/15 text-awas ring-awas/50'];
         }
         if ($browser === null || $browser->hash === null || ($browser->error !== null)) {
-            return ['Tidak dapat diakses', 'bg-yellow-900/60 text-yellow-200 ring-yellow-700'];
+            return ['Tidak dapat diakses', 'bg-waspada/10 text-waspada ring-waspada/40'];
         }
 
-        return ['Aman', 'bg-emerald-900/60 text-emerald-300 ring-emerald-700'];
+        return ['Aman', 'bg-aman/10 text-aman ring-aman/40'];
     }
 
     /** Teks cuplikan dengan kata kunci judi disorot (aman: di-escape dulu). */

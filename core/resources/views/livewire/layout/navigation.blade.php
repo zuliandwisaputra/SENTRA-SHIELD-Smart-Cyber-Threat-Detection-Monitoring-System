@@ -65,7 +65,7 @@ new class extends Component
             </div>
 
             <div class="hidden shrink-0 xl:flex xl:items-center xl:gap-3">
-                <span data-sentra-live class="inline-flex h-7 items-center whitespace-nowrap rounded-chip border border-line-strong bg-base px-2 font-display text-xs font-medium uppercase tracking-[0.12em] text-ink-2" role="status" title="WebSocket belum tersambung; diperbarui tiap 3 detik">Polling</span>
+                <span data-sentra-live class="inline-flex h-7 items-center whitespace-nowrap rounded-chip border border-line-strong bg-canvas px-2 font-display text-xs font-medium uppercase tracking-[0.12em] text-ink-2" role="status" title="WebSocket belum tersambung; diperbarui tiap 3 detik">Polling</span>
                 <x-dropdown align="right" width="w-56">
                     <x-slot name="trigger">
                         <button aria-label="Menu pengguna {{ $user->name }}" class="flex items-center gap-2.5 rounded-control px-2 py-1.5 text-start transition-colors duration-150 hover:bg-raised focus:outline-none focus-visible:ring-2 focus-visible:ring-accent">
@@ -104,7 +104,7 @@ new class extends Component
             </div>
 
             <div class="-me-2 flex items-center gap-2 xl:hidden">
-                <span data-sentra-live class="inline-flex h-7 items-center whitespace-nowrap rounded-chip border border-line-strong bg-base px-2 font-display text-xs font-medium uppercase tracking-[0.12em] text-ink-2" role="status" title="WebSocket belum tersambung; diperbarui tiap 3 detik">Polling</span>
+                <span data-sentra-live class="inline-flex h-7 items-center whitespace-nowrap rounded-chip border border-line-strong bg-canvas px-2 font-display text-xs font-medium uppercase tracking-[0.12em] text-ink-2" role="status" title="WebSocket belum tersambung; diperbarui tiap 3 detik">Polling</span>
                 <button @click="open = ! open" aria-label="Buka menu" :aria-expanded="open.toString()" class="grid size-11 place-items-center rounded-control text-ink-2 transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent">
                     <x-icon name="menu" class="size-6" x-show="! open" />
                     <x-icon name="x" class="size-6" x-show="open" x-cloak />

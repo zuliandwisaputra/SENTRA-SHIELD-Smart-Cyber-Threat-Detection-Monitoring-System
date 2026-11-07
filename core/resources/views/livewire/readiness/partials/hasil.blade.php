@@ -1,8 +1,8 @@
-{{-- Lencana hasil satu skenario Uji Kesiapan + catatan kegagalan. --}}
+{{-- Lencana hasil satu skenario Uji Kesiapan: ikon + teks. --}}
 @if ($r->detected)
-    <span class="inline-flex rounded-full bg-emerald-900/60 px-2 py-0.5 text-xs font-semibold text-emerald-300 ring-1 ring-inset ring-emerald-700">Terdeteksi</span>
+    <x-ui.badge tone="aman" icon="circle-check">Terdeteksi</x-ui.badge>
 @elseif ($running)
-    <span class="inline-flex whitespace-nowrap rounded-full bg-sky-900/60 px-2 py-0.5 text-xs font-semibold text-sky-300 ring-1 ring-inset ring-sky-700">{{ $r->started_at ? 'Menunggu deteksi' : 'Menunggu' }}</span>
+    <x-ui.badge tone="accent" icon="loader-circle">{{ $r->started_at ? 'Menunggu deteksi' : 'Menunggu' }}</x-ui.badge>
 @else
-    <span class="inline-flex rounded-full bg-red-900/70 px-2 py-0.5 text-xs font-semibold text-red-300 ring-1 ring-inset ring-red-600">Lolos</span>
+    <x-ui.badge tone="awas" icon="circle-x">Lolos</x-ui.badge>
 @endif

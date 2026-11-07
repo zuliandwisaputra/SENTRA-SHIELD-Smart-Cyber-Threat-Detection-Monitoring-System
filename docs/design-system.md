@@ -41,7 +41,7 @@ Nilai disimpan sebagai triplet RGB agar modifier opasitas Tailwind bekerja (`bg-
 
 | Token | Hex | Kelas | Pakai untuk |
 |---|---|---|---|
-| `--base` | `#070B12` | `bg-base` | Latar halaman, isi input |
+| `--base` | `#070B12` | `bg-canvas` | Latar halaman, isi input (kelas memakai nama `canvas` karena `text-base` sudah dipakai Tailwind untuk ukuran huruf) |
 | `--panel` | `#0C121C` | `bg-panel`, `.panel` | Panel/kartu utama |
 | `--raised` | `#111A27` | `bg-raised` | Hover, dropdown, kartu dalam panel |
 | `--inset` | `#16212F` | `bg-inset` | Sumur, chip, baris aktif |
