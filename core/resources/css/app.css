@@ -1,18 +1,166 @@
+/* Font dibundel lokal (fontsource, OFL-1.1). Subset latin saja; simbol lain jatuh ke font sistem. */
+@import '@fontsource/fira-sans/latin-400.css';
+@import '@fontsource/fira-sans/latin-500.css';
+@import '@fontsource/fira-sans/latin-600.css';
+@import '@fontsource/fira-sans/latin-700.css';
+@import '@fontsource/fira-sans-condensed/latin-500.css';
+@import '@fontsource/fira-sans-condensed/latin-600.css';
+@import '@fontsource/fira-sans-condensed/latin-700.css';
+@import '@fontsource/fira-code/latin-400.css';
+@import '@fontsource/fira-code/latin-500.css';
+@import '@fontsource/fira-code/latin-600.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Indikator pembaruan di menu: titik hijau = WebSocket, kuning = polling 3 detik. */
+/*
+ * Token SENTRA SHIELD (docs/design-system.md). Nilai RGB tanpa koma agar
+ * modifier opasitas Tailwind bekerja. Kontras teks diperiksa terhadap panel:
+ * ink 15,9:1 · ink-2 9,1:1 · ink-3 6,0:1 · aksen 9,3:1 · status 6,0–11,8:1.
+ */
+:root {
+    color-scheme: dark;
+    --base: 7 11 18;          /* #070B12 latar ruang komando */
+    --panel: 12 18 28;        /* #0C121C permukaan panel */
+    --raised: 17 26 39;       /* #111A27 permukaan terangkat / hover */
+    --inset: 22 33 47;        /* #16212F sumur, baris tabel aktif */
+    --line: 29 41 56;         /* #1D2938 garis pemisah */
+    --line-strong: 44 60 81;  /* #2C3C51 garis tegas */
+    --line-control: 91 111 138; /* #5B6F8A batas kontrol formulir (3,6:1) */
+    --ink: 231 237 245;       /* #E7EDF5 teks utama */
+    --ink-2: 169 182 200;     /* #A9B6C8 teks sekunder */
+    --ink-3: 132 146 168;     /* #8492A8 label, keterangan */
+    --accent: 76 196 236;     /* #4CC4EC aksen "radar": tautan, tombol utama, fokus */
+    --accent-strong: 122 211 242; /* #7AD3F2 aksen saat hover */
+    --accent-ink: 4 18 26;    /* #04121A teks di atas aksen (9,4:1) */
+    --aman: 61 214 140;       /* #3DD68C Aman · Rendah */
+    --waspada: 242 201 76;    /* #F2C94C Waspada · Sedang */
+    --siaga: 245 154 78;      /* #F59A4E Siaga · Tinggi */
+    --awas: 242 100 98;       /* #F26462 Awas · Kritis */
+}
+
+@layer base {
+    html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-feature-settings: 'kern' 1;
+    }
+    body {
+        @apply bg-base text-ink font-sans;
+    }
+    h1, h2, h3 {
+        text-wrap: balance;
+    }
+    [x-cloak] {
+        display: none !important;
+    }
+    ::selection {
+        background: rgb(var(--accent) / 0.35);
+        color: rgb(var(--ink));
+    }
+    :focus-visible {
+        outline: 2px solid rgb(var(--accent));
+        outline-offset: 2px;
+    }
+    /* Scrollbar tipis bergaya panel. */
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: rgb(var(--line-strong)) transparent;
+    }
+    /* Formulir (plugin forms) memakai token. */
+    [type='text'], [type='email'], [type='password'], [type='number'], [type='date'], [type='search'], [type='url'], select, textarea {
+        @apply rounded-control border-line-control bg-base text-ink placeholder:text-ink-3 focus:border-accent focus:ring-accent/40;
+        color-scheme: dark;
+    }
+    [type='checkbox'] {
+        @apply rounded-chip border-line-control bg-base text-accent focus:ring-accent/40 focus:ring-offset-panel;
+    }
+}
+
+@layer components {
+    /* Panel: satu-satunya wadah bergaris. Tanpa bayangan. */
+    .panel {
+        @apply rounded-panel border border-line bg-panel;
+    }
+    .panel-head {
+        @apply flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-line px-4 py-3 sm:px-5;
+    }
+    .panel-title {
+        @apply font-display text-[15px] font-semibold uppercase tracking-[0.08em] text-ink;
+    }
+    .label-caps {
+        @apply font-display text-[12px] font-medium uppercase tracking-[0.1em] text-ink-3;
+    }
+    /* Angka besar (KPI, skor): rapat, tabular, terbaca dari proyektor. */
+    .num {
+        @apply font-display font-semibold tabular-nums leading-none tracking-tight;
+    }
+    /* Data teknis: IP, hash, [EV-n], kode aturan, teknik ATT&CK. */
+    .data {
+        @apply font-mono text-[0.92em] tabular-nums;
+    }
+    .chip {
+        @apply inline-flex items-center gap-1 whitespace-nowrap rounded-chip border border-line-strong bg-inset px-1.5 py-0.5 font-mono text-[12px] leading-4 text-ink-2;
+    }
+    .link {
+        @apply text-accent underline-offset-2 hover:text-accent-strong hover:underline;
+    }
+    /* Tabel padat. */
+    .tbl {
+        @apply min-w-full text-sm;
+    }
+    .tbl thead th {
+        @apply border-b border-line px-3 py-2.5 text-left font-display text-[12px] font-medium uppercase tracking-[0.1em] text-ink-3;
+    }
+    .tbl tbody td {
+        @apply border-b border-line/70 px-3 py-2.5 align-top;
+    }
+    .tbl tbody tr {
+        @apply transition-colors duration-150 hover:bg-raised/60;
+    }
+    .skeleton {
+        background: linear-gradient(90deg, rgb(var(--inset)) 0%, rgb(var(--raised)) 50%, rgb(var(--inset)) 100%);
+        background-size: 200% 100%;
+        @apply animate-kilau rounded-chip;
+    }
+    /* Latar halus "radar": grid tipis untuk layar login. */
+    .latar-grid {
+        background-image:
+            linear-gradient(rgb(var(--line) / 0.55) 1px, transparent 1px),
+            linear-gradient(90deg, rgb(var(--line) / 0.55) 1px, transparent 1px);
+        background-size: 48px 48px;
+        background-position: -1px -1px;
+    }
+}
+
+/* Indikator pembaruan di menu: titik hijau berdenyut = WebSocket, kuning = polling 3 detik. */
 [data-sentra-live]::before {
     content: '';
     display: inline-block;
-    width: 0.4rem;
-    height: 0.4rem;
-    margin-right: 0.35rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-right: 0.4rem;
     border-radius: 9999px;
-    vertical-align: middle;
-    background: #fbbf24;
+    vertical-align: 0.05em;
+    background: rgb(var(--waspada));
 }
 [data-sentra-live][data-mode='live']::before {
-    background: #34d399;
+    background: rgb(var(--aman));
+    animation: denyut-live 1.8s cubic-bezier(.2, .8, .2, 1) infinite;
+}
+@keyframes denyut-live {
+    0% { box-shadow: 0 0 0 0 rgb(var(--aman) / 0.55); }
+    70% { box-shadow: 0 0 0 6px rgb(var(--aman) / 0); }
+    100% { box-shadow: 0 0 0 0 rgb(var(--aman) / 0); }
+}
+
+/* Gerak hanya bila pengguna tidak meminta gerak dikurangi. */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }

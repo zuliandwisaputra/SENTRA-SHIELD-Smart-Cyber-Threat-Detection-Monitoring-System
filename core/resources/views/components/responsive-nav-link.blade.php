@@ -1,11 +1,9 @@
 @props(['active'])
-
 @php
 $classes = ($active ?? false)
-            ? 'block w-full ps-3 pe-4 py-2 border-l-4 border-emerald-400 dark:border-emerald-600 text-start text-base font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/50 focus:outline-none focus:text-emerald-800 dark:focus:text-emerald-200 focus:bg-emerald-100 dark:focus:bg-emerald-900 focus:border-emerald-700 dark:focus:border-emerald-300 transition duration-150 ease-in-out'
-            : 'block w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus:text-gray-800 dark:focus:text-gray-200 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-gray-300 dark:focus:border-gray-600 transition duration-150 ease-in-out';
+            ? 'flex w-full items-center gap-2.5 border-l-2 border-accent bg-accent/10 py-2.5 pe-4 ps-3 text-start text-base font-medium text-ink focus:outline-none transition-colors duration-150'
+            : 'flex w-full items-center gap-2.5 border-l-2 border-transparent py-2.5 pe-4 ps-3 text-start text-base font-medium text-ink-2 hover:border-line-strong hover:bg-raised hover:text-ink focus:outline-none focus:bg-raised transition-colors duration-150';
 @endphp
-
-<a {{ $attributes->merge(['class' => $classes]) }}>
+<a {{ $attributes->merge(['class' => $classes]) }} @if ($active ?? false) aria-current="page" @endif>
     {{ $slot }}
 </a>

@@ -22,36 +22,48 @@ new #[Layout('layouts.guest')] class extends Component
 }; ?>
 
 <div>
+    <div class="mb-6">
+        <p class="label-caps flex items-center gap-1.5"><x-icon name="fingerprint" class="size-3.5" />Akses operator</p>
+        <h2 class="mt-2 font-display text-2xl font-semibold tracking-wide">Masuk ke Pusat Komando</h2>
+    </div>
+
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form wire:submit="login">
+    <form wire:submit="login" class="space-y-5">
         <div>
             <x-input-label for="email" value="Email" />
-            <x-text-input wire:model="form.email" id="email" class="block mt-1 w-full" type="email" name="email" required autofocus autocomplete="username" />
+            <div class="relative mt-1.5">
+                <x-icon name="user" class="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-ink-3" />
+                <x-text-input wire:model="form.email" id="email" class="block h-11 w-full pl-10" type="email" name="email" required autofocus autocomplete="username" />
+            </div>
             <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
         </div>
 
-        <div class="mt-4">
+        <div>
             <x-input-label for="password" value="Kata sandi" />
-            <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            <div class="relative mt-1.5">
+                <x-icon name="key-round" class="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-ink-3" />
+                <x-text-input wire:model="form.password" id="password" class="block h-11 w-full pl-10"
+                                type="password"
+                                name="password"
+                                required autocomplete="current-password" />
+            </div>
             <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
         </div>
 
-        <div class="block mt-4">
-            <label for="remember" class="inline-flex items-center">
-                <input wire:model="form.remember" id="remember" type="checkbox" class="rounded bg-gray-950 border-gray-700 text-emerald-600 shadow-sm focus:ring-emerald-600 focus:ring-offset-gray-900" name="remember">
-                <span class="ms-2 text-sm text-gray-400">Ingat saya</span>
+        <div>
+            <label for="remember" class="inline-flex min-h-6 cursor-pointer items-center">
+                <input wire:model="form.remember" id="remember" type="checkbox" class="size-4" name="remember">
+                <span class="ms-2.5 text-sm text-ink-2">Ingat saya</span>
             </label>
         </div>
 
-        <div class="flex items-center justify-between mt-5">
-            <p class="text-xs text-gray-500">Akun dikelola Admin satuan.</p>
-            <x-primary-button>
-                Masuk
-            </x-primary-button>
-        </div>
+        <x-primary-button class="h-11 w-full text-[15px]" wire:loading.attr="disabled" wire:target="login">
+            <x-icon name="log-in" class="size-4" wire:loading.remove wire:target="login" />
+            <x-icon name="loader-circle" class="size-4 animate-spin" wire:loading wire:target="login" />
+            Masuk
+        </x-primary-button>
+
+        <p class="flex items-center gap-2 border-t border-line pt-4 text-xs text-ink-3"><x-icon name="shield" class="size-3.5" />Akun dikelola Admin satuan.</p>
     </form>
 </div>

@@ -60,20 +60,20 @@ enum AlertLevel: string
     public function badgeClass(): string
     {
         return match ($this) {
-            self::Aman => 'bg-emerald-900/60 text-emerald-300 ring-emerald-700',
-            self::Waspada => 'bg-yellow-900/60 text-yellow-300 ring-yellow-700',
-            self::Siaga => 'bg-orange-900/60 text-orange-300 ring-orange-700',
-            self::Awas => 'bg-red-900/70 text-red-300 ring-red-600',
+            self::Aman => 'bg-aman/10 text-aman ring-aman/40',
+            self::Waspada => 'bg-waspada/10 text-waspada ring-waspada/40',
+            self::Siaga => 'bg-siaga/10 text-siaga ring-siaga/40',
+            self::Awas => 'bg-awas/15 text-awas ring-awas/50',
         };
     }
 
     public function dotClass(): string
     {
         return match ($this) {
-            self::Aman => 'bg-emerald-500',
-            self::Waspada => 'bg-yellow-400',
-            self::Siaga => 'bg-orange-500',
-            self::Awas => 'bg-red-500',
+            self::Aman => 'bg-aman',
+            self::Waspada => 'bg-waspada',
+            self::Siaga => 'bg-siaga',
+            self::Awas => 'bg-awas',
         };
     }
 }

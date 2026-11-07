@@ -32,11 +32,11 @@ enum ActionStatus: string
     public function badgeClass(): string
     {
         return match ($this) {
-            self::Diusulkan => 'bg-sky-900/60 text-sky-300 ring-sky-700',
-            self::Disetujui => 'bg-indigo-900/60 text-indigo-300 ring-indigo-700',
-            self::Dieksekusi => 'bg-emerald-900/60 text-emerald-300 ring-emerald-700',
-            self::Gagal => 'bg-red-900/70 text-red-300 ring-red-600',
-            self::Ditolak, self::Kedaluwarsa, self::Dibatalkan => 'bg-gray-800 text-gray-300 ring-gray-600',
+            self::Diusulkan => 'bg-accent/10 text-accent ring-accent/40',
+            self::Disetujui => 'bg-accent/10 text-accent-strong ring-accent/50',
+            self::Dieksekusi => 'bg-aman/10 text-aman ring-aman/40',
+            self::Gagal => 'bg-awas/15 text-awas ring-awas/50',
+            self::Ditolak, self::Kedaluwarsa, self::Dibatalkan => 'bg-inset text-ink-2 ring-line-strong',
         };
     }
 }
