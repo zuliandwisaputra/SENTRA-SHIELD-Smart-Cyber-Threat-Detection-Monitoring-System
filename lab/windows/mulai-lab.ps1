@@ -5,10 +5,30 @@
 Tulis-Judul 'SENTRA SHIELD - Menyalakan lab'
 if (-not (Pastikan-Docker)) { Selesai 1 }
 
-Tulis-Info 'Menyalakan container. Pertama kali bisa 5-15 menit (mengunduh dan membangun image).'
+if (Di-OneDrive) {
+    Write-Host ''
+    Write-Host '  PERHATIAN: folder kode ada di dalam OneDrive:' -ForegroundColor Yellow
+    Write-Host ('  ' + $SentraRoot) -ForegroundColor Yellow
+    Tulis-Info 'Lab tetap bisa jalan, tetapi sinkronisasi OneDrive bisa mengunci file dan memperlambat build.'
+    Tulis-Saran 'Pindahkan kode ke luar OneDrive (panduan bagian 6, "Lokasi folder kode"). Data lab tidak hilang.'
+    Write-Host ''
+}
+
+$llm = LLM-Tersedia
+Tulis-Info 'Memastikan image dasar tersedia (yang sudah ada dilewati)...'
+$gagal = Tarik-Image-Dasar $llm
+if ($gagal.Count -gt 0) {
+    Tulis-Gagal ('Image berikut gagal diunduh: ' + ($gagal -join ', '))
+    Tulis-Saran 'Periksa internet lalu jalankan skrip ini lagi; bagian yang sudah terunduh tidak diulang.'
+    Tulis-Saran 'Bila tetap gagal, ikuti panduan bagian 10: "Unduhan image lambat atau context deadline exceeded".'
+    Selesai 1
+}
+Tulis-Ok 'Image dasar tersedia.'
+
+Tulis-Info 'Menyalakan container. Pertama kali bisa 5-15 menit (membangun image).'
 Tulis-Info 'Berikutnya hanya sekitar 30 detik. Jangan tutup jendela ini.'
 $mulai = Get-Date
-if (LLM-Tersedia) {
+if ($llm) {
     Tulis-Info 'LLM lokal (Ollama) ikut dinyalakan untuk LAPSIT.'
     Compose --profile llm up -d --build
 } else {

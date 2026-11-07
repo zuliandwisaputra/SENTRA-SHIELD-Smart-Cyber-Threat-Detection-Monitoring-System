@@ -8,9 +8,11 @@ printf "<?php return ['satuan' => %s];\n" "$(php -r 'echo var_export(getenv("SAT
 mkdir -p /var/lib/portal /var/www/html/uploads
 [ -f /var/lib/portal/portal.sqlite ] || php /opt/portal-seed.php /var/lib/portal/portal.sqlite
 chown -R www-data:www-data /var/lib/portal /var/www/html/uploads
+chmod -R ug+rwX /var/lib/portal /var/www/html/uploads
 # Celah DISENGAJA (lingkungan latihan): halaman utama bisa ditulis proses web, sehingga
 # file PHP yang diunggah bisa menyisipkan judi online ber-cloaking (skenario 06).
 chown www-data:www-data /var/www/html/index.php
+chmod u+rw /var/www/html/index.php
 
 # Akun SSH lemah yang SENGAJA ada di wordlist penyerang (lingkungan latihan saja).
 id latihan >/dev/null 2>&1 || useradd -m -s /bin/bash latihan

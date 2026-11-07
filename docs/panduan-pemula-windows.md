@@ -203,11 +203,13 @@ docker run hello-world
 
    **Yang harus terlihat:** `git version 2.xx...`
 
-4. Masuk ke folder Documents:
+4. Masuk ke folder pengguna (misalnya `C:\Users\NamaKamu`):
 
    ```powershell
-   cd $HOME\Documents
+   cd $HOME
    ```
+
+   **Jangan** menaruh kode di folder **OneDrive** (termasuk `Documents` atau `Desktop` yang ikut dicadangkan OneDrive, atau folder bawaan GitHub Desktop `Documents\GitHub`). Sinkronisasi OneDrive bisa mengunci file dan membawa atribut *read-only* ke dalam Docker. `mulai-lab.bat` akan memberi peringatan kuning bila kode ada di OneDrive.
 
 5. Ambil kode:
 
@@ -226,6 +228,26 @@ docker run hello-world
 **Yang harus terlihat:** jendela File Explorer berisi file seperti `mulai-lab.bat`, `cek-lab.bat`, dan `jalankan-demo.bat`.
 
 **Tips:** klik kanan folder `windows` di panel kiri Explorer → **Pin to Quick access**, supaya mudah dibuka lagi.
+
+### Lokasi folder kode (bila terlanjur di OneDrive)
+
+Kalau kode sudah ada di folder OneDrive (misalnya `C:\Users\NamaKamu\OneDrive\Documents\GitHub\...`), pindahkan dengan mengambil ulang:
+
+1. Jalankan `matikan-lab.bat` dari folder lama.
+2. Di PowerShell biasa:
+
+   ```powershell
+   cd $HOME
+   ```
+
+   ```powershell
+   git clone -b claude/pensive-galileo-eow7qv https://github.com/zuliandwisaputra17-stack/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System.git sentra-shield
+   ```
+
+3. Mulai sekarang pakai skrip di `C:\Users\NamaKamu\sentra-shield\lab\windows`. Jalankan `mulai-lab.bat` dari folder baru itu.
+4. Folder lama di OneDrive boleh dihapus.
+
+Data lab (database, insiden, model LLM) dan image Docker **tidak hilang**, karena disimpan oleh Docker, bukan di folder kode.
 
 > Kalau Windows memunculkan **"Windows protected your PC"** saat file `.bat` diklik: klik **More info** → **Run anyway**. Skrip ini aman dan hanya menjalankan perintah Docker untuk lab.
 
@@ -267,7 +289,7 @@ Semua dilakukan dengan **klik dua kali** file di folder `lab\windows`:
 
 | File | Gunanya | Lama |
 |---|---|---|
-| `mulai-lab.bat` | Menyalakan seluruh lab lalu membuka dashboard di browser | Pertama kali 5–15 menit, berikutnya ±30 detik |
+| `mulai-lab.bat` | Memastikan image dasar ada (unduh ulang otomatis bila gagal), menyalakan seluruh lab, lalu membuka dashboard di browser | Pertama kali 5–15 menit, berikutnya ±30 detik |
 | `cek-lab.bat` | Memeriksa: agent online, jumlah event, insiden, tindakan | Beberapa detik |
 | `jalankan-demo.bat` | Menjalankan seluruh skenario serangan berurutan, berhenti di tiap langkah untuk penjelasan | ±10 menit |
 | `matikan-lab.bat` | Mematikan lab; data tetap tersimpan | ±10 detik |
@@ -411,6 +433,27 @@ docker network prune -f
 ```
 
 Lalu jalankan `mulai-lab.bat` lagi.
+
+### Unduhan image lambat, "context deadline exceeded", atau "TLS handshake timeout" dari Docker Hub
+
+`mulai-lab.bat` sudah otomatis: image dasar (ubuntu, composer, node, mysql) diunduh dulu lewat cermin Google `mirror.gcr.io` (isinya sama dengan Docker Hub, biasanya lebih cepat), lalu dari Docker Hub, masing-masing dengan percobaan ulang. Image yang sudah ada di laptop dilewati, jadi pada hari demo tidak butuh internet.
+
+Kalau masih gagal, pasang cermin itu untuk semua unduhan Docker:
+
+1. Docker Desktop → ikon ⚙️ **Settings** → **Docker Engine**.
+2. Di kotak teks JSON, tambahkan baris `"registry-mirrors": ["https://mirror.gcr.io"],` tepat setelah tanda `{` di baris pertama.
+3. Klik **Apply & restart**, tunggu **Engine running**, lalu jalankan `mulai-lab.bat` lagi.
+
+### "container sentra-lab-sentra-core-1 is unhealthy" atau "dependency failed to start"
+
+Core menyala tetapi tidak sehat. Penyebab yang pernah terjadi: kode diambil di folder OneDrive sehingga folder `storage` di dalam image tidak bisa ditulis (halaman `/up` menjawab HTTP 500). Sejak 7 Nov, izin itu dinormalkan otomatis saat build dan setiap kali Core menyala.
+
+1. Jalankan `perbarui-kode.bat`, lalu `mulai-lab.bat` (image dibangun ulang).
+2. Kalau masih *unhealthy*, kirim ke pengembang keluaran perintah ini (PowerShell biasa, dari folder kode):
+
+   ```powershell
+   docker compose -f lab\docker-compose.yml logs --tail 80 sentra-core
+   ```
 
 ### Saat build: "TLS handshake timeout", "unexpected EOF", "failed to resolve", atau "Could not resolve host"
 

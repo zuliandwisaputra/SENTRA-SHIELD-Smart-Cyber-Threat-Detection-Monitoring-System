@@ -22,12 +22,8 @@ $script:gagal = 0
 function Hasil([string]$Nama, [bool]$Ok) {
     if ($Ok) { Tulis-Ok $Nama; $script:lulus++ } else { Tulis-Gagal $Nama; $script:gagal++ }
 }
-# Jalankan perintah docker tanpa menampilkan keluarannya. Lewat cmd agar pesan
-# stderr docker/nc (mis. "Connection ... succeeded!") tidak tercatat sebagai
-# error merah di transcript Windows PowerShell 5.1. Kode keluar tetap di $LASTEXITCODE.
-function Docker-Diam([string]$Perintah) {
-    cmd /c "docker $Perintah >nul 2>&1"
-}
+# Docker-Diam (di _umum.ps1) dipakai agar pesan stderr docker/nc yang normal tidak
+# tercatat sebagai error merah di transcript Windows PowerShell 5.1.
 function Bersihkan {
     Docker-Diam 'rm -f sentra-spike-target sentra-spike-attacker'
     Docker-Diam "network rm $net"

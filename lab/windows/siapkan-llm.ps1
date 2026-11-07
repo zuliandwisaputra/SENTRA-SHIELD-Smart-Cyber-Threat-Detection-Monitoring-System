@@ -9,6 +9,11 @@ Tulis-Info "Mengunduh image Ollama dan model $Model (total sekitar 4-5 GB). Butu
 Tulis-Info 'Saat menyusun LAPSIT, LLM memakai RAM tambahan sekitar 3 GB.'
 Tunggu-Enter 'Tekan Enter untuk mulai (tutup jendela untuk batal)'
 
+if (-not (Tarik-Image 'ollama/ollama:latest')) {
+    Tulis-Gagal 'Image Ollama gagal diunduh.'
+    Tulis-Saran 'Periksa koneksi internet lalu jalankan skrip ini lagi.'
+    Selesai 1
+}
 Compose --profile llm up -d ollama
 if ($LASTEXITCODE -ne 0) {
     Tulis-Gagal 'Gagal menyalakan container Ollama.'

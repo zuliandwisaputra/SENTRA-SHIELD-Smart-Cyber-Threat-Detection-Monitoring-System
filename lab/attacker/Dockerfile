@@ -8,6 +8,8 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 COPY wordlists/ /opt/serangan/wordlists/
 COPY skenario/ /opt/serangan/skenario/
-RUN chmod +x /opt/serangan/skenario/*
+# Izin dinormalkan: build context dari Windows/OneDrive bisa membawa atribut read-only.
+RUN chmod -R u+rwX,go+rX,go-w /opt/serangan \
+    && chmod +x /opt/serangan/skenario/*
 WORKDIR /opt/serangan
 CMD ["sleep", "infinity"]

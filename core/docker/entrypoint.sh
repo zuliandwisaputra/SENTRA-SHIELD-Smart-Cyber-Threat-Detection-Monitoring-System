@@ -88,8 +88,14 @@ for i in $(seq 1 90); do
     sleep 2
 done
 cd "$APP"
+# storage/app ada di volume: volume yang dibuat dari image lama bisa membawa izin
+# read-only (build context Windows/OneDrive). Dinormalkan setiap start.
+mkdir -p storage/logs storage/framework/cache/data storage/framework/sessions storage/framework/views storage/app/private
+chown -R www-data:www-data storage bootstrap/cache
+chmod -R ug+rwX storage bootstrap/cache
 php artisan sentra:setup
 chown -R www-data:www-data storage bootstrap/cache
+chmod -R ug+rwX storage bootstrap/cache
 
 echo "[sentra] layanan dinyalakan: https://localhost:8443"
 exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf

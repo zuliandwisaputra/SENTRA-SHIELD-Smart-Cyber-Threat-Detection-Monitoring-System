@@ -38,8 +38,12 @@ COPY docker/nginx.conf /etc/nginx/conf.d/sentra.conf
 COPY docker/php-fpm.conf /etc/php/8.3/fpm/pool.d/zz-sentra.conf
 COPY docker/supervisord.conf /etc/supervisor/conf.d/sentra.conf
 COPY docker/entrypoint.sh /usr/local/bin/sentra-entrypoint
+# Izin dinormalkan: build context dari Windows (mis. folder OneDrive) bisa membawa
+# atribut read-only sehingga direktori menjadi dr-xr-xr-x di dalam image.
 RUN chmod +x /usr/local/bin/sentra-entrypoint \
-    && chown -R www-data:www-data storage bootstrap/cache
+    && chmod -R u+rwX,go+rX,go-w /var/www/core \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R ug+rwX storage bootstrap/cache
 EXPOSE 443
 HEALTHCHECK --interval=5s --timeout=3s --start-period=20s --retries=30 \
     CMD curl -fsk https://127.0.0.1/up >/dev/null || exit 1
