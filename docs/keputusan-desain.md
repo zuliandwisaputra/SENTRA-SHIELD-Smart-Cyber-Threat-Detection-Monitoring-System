@@ -115,3 +115,18 @@ Atas permintaan pemilik proyek, karena laptop demo memakai Windows 11 + Docker D
 - **Log scheduler hanya ASCII.** Penjaga Situs dijadwalkan sebagai callback; perintah artisan yang dijadwalkan membuat Laravel mencetak karakter `⇂` yang tampil sebagai `Γçé` di konsol Windows.
 - **Bukti demo otomatis.** `jalankan-demo` menyimpan rekaman terminal dan log container ke `docs/bukti-demo`; `sentra:status` merangkum Uji Kesiapan terakhir, waktu eksekusi tindakan setelah disetujui, dan verifikasi rantai audit.
 
+## Tampilan "pusat komando" (7 Nov)
+
+Murni perubahan tampilan: logika, fitur, route, alur, dan teks penting tidak berubah. Pegangan lengkapnya ada di [design-system.md](design-system.md).
+
+| Keputusan | Alasan |
+|---|---|
+| Satu skala warna untuk Tingkat Siaga dan severity (Aman/Rendah hijau, Waspada/Sedang kuning, Siaga/Tinggi oranye, Awas/Kritis merah), selalu disertai teks dan ikon atau meter batang. Hijau tidak lagi dipakai untuk tautan atau tombol; interaksi memakai aksen biru "radar". | Warna status harus punya satu arti di semua halaman dan tetap terbaca oleh pengguna buta warna (WCAG AA). |
+| Huruf Fira dan ikon Lucide dibundel lokal lewat npm, tanpa CDN. | Sistem harus berjalan penuh tanpa internet. |
+| Token warna latar dinamai `canvas` di Tailwind (variabel CSS tetap `--base`). | Nama `base` bentrok dengan utilitas ukuran huruf `text-base` sehingga teks ikut berwarna latar. |
+| Satu angka/status terpenting per layar: Tingkat Siaga keseluruhan di Beranda, skor risiko di Detail Insiden, cakupan di Uji Kesiapan, status rantai di Audit Log. | Terbaca dari proyektor saat demo. |
+| Tingkat Siaga keseluruhan di Beranda dihitung di tampilan sebagai tingkat tertinggi pohon satuan yang boleh dilihat pengguna, aturan yang sama dengan satuan induk. | Tidak menambah logika baru; hanya menampilkan nilai yang sudah ada. |
+| Pratinjau LAPSIT di halaman insiden bergaya lembar dokumen (latar terang). Isi tetap dari laporan yang sama; hanya judul, baris "Kunci : nilai", dan judul bab yang diberi gaya. | Juri langsung mengenali bentuk laporan dinas. PDF tidak berubah. |
+| Perbaikan bug: objek Chart.js tidak lagi disimpan di state reaktif Alpine. | Ditemukan saat uji live di lab: pembaruan grafik melempar "Maximum call stack size exceeded" dan memutus pembaruan Beranda. |
+| Teks paginasi berbahasa Indonesia lewat `lang/id.json`. | Sebelumnya "Showing 1 to 15 of 52 results". |
+

@@ -14,7 +14,7 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 > **Terukur** — sistem menguji dirinya sendiri (Uji Kesiapan) dan menampilkan cakupan deteksi serta waktu deteksi dalam angka.
 > **Siap pakai** — satu perintah menyalakan seluruh lab; berjalan penuh tanpa internet setelah image dan model diunduh sekali; cukup di mini-PC.
 
-![Beranda Komando dengan data latihan dari lab: insiden terbuka, agent online, blokir aktif, grafik event per menit, dan pohon satuan dengan Tingkat Siaga](site/img/beranda.jpg)
+![Beranda Komando dengan data latihan dari lab: papan Tingkat Siaga keseluruhan, metrik insiden terbuka, agent online, dan blokir aktif, grafik event per menit, feed live, dan topologi satuan](site/img/beranda.jpg)
 
 *Tangkapan layar berisi DATA LATIHAN: telemetri asli dari serangan di lab, nama satuan fiktif.*
 
@@ -178,6 +178,7 @@ Menjalankan Core tanpa Docker (setelah langkah di atas): `php artisan serve`, la
 - [Agent](agent/README.md): sumber telemetri, perintah daftar tetap, Uji Kesiapan, pemasangan di host nyata.
 - [Spike nftables](lab/spike/nftables/README.md): bukti log firewall dan blokir dari dalam container.
 - [Landing page](site/README.md): memasang video dan menerbitkan ke GitHub Pages.
+- [Sistem desain](docs/design-system.md): token warna (skala Tingkat Siaga/severity), tipografi, gerak, aksesibilitas, dan komponen Blade dashboard.
 
 ## Pernyataan karya dasar
 
@@ -188,9 +189,11 @@ Proyek ini dibangun di atas perangkat lunak sumber terbuka yang sudah ada:
 - **Layanan opsional yang dijalankan terpisah:** Ollama (MIT). Model bawaan Qwen2.5-3B memakai lisensi Qwen Research dari pembuatnya (penggunaan non-komersial); model bisa diganti di halaman Pengaturan.
 - **Komponen sistem di image lab** (lisensi masing-masing): Ubuntu 24.04, MySQL 8.4, nginx, PHP-FPM, OpenSSH, nftables, supervisor.
 - **Hanya dipakai di lab** (lisensi masing-masing): pymodbus untuk PLC simulasi; nmap, hydra, sqlmap, dan curl untuk mesin penyerang.
+- **Aset tampilan, dibundel lokal (tanpa CDN):** huruf Fira Sans, Fira Sans Condensed, dan Fira Code (SIL Open Font License 1.1, lewat paket @fontsource); ikon Lucide (ISC, lewat lucide-static, disalin sebagai SVG inline).
+- **Alat bantu desain saat pengembangan, tidak ikut berjalan di aplikasi:** skill ui-ux-pro-max (MIT) di `.claude/skills/ui-ux-pro-max`, dipakai untuk mencari rekomendasi sistem desain (lihat [docs/design-system.md](docs/design-system.md)).
 - **Rujukan:** MITRE ATT&CK Enterprise dan ATT&CK for ICS untuk pemetaan teknik.
 
-Logika SENTRA SHIELD ditulis untuk lomba ini: agent dan sensornya, mesin deteksi dan korelasi, rumus skor, respons berjenjang, Sensor Buta, Kampanye, Uji Kesiapan, Penjaga Situs, LAPSIT dan validasi sitasinya, audit log berantai, dashboard, lab demo, dan skrip Windows.
+Logika SENTRA SHIELD ditulis untuk lomba ini: agent dan sensornya, mesin deteksi dan korelasi, rumus skor, respons berjenjang, Sensor Buta, Kampanye, Uji Kesiapan, Penjaga Situs, LAPSIT dan validasi sitasinya, audit log berantai, dashboard beserta sistem desain dan tanda SENTRA SHIELD (rancangan sendiri, bukan lambang resmi mana pun), lab demo, dan skrip Windows.
 
 ## Lisensi
 

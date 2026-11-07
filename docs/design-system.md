@@ -87,10 +87,10 @@ Semua huruf dibundel lokal lewat `@fontsource` (OFL-1.1, subset latin). Tidak ad
 | Peran | Huruf | Kelas | Ukuran tipikal |
 |---|---|---|---|
 | Teks UI | Fira Sans 400/500/600/700 | `font-sans` | 14 px (tabel, form), 16 px (paragraf) |
-| Judul, label kapital, angka besar | Fira Sans Condensed 500/600/700 | `font-display`, `.panel-title`, `.label-caps`, `.num` | Label 12 px kapital + tracking .1em. Judul panel 15 px. Judul halaman 22–24 px. KPI 44–48 px. Status utama 56–72 px. |
+| Judul, angka besar, kata status | Fira Sans Condensed 500/600/700 | `font-display`, `.panel-title`, `.label-caps`, `.num` | Judul panel 17 px. Judul halaman 26 px. KPI 44–56 px. Skor risiko 52 px. Status utama (Tingkat Siaga) 64–88 px, huruf kapital. Kepala kolom tabel 12 px kapital + tracking .1em. |
 | Data teknis | Fira Code 400/500/600 | `font-mono`, `.data`, `.chip` | 0,92 em dari teks sekitarnya |
 
-Angka memakai `tabular-nums` agar kolom dan angka yang berubah tidak bergoyang. Judul `h1`–`h3` memakai `text-wrap: balance`.
+Angka di kolom tabel dan sumbu grafik memakai `tabular-nums` agar rata; angka besar yang berdiri sendiri memakai angka proporsional. Label dan judul memakai huruf biasa (sentence case); huruf kapital hanya untuk kepala kolom tabel, kata status Tingkat Siaga, dan strip DATA LATIHAN. Judul `h1`–`h3` memakai `text-wrap: balance`.
 
 ## Jarak, radius, bayangan
 
@@ -120,6 +120,14 @@ Angka memakai `tabular-nums` agar kolom dan angka yang berubah tidak bergoyang. 
 - Hanya 1–2 elemen per layar yang boleh bergerak terus-menerus.
 - `prefers-reduced-motion: reduce` mematikan semua animasi dan transisi (`app.css`).
 
+## Grafik
+
+- Chart.js hanya untuk grafik event per menit; grafik kecil lain (kontribusi skor, waktu deteksi, kemiripan, cakupan) berupa batang/cincin HTML-SVG ringan.
+- Seri tunggal memakai `#2F9DCB` (langkah lebih gelap dari aksen), lolos validator palet dataviz terhadap panel (L 0,48–0,67, kontras ≥3:1). Hover memakai aksen `#4CC4EC`.
+- Batang ≤24 px, sudut 4 px di ujung data, celah 2 px warna permukaan; grid garis rambut solid; teks sumbu memakai warna teks, bukan warna seri.
+- Label selektif: hanya nilai puncak yang ditulis di atas batang; nilai lain lewat sumbu, tooltip, dan tabel ("Lihat sebagai tabel").
+- Objek Chart disimpan di closure, bukan di state Alpine, dan data dari Livewire disalin dulu (Proxy reaktif membuat Chart.js berulang tanpa henti).
+
 ## Aksesibilitas
 
 - Kontras teks minimal 4,5:1. Semua token teks di atas lolos AA, sebagian besar AAA.
@@ -137,8 +145,8 @@ Angka memakai `tabular-nums` agar kolom dan angka yang berubah tidak bergoyang. 
 | Kelas | Fungsi |
 |---|---|
 | `.panel`, `.panel-head`, `.panel-title` | Wadah bergaris dan kepalanya |
-| `.label-caps` | Label kapital kecil (judul kolom, label KPI) |
-| `.num` | Angka besar: Condensed, tabular |
+| `.label-caps` | Label kapital kecil (dipakai hemat; kepala kolom tabel memakai gaya yang sama) |
+| `.num` | Angka besar: Condensed, proporsional |
 | `.data` | Data teknis monospace di dalam kalimat |
 | `.chip` | Chip monospace (kode aturan, teknik ATT&CK, `[EV-n]`) |
 | `.link` | Tautan beraksen |
@@ -150,14 +158,15 @@ Angka memakai `tabular-nums` agar kolom dan angka yang berubah tidak bergoyang. 
 
 | Komponen | Props | Catatan |
 |---|---|---|
+| `<x-ui.page-header>` | `title`, `icon`, `back`, `backLabel`; slot keterangan, slot `actions` | Kepala halaman. `back` menampilkan tautan kembali (halaman detail). |
 | `<x-ui.panel>` | `title`, `subtitle`, `icon`, `headingId`, `flush`; slot `actions` | Wadah utama. `:flush="true"` untuk tabel/daftar tanpa padding. |
 | `<x-ui.card>` | `tone` (aman/waspada/siaga/awas/accent), `href` | Kartu objek dalam daftar, dengan garis status di tepi kiri. |
-| `<x-ui.kpi>` | `label`, `value`, `unit`, `icon`, `tone`, `href`; slot keterangan | Angka besar terbaca dari proyektor. Disorot saat nilai berubah. |
+| `<x-ui.kpi>` | `label`, `value`, `unit`, `icon`, `tone`, `href`, `bare`; slot keterangan | Angka besar terbaca dari proyektor. Disorot saat nilai berubah. `:bare="true"` untuk sel di dalam satu panel metrik. |
 | `<x-ui.table>` | `caption`; slot `head` | Tabel `.tbl` dalam wadah gulir horizontal. |
 | `<x-ui.button>` | `variant` (primary/secondary/danger/approve/ghost), `size` (sm/md/lg), `icon`, `href`, `type` | `lg` = target sentuh HP. `approve`/`danger` untuk keputusan Setujui/Tolak. |
 | `<x-ui.badge>` | `tone` (neutral/accent/aman/waspada/siaga/awas/latihan), `icon` | Lencana umum. |
 | `<x-alert-badge>` | `level` (AlertLevel), `size` (sm/lg) | Tingkat Siaga: ikon + teks. |
-| `<x-severity-badge>` | `severity` (Severity) | Meter 4 batang + teks. |
+| `<x-severity-badge>` | `severity` (Severity), `size` (sm/lg) | Meter 4 batang + teks. |
 | `<x-action-status>` | `status` (ActionStatus) | Status tindakan: ikon + teks. |
 | `<x-ui.empty>` | `icon`, `title`; slot penjelasan | Keadaan kosong: menyebut apa yang akan muncul dan dari mana asalnya. |
 | `<x-ui.skeleton>` | `lines` | Kerangka pemuatan. |
