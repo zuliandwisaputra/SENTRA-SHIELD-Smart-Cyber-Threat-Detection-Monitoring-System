@@ -4,7 +4,7 @@
 --}}
 @props(['tone' => null, 'href' => null])
 @php
-    $tepi = ['aman' => 'border-l-aman', 'waspada' => 'border-l-waspada', 'siaga' => 'border-l-siaga', 'awas' => 'border-l-awas', 'accent' => 'border-l-accent'][$tone] ?? null;
+    $tepi = ['aman' => 'border-l-aman', 'waspada' => 'border-l-waspada', 'siaga' => 'border-l-siaga', 'awas' => 'border-l-awas', 'accent' => 'border-l-accent', 'pasir' => 'border-l-pasir'][$tone] ?? null;
     $kelas = 'block min-w-0 rounded-panel border border-line bg-raised/40 p-4'.($tepi ? ' border-l-[3px] '.$tepi : '').($href ? ' transition-colors duration-150 ease-sentra hover:border-line-strong hover:bg-raised' : '');
 @endphp
 @if ($href)

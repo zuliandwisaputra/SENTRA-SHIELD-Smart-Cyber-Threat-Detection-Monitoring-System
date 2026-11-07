@@ -55,6 +55,28 @@ enum Severity: string
         };
     }
 
+    /** Nama nada warna untuk komponen (kartu, stempel): pasir|waspada|siaga|awas. */
+    public function tone(): string
+    {
+        return match ($this) {
+            self::Rendah => 'pasir',
+            self::Sedang => 'waspada',
+            self::Tinggi => 'siaga',
+            self::Kritis => 'awas',
+        };
+    }
+
+    /** Kelas warna teks (angka skor, kata status). */
+    public function textClass(): string
+    {
+        return match ($this) {
+            self::Rendah => 'text-pasir',
+            self::Sedang => 'text-waspada',
+            self::Tinggi => 'text-siaga',
+            self::Kritis => 'text-awas',
+        };
+    }
+
     /** Kelas warna isian (meter, garis, batang). */
     public function fillClass(): string
     {
