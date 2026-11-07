@@ -130,3 +130,17 @@ Murni perubahan tampilan: logika, fitur, route, alur, dan teks penting tidak ber
 | Perbaikan bug: objek Chart.js tidak lagi disimpan di state reaktif Alpine. | Ditemukan saat uji live di lab: pembaruan grafik melempar "Maximum call stack size exceeded" dan memutus pembaruan Beranda. |
 | Teks paginasi berbahasa Indonesia lewat `lang/id.json`. | Sebelumnya "Showing 1 to 15 of 52 results". |
 
+## Perombakan tampilan Olive Drab / Ops Darat (7 Nov)
+
+Disetujui pemilik proyek setelah meninjau papan gaya, Login, dan Beranda. Murni tampilan: logika, fitur, route, dan alur tidak berubah. Rinciannya ada di [design-system.md](design-system.md).
+
+| Keputusan | Alasan |
+|---|---|
+| Palet olive-hitam/olive drab, aksen khaki, teks krem. Severity: Rendah pasir, Sedang amber, Tinggi oranye karat, Kritis merah bata. Tingkat Siaga Aman memakai hijau sinyal. | Arahan pemilik proyek. Aman harus beda jelas dari olive dasar. Semua kontras teks lolos WCAG AA. |
+| Menu atas diganti sidebar kiri berkelompok (Operasi, Analisis, Sistem) dan laci di HP. Bilah atas tipis berisi DTG, Tingkat Siaga, LIVE, akun. | Menu atas yang padat membingungkan. |
+| LAPSIT tetap di Detail Insiden; tidak ada menu LAPSIT terpisah. | Tidak menambah route. |
+| Simbol satuan memakai konvensi peta umum (bingkai + tanda eselon + garis sinyal); penyerang belah ketupat. | Bukan lambang resmi; isi tanda tambah dihindari karena mirip simbol satuan kesehatan. |
+| Beranda menampilkan IP sumber insiden terbuka di peta operasi; navigasi menghitung Tingkat Siaga untuk bilah atas. | Data yang sudah ada, hanya ditampilkan; query insiden terbuka menambah kolom `src_ip`, `unit_id`, `score`. |
+| Kapital dibuat lewat CSS, teks asli di HTML tidak diubah. | Tes dan pembaca layar tetap membaca kata yang sama. |
+| Papan gaya `resources/views/dev/papan-gaya.blade.php` disimpan tanpa route. | Referensi tinjauan desain; tidak menambah route aplikasi. |
+
