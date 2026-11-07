@@ -197,7 +197,7 @@ test('LAPSIT tercatat di garis waktu insiden; sitasi bukti bisa diklik', functio
 
     $this->actingAs($this->analis)->get(route('incidents.show', $this->incident))
         ->assertSee('LAPSIT LAPSIT/INS-'.$this->incident->id.'/1 terbit (template), disusun untuk Analis Siber.')
-        ->assertSee('<a href="'.route('events.show', $this->evIds[0]).'" class="text-emerald-400 hover:underline">[EV-'.$this->evIds[0].']</a>', false);
+        ->assertSee('<a href="'.route('events.show', $this->evIds[0]).'" class="ev-ref">[EV-'.$this->evIds[0].']</a>', false);
 });
 
 test('Pengaturan: Admin mengubah durasi blokir dan Ollama; perubahan tercatat', function () {
