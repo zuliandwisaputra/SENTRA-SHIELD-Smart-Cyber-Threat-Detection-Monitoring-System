@@ -1,15 +1,11 @@
 <div>
-    <header class="border-b border-gray-800 bg-gray-900">
-        <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8">
-            <h2 class="font-semibold text-xl text-gray-100 leading-tight">Pengguna</h2>
-        </div>
-    </header>
+    <x-ui.page-header title="Pengguna" icon="user" />
 
-    <div class="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <section class="bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6">
+    <div class="py-8 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <section class="panel p-4 sm:p-6">
             <div class="overflow-x-auto">
-                <table class="min-w-full text-sm">
-                    <thead class="text-left text-xs uppercase tracking-wide text-gray-500">
+                <table class="tbl">
+                    <thead>
                         <tr>
                             <th class="py-2 pe-4">Nama</th>
                             <th class="py-2 pe-4">Email</th>
@@ -25,7 +21,7 @@
                                 <td class="py-2 pe-4 text-gray-300">{{ $user->email }}</td>
                                 <td class="py-2 pe-4 text-gray-300">{{ $user->role->label() }}</td>
                                 <td class="py-2 pe-4 text-gray-300">{{ $user->unit?->name ?? '—' }}</td>
-                                <td class="py-2"><button wire:click="edit({{ $user->id }})" class="text-xs text-emerald-400 hover:underline">Ubah</button></td>
+                                <td class="py-2"><button wire:click="edit({{ $user->id }})" class="text-xs link">Ubah</button></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -33,7 +29,7 @@
             </div>
         </section>
 
-        <section class="bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6">
+        <section class="panel p-4 sm:p-6">
             <h3 class="text-base font-semibold text-gray-100">{{ $editingId ? 'Ubah pengguna' : 'Tambah pengguna' }}</h3>
             <form wire:submit="save" class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 <div>
@@ -48,7 +44,7 @@
                 </div>
                 <div>
                     <x-input-label for="role" value="Peran" />
-                    <select wire:model.live="role" id="role" class="mt-1 block w-full rounded-md border-gray-700 bg-gray-950 text-gray-200 text-sm">
+                    <select wire:model.live="role" id="role" class="mt-1 block w-full rounded-control border-gray-700 bg-gray-950 text-gray-200 text-sm">
                         @foreach (\App\Enums\Role::cases() as $r)
                             <option value="{{ $r->value }}">{{ $r->label() }}</option>
                         @endforeach
@@ -57,7 +53,7 @@
                 </div>
                 <div>
                     <x-input-label for="unitId" value="Satuan" />
-                    <select wire:model="unitId" id="unitId" class="mt-1 block w-full rounded-md border-gray-700 bg-gray-950 text-gray-200 text-sm">
+                    <select wire:model="unitId" id="unitId" class="mt-1 block w-full rounded-control border-gray-700 bg-gray-950 text-gray-200 text-sm">
                         <option value="">—</option>
                         @foreach ($units as $unit)
                             <option value="{{ $unit->id }}">{{ $unit->name }}</option>

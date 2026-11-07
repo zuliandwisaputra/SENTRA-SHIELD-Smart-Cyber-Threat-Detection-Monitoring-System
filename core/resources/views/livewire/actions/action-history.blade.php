@@ -1,15 +1,12 @@
 <div>
-    <header class="border-b border-gray-800 bg-gray-900">
-        <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8">
-            <h2 class="font-semibold text-xl text-gray-100 leading-tight">Tindakan</h2>
-            <p class="mt-1 text-xs text-gray-500">Perintah ke agent hanya dari daftar tetap: blokir IP, buka blokir, jalankan uji.</p>
-        </div>
-    </header>
+    <x-ui.page-header title="Tindakan" icon="shield-ban">
+        <span class="block max-w-3xl">Perintah ke agent hanya dari daftar tetap: blokir IP, buka blokir, jalankan uji.</span>
+    </x-ui.page-header>
 
-    <div class="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+    <div class="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8 space-y-4">
         <div class="max-w-xs">
             <x-input-label for="f-status" value="Status" />
-            <select wire:model.live="status" id="f-status" class="mt-1 block w-full rounded-md border-gray-700 bg-gray-950 text-gray-200 text-sm">
+            <select wire:model.live="status" id="f-status" class="mt-1 block w-full rounded-control border-gray-700 bg-gray-950 text-gray-200 text-sm">
                 <option value="">Semua</option>
                 <option value="aktif">Blokir aktif</option>
                 @foreach (\App\Enums\ActionStatus::cases() as $s)
@@ -18,9 +15,9 @@
             </select>
         </div>
 
-        <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-x-auto">
-            <table class="min-w-full text-sm">
-                <thead class="text-left text-xs uppercase tracking-wide text-gray-500 border-b border-gray-800">
+        <div class="panel overflow-x-auto">
+            <table class="tbl">
+                <thead>
                     <tr>
                         <th class="py-3 px-3">#</th><th class="py-3 px-3">Tindakan</th><th class="py-3 px-3">Agent</th>
                         <th class="py-3 px-3">Status</th><th class="py-3 px-3">Pengusul / pemutus</th><th class="py-3 px-3">Hasil agent</th><th class="py-3 px-3">Berlaku sampai</th>
@@ -33,7 +30,7 @@
                             <td class="py-2 px-3">
                                 <div class="text-gray-100">{{ $a->type->label() }} <span class="font-mono">{{ $a->params['ip'] ?? '' }}</span></div>
                                 @if ($a->incident)
-                                    <a href="{{ route('incidents.show', $a->incident) }}" wire:navigate class="text-xs text-emerald-400 hover:underline">Insiden #{{ $a->incident_id }}</a>
+                                    <a href="{{ route('incidents.show', $a->incident) }}" wire:navigate class="text-xs link">Insiden #{{ $a->incident_id }}</a>
                                 @endif
                             </td>
                             <td class="py-2 px-3 text-gray-300">{{ $a->targetAgent->hostname }}<div class="text-xs text-gray-500">{{ $a->targetAgent->unit->name }}</div></td>

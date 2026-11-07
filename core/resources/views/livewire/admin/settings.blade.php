@@ -1,17 +1,13 @@
 <div>
-    <header class="border-b border-gray-800 bg-gray-900">
-        <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8">
-            <h2 class="font-semibold text-xl text-gray-100 leading-tight">Pengaturan</h2>
-        </div>
-    </header>
+    <x-ui.page-header title="Pengaturan" icon="settings" />
 
     <div class="py-6 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <form wire:submit="save" class="space-y-6">
-            <section class="rounded-lg border border-gray-800 bg-gray-900 p-4 sm:p-6" aria-labelledby="set-blokir">
+            <section class="panel p-4 sm:p-6" aria-labelledby="set-blokir">
                 <h3 id="set-blokir" class="text-base font-semibold text-gray-100">Respons</h3>
                 <div class="mt-4 max-w-xs">
                     <x-input-label for="blockDuration" value="Durasi blokir default" />
-                    <select wire:model="blockDuration" id="blockDuration" class="mt-1 block w-full rounded-md border-gray-700 bg-gray-950 text-sm text-gray-200">
+                    <select wire:model="blockDuration" id="blockDuration" class="mt-1 block w-full rounded-control border-gray-700 bg-gray-950 text-sm text-gray-200">
                         @foreach (\App\Response\ActionService::DURATIONS as $seconds => $label)
                             <option value="{{ $seconds }}">{{ $label }}</option>
                         @endforeach
@@ -21,7 +17,7 @@
                 </div>
             </section>
 
-            <section class="rounded-lg border border-gray-800 bg-gray-900 p-4 sm:p-6" aria-labelledby="set-llm">
+            <section class="panel p-4 sm:p-6" aria-labelledby="set-llm">
                 <h3 id="set-llm" class="text-base font-semibold text-gray-100">LLM lokal untuk LAPSIT (Ollama)</h3>
                 <p class="mt-1 text-xs text-gray-500">Data insiden hanya dikirim ke alamat ini. Bila Ollama tidak tersedia atau melewati batas waktu, LAPSIT dibuat dari template.</p>
                 <div class="mt-4 grid gap-4 sm:grid-cols-2">
@@ -42,10 +38,10 @@
                     </div>
                 </div>
                 <div class="mt-4 flex flex-wrap items-center gap-3">
-                    <button type="button" wire:click="checkOllama" wire:loading.attr="disabled" wire:target="checkOllama" class="rounded-md border border-gray-600 px-3 py-1.5 text-sm text-gray-200 hover:bg-gray-800">Periksa koneksi Ollama</button>
+                    <button type="button" wire:click="checkOllama" wire:loading.attr="disabled" wire:target="checkOllama" class="rounded-control border border-gray-600 px-3 py-1.5 text-sm text-gray-200 hover:bg-gray-800">Periksa koneksi Ollama</button>
                     <span wire:loading wire:target="checkOllama" class="text-sm text-gray-400">Memeriksa…</span>
                     @if ($ollamaStatus)
-                        <span class="text-sm {{ $ollamaStatus['ok'] ? 'text-emerald-300' : 'text-yellow-300' }}" role="status" data-testid="status-ollama">{{ $ollamaStatus['message'] }}</span>
+                        <span class="text-sm {{ $ollamaStatus['ok'] ? 'text-aman' : 'text-waspada' }}" role="status" data-testid="status-ollama">{{ $ollamaStatus['message'] }}</span>
                     @endif
                 </div>
             </section>
@@ -53,7 +49,7 @@
             <div class="flex items-center gap-3">
                 <x-primary-button>Simpan pengaturan</x-primary-button>
                 @if ($saved)
-                    <span class="text-sm text-emerald-300" role="status">{{ $saved }}</span>
+                    <span class="text-sm text-aman" role="status">{{ $saved }}</span>
                 @endif
             </div>
         </form>

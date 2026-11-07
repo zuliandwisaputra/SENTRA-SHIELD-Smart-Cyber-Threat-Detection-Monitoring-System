@@ -155,14 +155,15 @@
                 {{-- Feed event live --}}
                 <x-ui.panel title="Feed event live" icon="activity" heading-id="feed-judul" :flush="true">
                     <x-slot:actions><span class="text-xs text-ink-3">12 event terakhir · waktu WIB</span></x-slot:actions>
-                    {{-- Baris baru (id di atas batas saat halaman dimuat) diberi animasi masuk. --}}
-                    <ul class="text-sm" x-data="{ batas: {{ (int) $feed->max('id') }} }">
+                    {{-- Baris baru (id di atas batas saat halaman dimuat) diberi animasi masuk sekali saat disisipkan.
+                         wire:ignore.self menjaga x-data (batas awal) dan kelas animasi tidak ditimpa morph Livewire. --}}
+                    <ul class="text-sm" wire:ignore.self x-data="{ batas: {{ (int) $feed->max('id') }} }">
                         @forelse ($feed as $event)
                             @php
                                 $sev = $event->detections->map(fn ($d) => $d->incident?->severity)->filter()->sortByDesc(fn ($s) => $s->rank())->first();
                             @endphp
                             <li class="relative flex flex-col gap-1 border-b border-line/70 px-4 py-2.5 last:border-b-0 sm:grid sm:grid-cols-[4rem_6.75rem_minmax(0,1fr)_auto] sm:items-center sm:gap-x-4 sm:px-5"
-                                wire:key="feed-{{ $event->id }}" x-init="if ({{ $event->id }} > batas) $el.classList.add('animate-masuk')">
+                                wire:key="feed-{{ $event->id }}" wire:ignore.self x-init="if ({{ $event->id }} > batas) $el.classList.add('animate-masuk')">
                                 <span class="absolute inset-y-0 left-0 w-[3px] {{ $sev ? $garisSeverity[$sev->value] : '' }}" aria-hidden="true"></span>
                                 <span class="font-mono text-xs text-ink-3" title="{{ waktu_wib($event->occurred_at) }}">{{ $event->occurred_at->copy()->setTimezone(config('sentra.display_timezone'))->format('H:i:s') }}</span>
                                 <span class="flex items-center gap-1.5">

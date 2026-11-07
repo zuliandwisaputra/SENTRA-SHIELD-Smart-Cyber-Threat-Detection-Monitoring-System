@@ -1,15 +1,11 @@
 <div>
-    <header class="border-b border-gray-800 bg-gray-900">
-        <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8">
-            <h2 class="font-semibold text-xl text-gray-100 leading-tight">Daftar Insiden</h2>
-        </div>
-    </header>
+    <x-ui.page-header title="Daftar Insiden" icon="siren" />
 
-    <div class="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-        <div class="grid gap-3 sm:grid-cols-4 bg-gray-900 border border-gray-800 rounded-lg p-4">
+    <div class="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8 space-y-4">
+        <div class="grid gap-3 sm:grid-cols-4 panel p-4">
             <div>
                 <x-input-label for="f-severity" value="Severity" />
-                <select wire:model.live="severity" id="f-severity" class="mt-1 block w-full rounded-md border-gray-700 bg-gray-950 text-gray-200 text-sm">
+                <select wire:model.live="severity" id="f-severity" class="mt-1 block w-full rounded-control border-gray-700 bg-gray-950 text-gray-200 text-sm">
                     <option value="">Semua</option>
                     @foreach (\App\Enums\Severity::cases() as $s)
                         <option value="{{ $s->value }}">{{ $s->label() }}</option>
@@ -18,7 +14,7 @@
             </div>
             <div>
                 <x-input-label for="f-status" value="Status" />
-                <select wire:model.live="status" id="f-status" class="mt-1 block w-full rounded-md border-gray-700 bg-gray-950 text-gray-200 text-sm">
+                <select wire:model.live="status" id="f-status" class="mt-1 block w-full rounded-control border-gray-700 bg-gray-950 text-gray-200 text-sm">
                     <option value="terbuka">Terbuka (belum selesai)</option>
                     <option value="">Semua</option>
                     @foreach (\App\Enums\IncidentStatus::cases() as $s)
@@ -28,7 +24,7 @@
             </div>
             <div>
                 <x-input-label for="f-unit" value="Satuan" />
-                <select wire:model.live="unit" id="f-unit" class="mt-1 block w-full rounded-md border-gray-700 bg-gray-950 text-gray-200 text-sm">
+                <select wire:model.live="unit" id="f-unit" class="mt-1 block w-full rounded-control border-gray-700 bg-gray-950 text-gray-200 text-sm">
                     <option value="">Semua</option>
                     @foreach ($units as $u)
                         <option value="{{ $u->id }}">{{ $u->name }}</option>
@@ -41,9 +37,9 @@
             </div>
         </div>
 
-        <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-x-auto">
-            <table class="min-w-full text-sm">
-                <thead class="text-left text-xs uppercase tracking-wide text-gray-500 border-b border-gray-800">
+        <div class="panel overflow-x-auto">
+            <table class="tbl">
+                <thead>
                     <tr>
                         <th class="py-3 px-4">Insiden</th>
                         <th class="py-3 px-4">Satuan</th>
@@ -58,7 +54,7 @@
                     @forelse ($incidents as $incident)
                         <tr wire:key="inc-{{ $incident->id }}" class="hover:bg-gray-800/50">
                             <td class="py-3 px-4">
-                                <a href="{{ route('incidents.show', $incident) }}" wire:navigate class="font-medium text-emerald-400 hover:underline">#{{ $incident->id }} {{ $incident->title }}</a>
+                                <a href="{{ route('incidents.show', $incident) }}" wire:navigate class="font-medium link">#{{ $incident->id }} {{ $incident->title }}</a>
                                 <div class="text-xs text-gray-500">{{ $incident->detections_count }} deteksi</div>
                             </td>
                             <td class="py-3 px-4 text-gray-300">{{ $incident->unit->name }}</td>

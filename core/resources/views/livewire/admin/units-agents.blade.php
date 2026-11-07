@@ -1,27 +1,23 @@
 <div>
-    <header class="border-b border-gray-800 bg-gray-900">
-        <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8">
-            <h2 class="font-semibold text-xl text-gray-100 leading-tight">Satuan &amp; Agent</h2>
-        </div>
-    </header>
+    <x-ui.page-header title="Satuan & Agent" icon="server" />
 
-    <div class="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+    <div class="py-8 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         @if ($newCode)
-            <div class="rounded-lg border border-emerald-700 bg-emerald-950/60 p-4" role="alert">
-                <p class="text-sm text-emerald-200">Kode pendaftaran untuk <strong>{{ $newCodeHostname }}</strong>. Kode hanya ditampilkan sekali, sekali pakai, dan berlaku 24 jam.</p>
+            <div class="rounded-panel border border-aman/40 bg-aman/10 p-4" role="alert">
+                <p class="text-sm text-aman">Kode pendaftaran untuk <strong>{{ $newCodeHostname }}</strong>. Kode hanya ditampilkan sekali, sekali pakai, dan berlaku 24 jam.</p>
                 <p class="mt-2 font-mono text-lg tracking-wider text-white select-all" data-testid="kode-pendaftaran">{{ $newCode }}</p>
-                <button wire:click="dismissCode" class="mt-3 text-xs text-emerald-300 underline">Sudah dicatat, tutup</button>
+                <button wire:click="dismissCode" class="mt-3 text-xs text-aman underline">Sudah dicatat, tutup</button>
             </div>
         @endif
 
         {{-- Agent --}}
-        <section class="bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6">
+        <section class="panel p-4 sm:p-6">
             <h3 class="text-base font-semibold text-gray-100">Agent</h3>
             <p class="mt-1 text-xs text-gray-500">Satu host = satu agent. Heartbeat diharapkan tiap 10 detik.</p>
 
             <div class="mt-4 overflow-x-auto">
-                <table class="min-w-full text-sm">
-                    <thead class="text-left text-xs uppercase tracking-wide text-gray-500">
+                <table class="tbl">
+                    <thead>
                         <tr>
                             <th class="py-2 pe-4">Host</th>
                             <th class="py-2 pe-4">Satuan</th>
@@ -54,18 +50,18 @@
                                 <td class="py-2 pe-4">
                                     <div class="flex flex-wrap gap-1">
                                         @forelse (collect($agent->sources ?? [])->reject(fn ($s) => ($s['status'] ?? '') === 'disabled') as $name => $source)
-                                            <span title="{{ $source['detail'] ?? '' }}" class="rounded px-1.5 py-0.5 text-xs {{ ($source['status'] ?? '') === 'ok' ? 'bg-emerald-900/50 text-emerald-300' : 'bg-red-900/50 text-red-300' }}">{{ $name }}: {{ $source['status'] ?? '?' }}</span>
+                                            <span title="{{ $source['detail'] ?? '' }}" class="rounded-chip px-1.5 py-0.5 font-mono text-xs ring-1 ring-inset {{ ($source['status'] ?? '') === 'ok' ? 'bg-aman/10 text-aman ring-aman/40' : 'bg-awas/15 text-awas ring-awas/50' }}">{{ $name }}: {{ $source['status'] ?? '?' }}</span>
                                         @empty
                                             <span class="text-xs text-gray-500">—</span>
                                         @endforelse
                                     </div>
                                     @foreach ($warnings->get($agent->id, []) as $w)
-                                        <div class="mt-1 text-xs font-semibold text-yellow-300" title="{{ $w['detail'] }}">Peringatan: sumber {{ $w['source'] }} {{ $w['alasan'] }}</div>
+                                        <div class="mt-1 text-xs font-semibold text-waspada" title="{{ $w['detail'] }}">Peringatan: sumber {{ $w['source'] }} {{ $w['alasan'] }}</div>
                                     @endforeach
                                 </td>
                                 <td class="py-2 pe-4">
                                     @if ($canManage)
-                                        <select wire:change="setAssetType({{ $agent->id }}, $event.target.value)" aria-label="Jenis aset {{ $agent->hostname }}" class="rounded-md border-gray-700 bg-gray-950 text-xs text-gray-200">
+                                        <select wire:change="setAssetType({{ $agent->id }}, $event.target.value)" aria-label="Jenis aset {{ $agent->hostname }}" class="rounded-control border-gray-700 bg-gray-950 text-xs text-gray-200">
                                             @foreach (\App\Enums\AssetType::cases() as $type)
                                                 <option value="{{ $type->value }}" @selected($agent->asset_type === $type)>{{ $type->label() }}</option>
                                             @endforeach
@@ -77,10 +73,10 @@
                                 @if ($canManage)
                                     <td class="py-2 whitespace-nowrap">
                                         @if ($agent->status === \App\Enums\AgentStatus::Menunggu)
-                                            <button wire:click="reissueCode({{ $agent->id }})" class="text-xs text-emerald-400 hover:underline">Buat kode baru</button>
+                                            <button wire:click="reissueCode({{ $agent->id }})" class="text-xs link">Buat kode baru</button>
                                         @endif
                                         @if ($agent->status !== \App\Enums\AgentStatus::Dicabut)
-                                            <button wire:click="revokeAgent({{ $agent->id }})" wire:confirm="Cabut token agent {{ $agent->hostname }}? Agent langsung ditolak API." class="ms-2 text-xs text-red-400 hover:underline">Cabut token</button>
+                                            <button wire:click="revokeAgent({{ $agent->id }})" wire:confirm="Cabut token agent {{ $agent->hostname }}? Agent langsung ditolak API." class="ms-2 text-xs text-awas hover:underline">Cabut token</button>
                                         @endif
                                     </td>
                                 @endif
@@ -96,7 +92,7 @@
                 <form wire:submit="createAgent" class="mt-6 grid gap-3 sm:grid-cols-4 sm:items-end border-t border-gray-800 pt-4">
                     <div>
                         <x-input-label for="agentUnitId" value="Satuan" />
-                        <select wire:model="agentUnitId" id="agentUnitId" class="mt-1 block w-full rounded-md border-gray-700 bg-gray-950 text-gray-200 text-sm">
+                        <select wire:model="agentUnitId" id="agentUnitId" class="mt-1 block w-full rounded-control border-gray-700 bg-gray-950 text-gray-200 text-sm">
                             <option value="">Pilih satuan</option>
                             @foreach ($units as $unit)
                                 <option value="{{ $unit->id }}">{{ $unit->name }}</option>
@@ -111,7 +107,7 @@
                     </div>
                     <div>
                         <x-input-label for="agentAssetType" value="Jenis aset" />
-                        <select wire:model="agentAssetType" id="agentAssetType" class="mt-1 block w-full rounded-md border-gray-700 bg-gray-950 text-gray-200 text-sm">
+                        <select wire:model="agentAssetType" id="agentAssetType" class="mt-1 block w-full rounded-control border-gray-700 bg-gray-950 text-gray-200 text-sm">
                             @foreach (\App\Enums\AssetType::cases() as $type)
                                 <option value="{{ $type->value }}">{{ $type->label() }}</option>
                             @endforeach
@@ -123,7 +119,7 @@
         </section>
 
         {{-- Satuan --}}
-        <section class="bg-gray-900 border border-gray-800 rounded-lg p-4 sm:p-6">
+        <section class="panel p-4 sm:p-6">
             <h3 class="text-base font-semibold text-gray-100">Hierarki satuan</h3>
             <ul class="mt-4 space-y-1">
                 @foreach ($tree as $unit)
@@ -145,7 +141,7 @@
                     </div>
                     <div>
                         <x-input-label for="unitLevel" value="Tingkat" />
-                        <select wire:model="unitLevel" id="unitLevel" class="mt-1 block w-full rounded-md border-gray-700 bg-gray-950 text-gray-200 text-sm">
+                        <select wire:model="unitLevel" id="unitLevel" class="mt-1 block w-full rounded-control border-gray-700 bg-gray-950 text-gray-200 text-sm">
                             @foreach (\App\Enums\UnitLevel::cases() as $level)
                                 <option value="{{ $level->value }}">{{ $level->label() }}</option>
                             @endforeach
@@ -153,7 +149,7 @@
                     </div>
                     <div>
                         <x-input-label for="unitParentId" value="Induk" />
-                        <select wire:model="unitParentId" id="unitParentId" class="mt-1 block w-full rounded-md border-gray-700 bg-gray-950 text-gray-200 text-sm">
+                        <select wire:model="unitParentId" id="unitParentId" class="mt-1 block w-full rounded-control border-gray-700 bg-gray-950 text-gray-200 text-sm">
                             <option value="">— tanpa induk —</option>
                             @foreach ($units as $unit)
                                 <option value="{{ $unit->id }}">{{ $unit->name }}</option>

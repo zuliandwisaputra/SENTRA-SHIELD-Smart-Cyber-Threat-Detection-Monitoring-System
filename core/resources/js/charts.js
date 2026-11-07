@@ -41,12 +41,20 @@ const labelPuncak = {
 };
 
 document.addEventListener('alpine:init', () => {
-    window.Alpine.data('grafikEvent', (series) => ({
-        chart: null,
+    // Objek Chart disimpan di closure, bukan di state Alpine: Proxy reaktif Alpine
+    // membuat Chart.js berulang tanpa henti (Maximum call stack) saat data diperbarui.
+    // Data dari Livewire juga disalin dulu agar tidak membawa Proxy.
+    const salin = (v) => JSON.parse(JSON.stringify(v));
+
+    window.Alpine.data('grafikEvent', (series) => {
+        let chart = null;
+
+        return {
         init() {
-            this.chart = new Chart(this.$refs.canvas, {
+            const awal = salin(series);
+            chart = new Chart(this.$refs.canvas, {
                 type: 'bar',
-                data: { labels: series.labels, datasets: [{ data: series.counts }] },
+                data: { labels: awal.labels, datasets: [{ data: awal.counts }] },
                 plugins: [labelPuncak],
                 options: {
                     locale: 'id-ID',
@@ -103,13 +111,17 @@ document.addEventListener('alpine:init', () => {
             });
             // Livewire memperbarui data saat ada sinyal perubahan.
             this.$wire.$watch('series', (value) => {
-                this.chart.data.labels = value.labels;
-                this.chart.data.datasets[0].data = value.counts;
-                this.chart.update('none');
+                if (!chart) return;
+                const baru = salin(value);
+                chart.data.labels = baru.labels;
+                chart.data.datasets[0].data = baru.counts;
+                chart.update('none');
             });
         },
         destroy() {
-            this.chart?.destroy();
+            chart?.destroy();
+            chart = null;
         },
-    }));
+        };
+    });
 });
