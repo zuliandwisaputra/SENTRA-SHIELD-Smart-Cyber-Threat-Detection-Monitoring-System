@@ -1,8 +1,9 @@
 # site/ — Landing page (link karya)
 
-Halaman statis untuk link karya (F15, keputusan B8: tanpa VPS, landing page + video + screenshot). Tidak memuat font, CDN, atau skrip dari luar; bisa dibuka langsung dengan klik dua kali `index.html`.
+Halaman statis untuk link karya (F15, keputusan B8: tanpa VPS, landing page + video + screenshot). Tidak memuat font, CDN, atau skrip dari luar; bisa dibuka langsung dengan klik dua kali `index.html`. Gayanya sama dengan aplikasi (Olive Drab / Ops Darat, lihat `docs/design-system.md`).
 
 - `index.html`: seluruh halaman (HTML + CSS dalam satu file).
+- `fonts/`: Saira Stencil One, Saira Condensed, dan Fira Code (subset latin, SIL Open Font License 1.1; teks lisensi ikut di folder ini).
 - `img/`: tangkapan layar asli dari lab setelah skenario serangan lengkap, berlabel DATA LATIHAN.
 
 ## Memasang video
