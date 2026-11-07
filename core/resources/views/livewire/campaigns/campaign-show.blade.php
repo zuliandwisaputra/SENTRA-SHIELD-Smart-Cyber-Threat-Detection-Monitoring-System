@@ -4,17 +4,20 @@
     $selesai = max($c->last_seen_at->getTimestamp(), $mulai + 1);
     $rentang = $selesai - $mulai;
     $posisi = fn ($t) => min(100, max(0, ($t->getTimestamp() - $mulai) / $rentang * 100));
-    $garis = ['rendah' => 'bg-aman', 'sedang' => 'bg-waspada', 'tinggi' => 'bg-siaga', 'kritis' => 'bg-awas'];
+    $eselon = ['kodam' => 'XX', 'korem' => 'X', 'kodim' => 'II'];
     $tik = collect(range(0, 4))->map(fn ($i) => \Illuminate\Support\Carbon::createFromTimestamp($mulai + $rentang * $i / 4));
 @endphp
 <div>
     <x-ui.page-header :back="route('campaigns.index')" back-label="Kampanye" icon="network"
         :title="new \Illuminate\Support\HtmlString('Kampanye #'.$c->id.': <span class=\'font-mono text-[0.85em]\'>'.e($c->src_ip).'</span> menyerang '.$c->unit_count.' satuan')">
         <span class="text-ink-2"><span class="data">{{ waktu_wib($c->first_seen_at, 'd/m/Y H:i:s') }} s.d. {{ waktu_wib($c->last_seen_at, 'H:i:s') }}</span> · status {{ $c->status->label() }} · skor setiap insiden tertaut dikalikan 1,3</span>
+        <x-slot:actions>
+            <x-ui.stempel :tone="$c->status === \App\Enums\CampaignStatus::Aktif ? 'awas' : 'pasir'" size="md">Kampanye {{ $c->status->label() }}</x-ui.stempel>
+        </x-slot:actions>
     </x-ui.page-header>
 
-    <div class="mx-auto max-w-[1440px] space-y-4 px-4 py-6 sm:px-6 lg:px-8">
-        <x-ui.panel title="Satuan terdampak menurut urutan waktu" icon="network" heading-id="urutan"
+    <div class="mx-auto max-w-[1600px] space-y-4 px-4 py-5 sm:px-6 lg:px-8">
+        <x-ui.panel nomor="01" kode="Garis waktu operasi" :penggaris="true" title="Satuan terdampak menurut urutan waktu" icon="network" heading-id="urutan"
             subtitle="Satu lajur per satuan; batang menunjukkan rentang serangan di satuan itu, warnanya mengikuti severity insiden.">
             {{-- Sumbu waktu --}}
             <div class="hidden grid-cols-[15rem_minmax(0,1fr)] gap-x-4 sm:grid" aria-hidden="true">
@@ -34,18 +37,19 @@
                     @endphp
                     <li class="grid gap-x-4 gap-y-2 sm:grid-cols-[15rem_minmax(0,1fr)] sm:items-center" wire:key="ki-{{ $inc->id }}">
                         <div class="flex min-w-0 items-center gap-3">
-                            <span class="grid size-7 shrink-0 place-items-center rounded-full bg-inset font-mono text-xs font-semibold text-ink ring-1 ring-inset ring-line-strong">{{ $i + 1 }}</span>
+                            <span class="font-stensil text-lg text-accent" aria-hidden="true">{{ str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT) }}</span>
+                            <x-ui.simbol-satuan :eselon="$eselon[$inc->unit->level->value] ?? ''" :tone="\App\Enums\AlertLevel::fromSeverity($inc->severity)->value" />
                             <div class="min-w-0">
-                                <p class="truncate font-medium text-ink">{{ $inc->unit->name }}</p>
+                                <p class="truncate font-semibold uppercase tracking-[0.06em] text-ink">{{ $inc->unit->name }}</p>
                                 <p class="mt-0.5 flex items-center gap-2"><x-severity-badge :severity="$inc->severity" /><span class="text-xs text-ink-2">skor {{ $inc->score }}</span></p>
                             </div>
                         </div>
                         <div class="min-w-0">
-                            <div class="relative h-7 rounded-control bg-canvas ring-1 ring-inset ring-line" aria-hidden="true">
+                            <div class="grid-peta relative h-9 rounded-control bg-canvas ring-1 ring-inset ring-line" aria-hidden="true">
                                 @foreach ([25, 50, 75] as $g)
-                                    <span class="absolute inset-y-0 w-px bg-line" style="left: {{ $g }}%"></span>
+                                    <span class="absolute inset-y-0 w-px bg-accent/30" style="left: {{ $g }}%"></span>
                                 @endforeach
-                                <span class="absolute inset-y-1.5 rounded-[3px] {{ $garis[$inc->severity->value] }}" style="left: {{ round($kiri, 2) }}%; width: {{ round($lebar, 2) }}%"></span>
+                                <span class="absolute inset-y-2 rounded-[2px] {{ $inc->severity->fillClass() }}" style="left: {{ round($kiri, 2) }}%; width: {{ round($lebar, 2) }}%"></span>
                             </div>
                             <p class="mt-1.5 text-xs text-ink-3">
                                 Pertama <span class="data">{{ waktu_wib($inc->first_seen_at, 'H:i:s') }}</span> · terakhir <span class="data">{{ waktu_wib($inc->last_seen_at, 'H:i:s') }}</span> · tahap {{ $inc->stage_max?->label() ?? '—' }} ·
@@ -57,10 +61,13 @@
             </ol>
         </x-ui.panel>
 
-        <section class="panel relative min-w-0 overflow-hidden" aria-labelledby="serentak">
-            <div class="absolute inset-x-0 top-0 h-0.5 bg-accent" aria-hidden="true"></div>
+        <section class="panel relative min-w-0" aria-labelledby="serentak">
+            <div class="absolute inset-x-0 top-0 h-1 bg-accent" aria-hidden="true"></div>
             <header class="panel-head">
-                <h3 id="serentak" class="panel-title flex items-center gap-2"><x-icon name="shield-ban" class="size-4 text-accent" />Blokir serentak</h3>
+                <div class="min-w-0">
+                    <p class="flex items-baseline gap-2" aria-hidden="true"><span class="nomor-bagian">02 //</span><span class="font-stensil text-[19px] uppercase leading-none tracking-[0.08em] text-ink">Respons</span></p>
+                    <h3 id="serentak" class="mt-1 flex items-center gap-1.5 text-sm font-semibold text-ink-2"><x-icon name="shield-ban" class="size-4 text-accent" />Blokir serentak</h3>
+                </div>
             </header>
             <div class="p-4 sm:p-5">
                 @if ($flash)

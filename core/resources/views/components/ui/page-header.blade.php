@@ -14,7 +14,7 @@
         <div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
             <div class="min-w-0">
                 <h2 class="flex items-center gap-3 font-stensil text-[30px] uppercase leading-tight tracking-[0.06em] text-ink sm:text-[34px]">
-                    @if ($icon)<x-icon :name="$icon" class="size-7 text-accent" />@endif{{ $title }}
+                    @if ($icon)<x-icon :name="$icon" class="size-7 shrink-0 text-accent" />@endif<span class="min-w-0 break-words">{{ $title }}</span>
                 </h2>
                 @if (trim($slot) !== '')
                     <div class="mt-1.5 text-[15px] text-ink-3">{{ $slot }}</div>
