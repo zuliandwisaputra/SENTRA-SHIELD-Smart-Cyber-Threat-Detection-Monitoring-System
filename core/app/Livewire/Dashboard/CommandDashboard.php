@@ -49,7 +49,7 @@ class CommandDashboard extends Component
         $units = $user->visibleUnitIds();
         $scope = fn ($q) => $units === null ? $q : $q->whereIn('unit_id', $units);
 
-        $open = Incident::query()->open()->visibleTo($user)->get(['id', 'severity']);
+        $open = Incident::query()->open()->visibleTo($user)->get(['id', 'severity', 'score', 'unit_id', 'src_ip']);
         $bySeverity = collect(Severity::cases())->reverse()
             ->mapWithKeys(fn (Severity $s) => [$s->value => $open->where('severity', $s)->count()]);
 
@@ -63,6 +63,8 @@ class CommandDashboard extends Component
 
         return view('livewire.dashboard.command-dashboard', [
             'tree' => Unit::tree($units),
+            // Untuk peta operasi: posisi penyerang (IP sumber insiden terbuka) dan satuan sasarannya.
+            'openIncidents' => $open,
             'openCount' => $open->count(),
             'bySeverity' => $bySeverity,
             'agentTotal' => $agents->count(),

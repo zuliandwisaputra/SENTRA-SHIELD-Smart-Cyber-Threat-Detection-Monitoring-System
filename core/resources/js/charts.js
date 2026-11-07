@@ -1,21 +1,21 @@
 /**
- * Grafik SENTRA (Chart.js). Warna mengikuti token di app.css. Seri tunggal tanpa legend;
- * judul panel menamai serinya. Warna batang #2F9DCB (langkah lebih gelap dari aksen radar)
- * lolos validator palet dataviz terhadap permukaan panel #0C121C (L 0,48-0,67, kontras >= 3:1).
+ * Grafik SENTRA (Chart.js). Warna mengikuti token di app.css (gaya olive drab). Seri tunggal tanpa
+ * legend; judul panel menamai serinya. Warna batang #9E8E58 (khaki gelap) lolos validator palet
+ * dataviz terhadap permukaan panel #181D10 (L 0,48-0,67, kontras >= 3:1).
  * Teks memakai warna teks, bukan warna seri.
  */
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip } from 'chart.js';
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip);
 
-const SERIES = '#2F9DCB';
-const SERIES_HOVER = '#4CC4EC';
-const TEXT = '#A9B6C8';
-const TEXT_MUTED = '#8492A8';
-const GRID = '#1D2938';
-const SURFACE = '#0C121C';
+const SERIES = '#9E8E58';
+const SERIES_HOVER = '#C9B57A';
+const TEXT = '#CEC6A6';
+const TEXT_MUTED = '#A69F80';
+const GRID = '#343C26';
+const SURFACE = '#181D10';
 const FONT_MONO = '"Fira Code", ui-monospace, monospace';
-const FONT_SANS = '"Fira Sans", ui-sans-serif, system-ui, sans-serif';
+const FONT_SANS = '"Saira Condensed", "Arial Narrow", ui-sans-serif, sans-serif';
 
 Chart.defaults.font.family = FONT_SANS;
 
@@ -91,14 +91,14 @@ document.addEventListener('alpine:init', () => {
                     plugins: {
                         legend: { display: false },
                         tooltip: {
-                            backgroundColor: '#111A27',
-                            borderColor: '#2C3C51',
+                            backgroundColor: '#20271A',
+                            borderColor: '#4A5134',
                             borderWidth: 1,
-                            cornerRadius: 6,
+                            cornerRadius: 3,
                             padding: 10,
                             titleColor: TEXT_MUTED,
                             titleFont: { weight: '500', size: 12 },
-                            bodyColor: '#E7EDF5',
+                            bodyColor: '#ECE4C8',
                             bodyFont: { weight: '600', size: 14 },
                             displayColors: false,
                             callbacks: {

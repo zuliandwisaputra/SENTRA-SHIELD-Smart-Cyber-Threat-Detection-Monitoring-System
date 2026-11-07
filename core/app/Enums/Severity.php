@@ -43,8 +43,26 @@ enum Severity: string
         };
     }
 
+    /**
+     * Kelas warna lencana. Rendah memakai pasir (bukan hijau Aman); Sedang/Tinggi/Kritis
+     * sama dengan Waspada/Siaga/Awas.
+     */
     public function badgeClass(): string
     {
-        return AlertLevel::fromSeverity($this)->badgeClass();
+        return match ($this) {
+            self::Rendah => 'bg-pasir/10 text-pasir ring-pasir/40',
+            default => AlertLevel::fromSeverity($this)->badgeClass(),
+        };
+    }
+
+    /** Kelas warna isian (meter, garis, batang). */
+    public function fillClass(): string
+    {
+        return match ($this) {
+            self::Rendah => 'bg-pasir',
+            self::Sedang => 'bg-waspada',
+            self::Tinggi => 'bg-siaga',
+            self::Kritis => 'bg-awas',
+        };
     }
 }

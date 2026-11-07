@@ -11,7 +11,7 @@
 <{{ $tag }} @if ($href) href="{{ $href }}" wire:navigate @endif
     {{ $attributes->merge(['class' => ($bare ? '' : 'panel ').'group relative flex min-w-0 flex-col p-4 sm:p-5 transition-colors duration-150 ease-sentra'.($href ? ($bare ? ' hover:bg-raised/50' : ' hover:border-line-strong hover:bg-raised/50') : '')]) }}>
     <div class="flex items-center justify-between gap-2">
-        <span class="text-sm font-medium text-ink-2">{{ $label }}</span>
+        <span class="label-caps">{{ $label }}</span>
         @if ($icon)<x-icon :name="$icon" class="size-4 text-ink-3 transition-colors group-hover:text-ink-2" />@endif
     </div>
     <div class="mt-3 flex items-baseline gap-1.5">

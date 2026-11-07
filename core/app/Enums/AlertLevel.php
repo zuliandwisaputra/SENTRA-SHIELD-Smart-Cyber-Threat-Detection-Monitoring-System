@@ -63,7 +63,7 @@ enum AlertLevel: string
             self::Aman => 'bg-aman/10 text-aman ring-aman/40',
             self::Waspada => 'bg-waspada/10 text-waspada ring-waspada/40',
             self::Siaga => 'bg-siaga/10 text-siaga ring-siaga/40',
-            self::Awas => 'bg-awas/15 text-awas ring-awas/50',
+            self::Awas => 'bg-awas/10 text-awas ring-awas/50',
         };
     }
 

@@ -32,28 +32,34 @@ export default {
                 line: { DEFAULT: token('line'), strong: token('line-strong'), control: token('line-control') },
                 ink: { DEFAULT: token('ink'), 2: token('ink-2'), 3: token('ink-3') },
                 accent: { DEFAULT: token('accent'), ink: token('accent-ink'), strong: token('accent-strong') },
-                // Tingkat Siaga satuan = severity: Aman/Rendah, Waspada/Sedang, Siaga/Tinggi, Awas/Kritis.
+                // Tingkat Siaga satuan: Aman, Waspada, Siaga, Awas. Severity: Rendah (pasir), Sedang (= waspada),
+                // Tinggi (= siaga), Kritis (= awas).
+                pasir: token('pasir'),
                 aman: token('aman'),
                 waspada: token('waspada'),
                 siaga: token('siaga'),
                 awas: token('awas'),
-                // Netral Tailwind dipetakan ke netral SENTRA (sedikit kebiruan), agar
-                // halaman lama ikut serasi dan teks redup tetap lolos WCAG AA.
+                // Netral Tailwind dipetakan ke netral olive/krem SENTRA, agar sisa kelas gray ikut serasi
+                // dan teks redup tetap lolos WCAG AA.
                 gray: {
-                    50: '#F3F6FA', 100: '#E7EDF5', 200: '#DAE2EC', 300: '#C5D0DE', 400: '#A9B6C8',
-                    500: '#8492A8', 600: '#52657F', 700: '#2C3C51', 800: '#1D2938', 900: '#0C121C', 950: '#070B12',
+                    50: '#F6F1E1', 100: '#ECE4C8', 200: '#DED6B9', 300: '#CEC6A6', 400: '#B8B191',
+                    500: '#A69F80', 600: '#6E6A50', 700: '#4A5134', 800: '#343C26', 900: '#181D10', 950: '#0E110A',
                 },
             },
             fontFamily: {
-                // Fira dibundel lokal (fontsource, OFL-1.1): tidak ada unduhan font dari internet.
-                sans: ['"Fira Sans"', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Arial', 'sans-serif'],
-                display: ['"Fira Sans Condensed"', '"Fira Sans"', 'ui-sans-serif', 'system-ui', 'Arial Narrow', 'sans-serif'],
+                // Dibundel lokal (fontsource, OFL-1.1): tidak ada unduhan font dari internet.
+                // sans = isi (Saira Condensed), display = judul/angka (Saira Condensed tebal),
+                // stensil = judul militer (Saira Stencil One), mono = data teknis (Fira Code).
+                sans: ['"Saira Condensed"', '"Arial Narrow"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                display: ['"Saira Condensed"', '"Arial Narrow"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                stensil: ['"Saira Stencil One"', '"Saira Condensed"', 'Impact', 'sans-serif'],
                 mono: ['"Fira Code"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
             },
             borderRadius: {
-                chip: '3px',
-                control: '6px',
-                panel: '8px',
+                // Militer: sudut nyaris tajam. Dog-tag tetap membulat.
+                chip: '2px',
+                control: '3px',
+                panel: '4px',
             },
             boxShadow: {
                 // Hanya untuk lapisan melayang (dropdown, dialog). Panel cukup bergaris.
@@ -85,6 +91,10 @@ export default {
                     '0%': { transform: 'rotate(0deg)' },
                     '100%': { transform: 'rotate(360deg)' },
                 },
+                'serbu': {
+                    '0%': { strokeDashoffset: '24' },
+                    '100%': { strokeDashoffset: '0' },
+                },
             },
             animation: {
                 denyut: 'denyut 1.8s cubic-bezier(.2,.8,.2,1) infinite',
@@ -92,6 +102,7 @@ export default {
                 sorot: 'sorot 1.2s ease-out',
                 kilau: 'kilau 1.6s linear infinite',
                 sapu: 'sapu 9s linear infinite',
+                serbu: 'serbu 1.2s linear infinite',
             },
         },
     },

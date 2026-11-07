@@ -12,30 +12,28 @@
     </head>
     <body class="bg-canvas font-sans text-ink antialiased">
         <div class="relative flex min-h-screen flex-col overflow-hidden">
-            {{-- Latar: grid tipis + cincin radar. Dekoratif, tidak memuat informasi. --}}
-            <div class="latar-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_30%_40%,black_20%,transparent_75%)]" aria-hidden="true"></div>
-            <svg class="pointer-events-none absolute -left-40 top-1/2 hidden size-[860px] -translate-y-1/2 text-accent lg:block" viewBox="0 0 400 400" fill="none" aria-hidden="true">
-                <g stroke="currentColor" stroke-opacity=".14">
-                    <circle cx="200" cy="200" r="60" /><circle cx="200" cy="200" r="110" /><circle cx="200" cy="200" r="160" /><circle cx="200" cy="200" r="198" />
-                    <path d="M200 2v396M2 200h396" stroke-opacity=".08" />
+            {{-- Latar: grid peta + garis kontur + penggaris koordinat. Dekoratif, tanpa informasi. --}}
+            <div class="latar-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_35%_45%,black_25%,transparent_80%)]" aria-hidden="true"></div>
+            <svg class="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
+                <g class="stroke-accent/[0.12]" stroke-width="1.4">
+                    <path d="M-20 620C160 560 300 660 470 600S760 500 960 560 1180 640 1240 600" />
+                    <path d="M-20 660C170 610 310 700 480 645S770 545 965 605 1185 680 1240 650" />
+                    <path d="M-20 700C180 660 320 740 490 690S780 590 970 650 1190 720 1240 700" />
+                    <path d="M240 210C320 150 470 160 500 230S420 340 320 320 180 270 240 210Z" />
+                    <path d="M270 220C330 180 440 186 462 236S405 310 330 296 230 262 270 220Z" />
+                    <path d="M300 232C340 208 410 212 424 242S386 285 340 276 280 256 300 232Z" />
                 </g>
-                <g class="origin-center animate-sapu" style="transform-box: view-box;">
-                    <path d="M200 200 L200 2 A198 198 0 0 1 340 60 Z" fill="url(#sapuan)" />
-                </g>
-                <defs>
-                    <linearGradient id="sapuan" x1="200" y1="2" x2="320" y2="120" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="currentColor" stop-opacity=".16" /><stop offset="1" stop-color="currentColor" stop-opacity="0" />
-                    </linearGradient>
-                </defs>
             </svg>
+            <span class="penggaris-x" aria-hidden="true"></span>
+            <span class="penggaris-y" aria-hidden="true"></span>
 
             {{-- Strip status sistem: hanya fakta dari server ini. --}}
-            <div class="relative border-b border-line bg-panel/80">
+            <div class="relative border-b border-line bg-panel/85">
                 <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-5 gap-y-1 px-4 py-2 font-mono text-xs text-ink-3 sm:px-6">
                     <span class="inline-flex items-center gap-1.5 text-aman"><span class="size-2 rounded-full bg-aman animate-denyut" style="--denyut: var(--aman)"></span>Core aktif</span>
-                    <span class="inline-flex items-center gap-1.5"><x-icon name="clock" class="size-3.5" />{{ waktu_wib(now(), 'd/m/Y H:i') }}</span>
+                    <span class="inline-flex items-center gap-1.5"><x-icon name="clock" class="size-3.5 text-accent" />{{ dtg(now()) }}</span>
                     @if (request()->secure())
-                        <span class="inline-flex items-center gap-1.5"><x-icon name="lock" class="size-3.5" />Saluran terenkripsi TLS</span>
+                        <span class="inline-flex items-center gap-1.5"><x-icon name="lock" class="size-3.5 text-accent" />Saluran terenkripsi TLS</span>
                     @endif
                     @if (config('sentra.lab.training_label'))
                         <span class="inline-flex items-center gap-1.5 text-waspada"><x-icon name="flag" class="size-3.5" />Lingkungan latihan · data latihan</span>
@@ -45,18 +43,21 @@
 
             <main class="relative mx-auto grid w-full max-w-6xl flex-1 items-center gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
                 <section class="min-w-0">
-                    <div class="flex items-center gap-3">
-                        <x-application-logo class="size-14 text-accent" />
-                        <div>
-                            <h1 class="font-display text-[34px] font-semibold leading-none tracking-[0.14em] sm:text-[40px]">SENTRA SHIELD</h1>
-                            <p class="mt-1.5 text-[12px] uppercase tracking-[0.18em] text-ink-3">Pusat Komando Deteksi &amp; Respons Ancaman Siber</p>
+                    <div class="flex items-center gap-4">
+                        <x-application-logo class="size-16 text-accent sm:size-20" />
+                        <div class="min-w-0">
+                            <h1 class="font-stensil text-[40px] leading-none tracking-[0.08em] sm:text-[56px]">SENTRA SHIELD</h1>
+                            <p class="mt-2 text-[13px] font-semibold uppercase tracking-[0.22em] text-accent">Pusat Komando Deteksi &amp; Respons Ancaman Siber</p>
                         </div>
                     </div>
-                    <p class="mt-8 max-w-xl text-lg leading-relaxed text-ink-2">Sensor di tiap satuan, satu insiden yang bisa dijelaskan, dan respons yang mengikuti rantai komando.</p>
-                    <dl class="mt-8 hidden max-w-xl grid-cols-3 gap-6 border-t border-line pt-5 sm:grid">
-                        <div><dt class="font-display text-[15px] font-semibold text-ink">Nyata</dt><dd class="mt-1 text-sm text-ink-2">Deteksi dari telemetri asli</dd></div>
-                        <div><dt class="font-display text-[15px] font-semibold text-ink">Terukur</dt><dd class="mt-1 text-sm text-ink-2">Uji Kesiapan dalam angka</dd></div>
-                        <div><dt class="font-display text-[15px] font-semibold text-ink">Siap pakai</dt><dd class="mt-1 text-sm text-ink-2">Satu perintah, tanpa internet</dd></div>
+                    <p class="mt-8 max-w-xl text-xl leading-relaxed text-ink-2">Sensor di tiap satuan, satu insiden yang bisa dijelaskan, dan respons yang mengikuti rantai komando.</p>
+                    @if (config('sentra.lab.training_label'))
+                        <x-ui.stempel tone="waspada" size="md" class="mt-6">Lingkungan latihan</x-ui.stempel>
+                    @endif
+                    <dl class="mt-8 hidden max-w-xl grid-cols-3 gap-4 sm:grid">
+                        <div class="border-t-2 border-accent/50 pt-3"><dt class="font-stensil text-[17px] uppercase tracking-[0.1em] text-ink">Nyata</dt><dd class="mt-1 text-[15px] text-ink-2">Deteksi dari telemetri asli</dd></div>
+                        <div class="border-t-2 border-accent/50 pt-3"><dt class="font-stensil text-[17px] uppercase tracking-[0.1em] text-ink">Terukur</dt><dd class="mt-1 text-[15px] text-ink-2">Uji Kesiapan dalam angka</dd></div>
+                        <div class="border-t-2 border-accent/50 pt-3"><dt class="font-stensil text-[17px] uppercase tracking-[0.1em] text-ink">Siap pakai</dt><dd class="mt-1 text-[15px] text-ink-2">Satu perintah, tanpa internet</dd></div>
                     </dl>
                 </section>
 

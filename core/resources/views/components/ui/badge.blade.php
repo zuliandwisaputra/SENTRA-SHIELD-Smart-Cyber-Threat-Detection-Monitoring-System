@@ -11,6 +11,6 @@
         'latihan' => 'bg-waspada/15 text-waspada ring-waspada/40',
     ][$tone] ?? 'bg-inset text-ink-2 ring-line-strong';
 @endphp
-<span {{ $attributes->merge(['class' => 'inline-flex items-center gap-1 whitespace-nowrap rounded-chip px-1.5 py-0.5 text-xs font-semibold ring-1 ring-inset '.$kelas]) }}>
+<span {{ $attributes->merge(['class' => 'inline-flex items-center gap-1 whitespace-nowrap rounded-chip px-1.5 py-0.5 text-xs font-semibold uppercase tracking-[0.08em] ring-1 ring-inset '.$kelas]) }}>
     @if ($icon)<x-icon :name="$icon" class="size-3.5" />@endif{{ $slot }}
 </span>

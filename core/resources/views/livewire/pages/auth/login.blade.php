@@ -22,7 +22,10 @@ new #[Layout('layouts.guest')] class extends Component
 }; ?>
 
 <div>
-    <h2 class="mb-6 flex items-center gap-2.5 font-display text-2xl font-semibold tracking-wide"><x-icon name="fingerprint" class="size-6 text-accent" />Masuk ke Pusat Komando</h2>
+    <div class="mb-6 border-b border-line pb-4">
+        <p class="flex items-baseline gap-2" aria-hidden="true"><span class="nomor-bagian">01 //</span><span class="font-stensil text-[15px] uppercase tracking-[0.14em] text-accent">Otentikasi</span></p>
+        <h2 class="mt-2 flex items-center gap-2.5 font-stensil text-[26px] uppercase leading-tight tracking-[0.06em]"><x-icon name="fingerprint" class="size-7 text-accent" />Masuk ke Pusat Komando</h2>
+    </div>
 
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -55,7 +58,7 @@ new #[Layout('layouts.guest')] class extends Component
             </label>
         </div>
 
-        <x-primary-button class="h-11 w-full text-[15px]" wire:loading.attr="disabled" wire:target="login">
+        <x-primary-button class="h-12 w-full text-base" wire:loading.attr="disabled" wire:target="login">
             <x-icon name="log-in" class="size-4" wire:loading.remove wire:target="login" />
             <x-icon name="loader-circle" class="size-4 animate-spin" wire:loading wire:target="login" />
             Masuk
