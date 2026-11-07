@@ -107,3 +107,11 @@ Atas permintaan pemilik proyek, karena laptop demo memakai Windows 11 + Docker D
 - **Halaman Penjaga Situs hanya untuk Analis (dan Demo melihat)** sesuai bagian 11, sehingga Analis juga yang menambah/menghapus situs.
 - **Catatan jaringan lab:** `net-kodim-a` (172.32.0.0/24) dan `net-kodim-b` (172.33.0.0/24) berada di luar rentang privat 172.16.0.0/12. Di lab hal ini tidak berpengaruh karena Core memanggil `http://kodim-a/` lewat `net-pusat` (172.31.0.0/24, privat).
 
+## Keputusan Fase 3 dan perbaikan dari tes Windows (7 Nov)
+
+- **F15 tanpa server publik (keputusan B8):** link karya berupa landing page statis di `site/` (GitHub Pages) dengan video dan tangkapan layar asli dari lab. Akun Demo tetap ada di aplikasi (hanya melihat). Setiap halaman aplikasi menampilkan strip **DATA LATIHAN** saat berjalan sebagai lab (`SENTRA_TRAINING_LABEL`, bawaan aktif bila agent lab dikonfigurasi) dan selalu untuk akun Demo.
+- **Izin file dinormalkan di image dan saat container menyala.** Kode yang diambil di folder OneDrive membawa atribut read-only ke build Docker, sehingga `storage` tidak bisa ditulis dan Core *unhealthy* (HTTP 500 di `/up`). Ditemukan di tes Windows; direproduksi dan diverifikasi di lab.
+- **Unduhan image dasar tahan gagal.** `mulai-lab` memastikan image dasar ada sebelum build: yang sudah ada dilewati (aman tanpa internet), yang belum diunduh lewat cermin `mirror.gcr.io` lalu Docker Hub dengan percobaan ulang. Ditemukan di tes Windows (Docker Hub *context deadline exceeded*).
+- **Log scheduler hanya ASCII.** Penjaga Situs dijadwalkan sebagai callback; perintah artisan yang dijadwalkan membuat Laravel mencetak karakter `⇂` yang tampil sebagai `Γçé` di konsol Windows.
+- **Bukti demo otomatis.** `jalankan-demo` menyimpan rekaman terminal dan log container ke `docs/bukti-demo`; `sentra:status` merangkum Uji Kesiapan terakhir, waktu eksekusi tindakan setelah disetujui, dan verifikasi rantai audit.
+

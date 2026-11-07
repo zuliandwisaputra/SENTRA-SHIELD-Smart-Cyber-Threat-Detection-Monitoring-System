@@ -34,6 +34,8 @@ return [
     */
     'lab' => [
         'agents' => env('SENTRA_LAB_AGENTS', ''),
+        // Label "DATA LATIHAN" di setiap halaman (FR-15). Bawaan: aktif bila ini lab.
+        'training_label' => (bool) env('SENTRA_TRAINING_LABEL', env('SENTRA_LAB_AGENTS', '') !== ''),
         // Situs dummy lab untuk Penjaga Situs: "KODE-SATUAN=url" dipisah koma.
         'sites' => env('SENTRA_LAB_SITES', ''),
         'enrollment_dir' => env('SENTRA_LAB_ENROLLMENT_DIR'),

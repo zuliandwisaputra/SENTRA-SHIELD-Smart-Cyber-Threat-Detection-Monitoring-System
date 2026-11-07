@@ -52,3 +52,16 @@ test('semua peran bisa membuka Beranda Komando', function (Role $role) {
 
     $this->get('/beranda')->assertOk()->assertSee('Pohon Satuan');
 })->with(Role::cases());
+
+test('label DATA LATIHAN tampil di lab dan untuk akun Demo (FR-15)', function () {
+    $this->seed();
+    $analis = User::where('email', 'analis@sentra.lab')->first();
+    $demo = User::where('email', 'demo@sentra.lab')->first();
+
+    config(['sentra.lab.training_label' => false]);
+    $this->actingAs($analis)->get('/beranda')->assertDontSee('data-testid="label-latihan"', false);
+    $this->actingAs($demo)->get('/beranda')->assertSee('Data latihan')->assertSee('mode demo, hanya lihat');
+
+    config(['sentra.lab.training_label' => true]);
+    $this->actingAs($analis)->get('/beranda')->assertSee('Data latihan')->assertDontSee('mode demo, hanya lihat');
+});

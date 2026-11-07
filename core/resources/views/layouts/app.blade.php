@@ -16,6 +16,15 @@
     </head>
     <body class="font-sans antialiased bg-gray-950 text-gray-100">
         <div class="min-h-screen">
+            {{-- FR-15: data lab ditandai DATA LATIHAN; akun Demo hanya melihat. --}}
+            @if (config('sentra.lab.training_label') || auth()->user()?->role === \App\Enums\Role::Demo)
+                <div class="bg-amber-900/70 px-4 py-0.5 text-center text-[11px] font-semibold uppercase tracking-wider text-amber-100" data-testid="label-latihan">
+                    Data latihan · telemetri asli dari serangan di lab, bukan data operasional
+                    @if (auth()->user()?->role === \App\Enums\Role::Demo)
+                        <span>· mode demo, hanya lihat</span>
+                    @endif
+                </div>
+            @endif
             <livewire:layout.navigation />
 
             @if (isset($header))

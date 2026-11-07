@@ -5,8 +5,10 @@ namespace App\Console\Commands;
 use App\Enums\AgentStatus;
 use App\Models\Agent;
 use App\Models\Incident;
+use App\Models\ReadinessRun;
 use App\Models\ResponseAction;
 use App\Models\SecurityEvent;
+use App\Services\AuditLogger;
 use Illuminate\Console\Command;
 
 /**
@@ -80,8 +82,35 @@ class SentraStatus extends Command
             $this->line('  (belum ada)');
         }
         foreach ($actions as $action) {
-            $this->line(sprintf('  #%-4d %-10s %-15s di %-8s %s', $action->id, $action->type->value, $action->params['ip'] ?? '-', $action->targetAgent?->hostname ?? '-', $action->status->label()));
+            $delay = $action->approved_at && $action->executed_at && $action->type->value !== 'run_test'
+                ? sprintf(' (dieksekusi %d dtk setelah disetujui)', max(0, $action->approved_at->diffInSeconds($action->executed_at)))
+                : '';
+            $this->line(sprintf('  #%-4d %-10s %-15s di %-8s %s%s', $action->id, $action->type->value, $action->params['ip'] ?? '-', $action->targetAgent?->hostname ?? '-', $action->status->label(), $delay));
         }
+
+        $this->line('');
+        $this->line('UJI KESIAPAN TERAKHIR');
+        $run = ReadinessRun::query()->with(['unit', 'results.rule'])->latest('id')->first();
+        if ($run === null) {
+            $this->line('  (belum pernah dijalankan)');
+        } else {
+            $detected = $run->results->where('detected', true);
+            $this->line(sprintf('  Uji #%d %s, %s: cakupan %d/%d%s', $run->id, $run->unit?->name ?? '-', $run->status->value,
+                $detected->count(), $run->results->count(),
+                $detected->isNotEmpty() ? ', rata-rata waktu deteksi '.number_format($detected->avg('ttd_ms') / 1000, 1, ',', '.').' dtk' : ''));
+            foreach ($run->results->sortBy('scenario') as $result) {
+                $this->line(sprintf('    %-4s %-12s %s', $result->scenario,
+                    $result->detected ? 'Terdeteksi' : 'Lolos',
+                    $result->ttd_ms !== null ? number_format($result->ttd_ms / 1000, 1, ',', '.').' dtk' : ($result->note ?? '')));
+            }
+        }
+
+        $this->line('');
+        $this->line('AUDIT LOG');
+        $chain = app(AuditLogger::class)->verify();
+        $this->line($chain['ok']
+            ? "  Rantai utuh: {$chain['checked']} baris diperiksa, semua hash cocok."
+            : "  RANTAI RUSAK mulai baris #{$chain['broken_id']}: {$chain['reason']}.");
 
         $online = $this->onlineCount();
         $this->line('');

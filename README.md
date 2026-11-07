@@ -1,58 +1,73 @@
 # SENTRA SHIELD — Smart Cyber Threat Detection & Monitoring System
 
-Pusat komando deteksi dan respons ancaman siber berbasis web untuk satuan TNI AD. Sensor ringan dipasang di tiap satuan. Pusat berbasis Laravel merangkum ratusan event menjadi satu insiden. Respons mengikuti rantai komando.
+Pusat komando deteksi dan respons ancaman siber berbasis web untuk satuan TNI AD. Sensor ringan dipasang di tiap satuan. Pusat berbasis Laravel merangkum ratusan event menjadi satu insiden yang bisa dijelaskan. Respons mengikuti rantai komando: Operator mengusulkan, Komandan menyetujui dari HP, dan agent memblokir penyerang di firewall.
 
 Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive Shield).
 
-> **Nyata** — setiap deteksi berasal dari telemetri asli; tidak ada data atau angka karangan di dashboard.
-> **Terukur** — sistem menguji dirinya sendiri (Uji Kesiapan) dan menampilkan cakupan deteksi dalam angka.
-> **Siap pakai** — berjalan penuh tanpa internet, cukup di mini-PC.
+| | |
+|---|---|
+| **Link karya** | Landing page: `https://zuliandwisaputra17-stack.github.io/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System/` (diterbitkan dari folder [`site/`](site/)) |
+| **Video presentasi** | menyusul (disematkan di landing page) |
+| **Slide** | menyusul |
 
-## Status pengerjaan
+> **Nyata** — setiap deteksi berasal dari telemetri asli, dan blokir benar-benar memutus penyerang dari mesin terpisah. Tidak ada data atau angka karangan di dashboard.
+> **Terukur** — sistem menguji dirinya sendiri (Uji Kesiapan) dan menampilkan cakupan deteksi serta waktu deteksi dalam angka.
+> **Siap pakai** — satu perintah menyalakan seluruh lab; berjalan penuh tanpa internet setelah image dan model diunduh sekali; cukup di mini-PC.
 
-| Fase | Isi | Status |
-|---|---|---|
-| 0 | Fondasi repo, skema database, peran & hak akses, data master | ✅ Selesai |
-| 1a | Lab Docker, agent Python, API agent (F1, F2) | ✅ Selesai |
-| 1b | Mesin deteksi, Attack Story, skor (F3, F4, F5) | ✅ Selesai |
-| 1c | Dashboard live, respons berjenjang & blokir (F6, F7) | ✅ Selesai |
-| 2 | Uji Kesiapan, Sensor Buta, Kampanye, audit log, LAPSIT, Penjaga Situs (F8–F13) | ✅ Selesai |
-| 3 | Landing page statis + video + screenshot (F15); Telegram (F14) bila sempat | ⏳ Berikutnya, setelah stabilisasi dan perbaikan dari tes Windows |
+![Beranda Komando dengan data latihan dari lab: insiden terbuka, agent online, blokir aktif, grafik event per menit, dan pohon satuan dengan Tingkat Siaga](site/img/beranda.jpg)
 
-### Sudah jalan vs peta jalan
+*Tangkapan layar berisi DATA LATIHAN: telemetri asli dari serangan di lab, nama satuan fiktif.*
+
+## Masalah yang diselesaikan
+
+1. Satuan setingkat Kodim/Korem jarang punya analis siber khusus, sehingga log tersebar dan tidak pernah dibaca.
+2. Alat keamanan biasa membanjiri operator dengan alert mentah tanpa konteks.
+3. Respons tidak mengikuti rantai komando, dan bukti mudah berubah atau hilang.
+4. Serangan terkoordinasi ke beberapa satuan tidak terlihat bila tiap satuan dipantau terpisah.
+5. Penyerang mematikan sensor atau log lebih dulu, sehingga pertahanan buta tanpa disadari.
+
+## Cara kerja
+
+```mermaid
+flowchart LR
+  A["Agent di tiap satuan<br/>log web · SSH · firewall · FIM · Modbus"] -- "HTTPS, event batch 1 dtk" --> C["SENTRA Core<br/>deteksi 13 aturan · Attack Story · skor<br/>Kampanye · Sensor Buta · Uji Kesiapan<br/>Penjaga Situs · LAPSIT · audit berantai"]
+  C -- "WebSocket" --> D["Dashboard<br/>Operator · Analis"]
+  D -- "usul blokir" --> K["HP Komandan<br/>Setujui / Tolak"]
+  K --> C
+  C -- "perintah daftar tetap:<br/>block_ip · unblock_ip · run_test" --> A
+```
+
+Rincian komponen, alur data, API agent, katalog aturan, rumus skor, dan desain keamanan: **[docs/arsitektur.md](docs/arsitektur.md)**.
+
+## Sudah jalan vs peta jalan
 
 | Kemampuan | Status |
 |---|---|
-| Lab satu perintah: `docker compose up -d` → 3 agent terdaftar otomatis dan mengirim heartbeat | ✅ Sudah jalan (19–56 detik dari volume kosong di mesin pengembang, di luar waktu build) |
-| Agent Python tanpa dependensi: log web, SSH, firewall (NFLOG), FIM, sensor Modbus pasif | ✅ Sudah jalan, diuji dengan nmap, hydra, sqlmap, dan tulis Modbus dari container penyerang. Uji kernel di laptop demo (Windows 11, WSL2): NFLOG dan blokir nftables lulus 6/6 |
-| Antrean lokal 10.000 event saat Core putus, batch 1 detik, heartbeat 10 detik | ✅ Sudah jalan |
-| API agent sesuai PRD bagian 9 (HTTPS, token Sanctum ter-hash, 401/422/429) | ✅ Sudah jalan |
-| Kode pendaftaran sekali pakai, cabut token → agent langsung ditolak | ✅ Sudah jalan |
-| Respons berjenjang: Operator/Analis usul blokir → Komandan setuju/tolak (dari HP) → agent memblokir di nftables | ✅ Sudah jalan di lab: penyerang terputus 2,7–4,0 detik setelah disetujui (agent mengambil perintah tiap 3 detik) |
-| Rollback oleh Komandan, blokir Kedaluwarsa otomatis, riwayat tindakan | ✅ Sudah jalan |
-| Audit log berantai hash (login, ubah status, usul, setuju, eksekusi, aksi admin) + halaman Audit Log dengan filter dan tombol Verifikasi Rantai | ✅ Sudah jalan: baris yang diubah atau dihapus langsung di database ditunjukkan nomor barisnya (diuji di lab) |
-| Halaman Satuan & Agent, Pengguna; Beranda: pohon satuan + Tingkat Siaga | ✅ Sudah jalan |
-| Lima peran sesuai matriks hak akses PRD; Operator hanya melihat satuannya | ✅ Sudah jalan |
-| Mesin deteksi 13 aturan R01–R13 (pola + ambang, Sensor Buta, situs), daftar putih IP, aturan bisa diubah Admin | ✅ Sudah jalan |
-| Korelasi Attack Story: nmap + hydra + sqlmap dari satu IP = 1 insiden dengan tahap kill chain dan ATT&CK | ✅ Sudah jalan di lab (insiden muncul ±6 detik setelah serangan dimulai) |
-| Skor yang bisa dijelaskan + rincian per komponen; severity dan Tingkat Siaga satuan otomatis | ✅ Sudah jalan (contoh PRD = 240 Kritis diuji otomatis) |
-| Daftar Insiden, Detail Insiden, Detail Event (setiap angka bisa diklik ke buktinya) | ✅ Sudah jalan |
-| Beranda Komando live: metrik, feed event, grafik event per menit, pohon satuan | ✅ Sudah jalan: WebSocket Reverb (event → tampil ±2 detik), cadangan polling 3 detik |
-| Sensor Buta: heartbeat hilang > 30 detik → agent BUTA + insiden Tinggi; sumber log rutin yang diam → peringatan; agent hidup kembali tercatat | ✅ Sudah jalan di lab (alarm 39 detik setelah agent dimatikan) |
-| Kampanye lintas satuan: IP yang sama menyerang ≥ 2 satuan dalam 24 jam → skor ×1,3, blokir serentak sekali setuju | ✅ Sudah jalan di lab (penyerang terputus dari dua satuan 7,2 detik setelah disetujui dari HP) |
-| Uji Kesiapan: 11 skenario aman ke host sendiri (R01–R07, R09–R12), matriks hasil, cakupan, rata-rata waktu deteksi, riwayat | ✅ Sudah jalan di lab: cakupan 11/11, rata-rata 4,2 detik, tanpa insiden palsu |
-| LAPSIT: tombol Buat LAPSIT di Detail Insiden; LLM lokal (Ollama `qwen2.5:3b`) dengan prompt fakta JSON, setiap temuan mengutip `[EV-n]`, sitasi/IP karangan dibuang; cadangan template bila Ollama tidak ada atau > 60 detik; PDF dengan SHA-256 isi di kaki halaman; ekspor tercatat di audit | ✅ Sudah jalan di lab: template ±1 detik; jalur LLM diuji dengan Ollama tiruan (batas waktu 60 detik → template terbukti). Model asli belum diuji di sandbox pengembangan (unduhan model diblokir), perlu dicoba di laptop |
-| Halaman Pengaturan (durasi blokir default, alamat/model/batas waktu Ollama, periksa koneksi) | ✅ Sudah jalan |
-| Penjaga Situs: situs satuan diperiksa tiap menit dalam 3 varian (browser, Googlebot, referer Google); isi berbeda + kata judi → R13 injeksi judi ber-cloaking; hash halaman utama berubah di luar jadwal → R10; perbandingan isi per varian dengan kata judi disorot | ✅ Sudah jalan di lab: injeksi judol ke portal Kodim A → versi Googlebot kemiripan 7%, 8 kata judi → R13 tertaut ke insiden yang sama dengan R10 dari FIM |
-| Uji alur penuh dari nol (semua serangan → kampanye → blokir dari HP → LAPSIT → Sensor Buta → Uji Kesiapan → verifikasi audit) | ✅ Lulus di lab pengembang 6 Nov: insiden Kodim A 946 Kritis (12 aturan), Uji Kesiapan 11/11 rata-rata 4,7 detik, 0 insiden dari event uji, rantai audit utuh |
-| Akun Demo read-only (sudah ada sejak Fase 0); landing page statis `site/` + video + screenshot (F15, tanpa VPS); Telegram (F14) bila sempat | ⏳ Fase 3 |
-| Mode Latihan (replay), impor IOC offline | 🗺️ Peta jalan (di luar lingkup lomba) |
+| **F1–F2** Agent Python tanpa dependensi: log web, SSH, firewall nftables (NFLOG, cadangan raw socket), FIM, sensor Modbus pasif; antrean lokal 10.000 event saat Core putus; kode pendaftaran sekali pakai, token bisa dicabut | ✅ Diuji dengan nmap, hydra, sqlmap, unggah webshell, dan tulis Modbus dari container penyerang |
+| **F3** Mesin deteksi 13 aturan (pola + ambang) dengan teknik MITRE ATT&CK, daftar putih IP, aturan bisa diubah Admin | ✅ |
+| **F4–F5** Korelasi Attack Story per tahap kill chain; skor dengan rumus terbuka, severity, dan Tingkat Siaga satuan | ✅ ±970 event serangan ke Kodim A → 1 insiden, 11 aturan, 4 tahap, skor 946 Kritis |
+| **F6** Beranda Komando live: metrik, feed event, grafik event per menit, pohon satuan; setiap angka bisa diklik ke buktinya | ✅ WebSocket (event tampil ±2 detik), cadangan polling 3 detik |
+| **F7** Respons berjenjang: usul → setuju/tolak dari HP → blokir di nftables; rollback, kedaluwarsa otomatis, riwayat | ✅ Penyerang terputus 2,7–4,0 detik setelah Komandan menyetujui |
+| **F8** Uji Kesiapan: 11 skenario aman ke host sendiri, matriks hasil, cakupan, rata-rata waktu deteksi, riwayat | ✅ 11/11, rata-rata 4,2–4,7 detik, tanpa insiden palsu |
+| **F9** Sensor Buta: heartbeat hilang > 30 detik → agent BUTA + insiden Tinggi; sumber log rutin yang diam → peringatan | ✅ Alarm ±40 detik setelah agent dimatikan (batas 30 detik + pemeriksaan tiap 10 detik) |
+| **F10** Kampanye lintas satuan: IP sama di ≥ 2 satuan dalam 24 jam → skor ×1,3, blokir serentak sekali setuju | ✅ |
+| **F11** Audit log berantai SHA-256 + halaman Audit Log dengan tombol Verifikasi Rantai | ✅ Baris yang diubah/dihapus langsung di database ditunjukkan nomornya |
+| **F12** LAPSIT: LLM lokal (Ollama `qwen2.5:3b`) dari fakta JSON, sitasi `[EV-n]` divalidasi, cadangan template, PDF ber-hash, ekspor tercatat | ✅ Template ±2 detik; jalur LLM dan batas waktu 60 detik diuji dengan Ollama tiruan. Model asli perlu diuji di laptop demo |
+| **F13** Penjaga Situs: 3 varian (browser, Googlebot, referer Google) → injeksi judi online ber-cloaking (R13) dan defacement di luar jadwal (R10) | ✅ Injeksi judol ke portal lab terdeteksi (kemiripan versi Googlebot 7%, 8 kata judi) |
+| **F15** Mode demo read-only: akun Demo hanya melihat, label DATA LATIHAN di setiap halaman, landing page dengan video dan screenshot | ✅ Tanpa server publik (tidak ada VPS); juri membuka landing page atau menjalankan lab sendiri |
+| Pengaturan (durasi blokir default, alamat/model/batas waktu Ollama) | ✅ |
+| **F14** Persetujuan lewat Telegram (bonus) | ❌ Tidak dikerjakan |
+| Mode Latihan (replay), impor IOC offline, protokol OT tambahan (S7comm, DNP3) | 🗺️ Peta jalan jangka pendek |
+| LAPSIT berjenjang Kodim → Kodam → Pusat, anomali berbasis baseline per satuan, integrasi firewall perimeter | 🗺️ Peta jalan jangka menengah |
+| Uji coba di satu satuan nyata bersama PUSSIBERAD, sertifikasi keamanan, agent untuk Windows | 🗺️ Peta jalan jangka panjang |
 
-## Menjalankan lab demo (disarankan)
+Semua angka di atas diukur dari lab latihan pada 6–7 November 2026 (lab pengembang dan laptop demo Windows 11 + Docker Desktop/WSL2). Uji kernel di laptop demo: log firewall NFLOG dan blokir nftables lulus 6/6.
 
-**Pengguna Windows:** ikuti [panduan pemula Windows](docs/panduan-pemula-windows.md), lalu klik dua kali `lab\windows\mulai-lab.bat`. Tidak perlu mengetik perintah.
+## Menjalankan lab demo
 
-Linux/macOS — kebutuhan: Docker dengan Compose v2 (Docker Desktop atau Docker Engine), RAM kosong ±3 GB, port `8443` bebas.
+**Windows 11:** ikuti [panduan pemula Windows](docs/panduan-pemula-windows.md), lalu klik dua kali file di `lab\windows`: `mulai-lab.bat` (menyalakan lab), `jalankan-demo.bat` (skenario demo bertahap), `cek-lab.bat`, `reset-lab.bat`, `matikan-lab.bat`. Tidak perlu mengetik perintah. Taruh kode di luar folder OneDrive.
+
+**Linux/macOS:** butuh Docker dengan Compose v2, RAM kosong ±3 GB, dan port `8443` bebas.
 
 ```bash
 git clone -b claude/pensive-galileo-eow7qv https://github.com/zuliandwisaputra17-stack/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System.git
@@ -70,11 +85,13 @@ docker compose -f lab/docker-compose.yml up -d --build
 bash lab/cek-lab.sh
 ```
 
-Buka **https://localhost:8443**. Sertifikat dibuat CA lab sendiri, jadi lanjutkan saja peringatan browser. Skenario serangan, topologi, dan reset ada di [lab/README.md](lab/README.md).
+Buka **https://localhost:8443**. Sertifikat dibuat CA lab sendiri, jadi lanjutkan peringatan browser. Lab memuat Core, MySQL, dua satuan dengan portal dummy "LINGKUNGAN LATIHAN", PLC simulasi, dan mesin penyerang terpisah; agent mendaftar sendiri. Skenario serangan, topologi, dan reset: [lab/README.md](lab/README.md).
 
 **Sistem berjalan offline setelah image Docker dan model LLM ditarik sekali.** Build pertama membutuhkan internet untuk image dasar, apt, composer, dan npm.
 
-LLM lokal untuk LAPSIT bersifat opsional (tanpa LLM, LAPSIT dibuat dari template). Menyiapkannya sekali (±4–5 GB, butuh RAM tambahan ±3 GB):
+### LLM lokal untuk LAPSIT (opsional)
+
+Tanpa LLM, LAPSIT dibuat dari template. Untuk memakai LLM lokal (±4–5 GB sekali unduh, RAM tambahan ±3 GB), di Windows klik `lab\windows\siapkan-llm.bat`; di Linux:
 
 ```bash
 docker compose -f lab/docker-compose.yml --profile llm up -d
@@ -84,44 +101,51 @@ docker compose -f lab/docker-compose.yml --profile llm up -d
 docker compose -f lab/docker-compose.yml exec ollama ollama pull qwen2.5:3b
 ```
 
-Setelah itu selalu sertakan `--profile llm` saat `up` dan `down`. `down -v` **tanpa** `--profile llm` (setelah `--profile llm down`) menghapus data lab tetapi tidak menghapus model.
+Setelah itu sertakan `--profile llm` saat `up` dan `down`. Reset data lab (`--profile llm down`, lalu `down -v` tanpa profile) tidak menghapus model.
 
 ### Akun lab bawaan
 
 Kata sandi awal semua akun: `Latihan#2026` (ubah lewat `SENTRA_SEED_PASSWORD`). Hanya untuk lab: ganti kata sandi bila dipakai di luar lab.
 
-| Email | Peran | Satuan |
-|---|---|---|
-| `admin@sentra.lab` | Admin | Kodam Latihan I |
-| `komandan@sentra.lab` | Komandan | Kodam Latihan I |
-| `analis@sentra.lab` | Analis | Kodam Latihan I |
-| `operator.a@sentra.lab` | Operator | Kodim Latihan A |
-| `operator.b@sentra.lab` | Operator | Kodim Latihan B |
-| `demo@sentra.lab` | Demo (hanya lihat) | Kodam Latihan I |
+| Email | Peran | Satuan | Bisa |
+|---|---|---|---|
+| `operator.a@sentra.lab` | Operator | Kodim Latihan A | melihat satuannya, ubah status insiden, usul tindakan |
+| `operator.b@sentra.lab` | Operator | Kodim Latihan B | sama, untuk Kodim B |
+| `analis@sentra.lab` | Analis | Kodam Latihan I | lintas satuan, usul tindakan, LAPSIT, Uji Kesiapan, Penjaga Situs, audit |
+| `komandan@sentra.lab` | Komandan | Kodam Latihan I | setuju/tolak tindakan (juga dari HP), LAPSIT, audit |
+| `admin@sentra.lab` | Admin | Kodam Latihan I | satuan, agent, pengguna, aturan, pengaturan, Uji Kesiapan, audit |
+| `demo@sentra.lab` | Demo | Kodam Latihan I | hanya melihat, tanpa aksi apa pun |
 
-Seeder hanya membuat data master (satuan, akun, aturan, pengaturan). Seeder **tidak** membuat event, insiden, atau angka apa pun.
+Seeder hanya membuat data master (satuan, akun, aturan, pengaturan). Seeder **tidak** membuat event, insiden, atau angka apa pun: semua yang tampil di dashboard berasal dari telemetri agent.
+
+## Batasan yang diakui
+
+- Deteksi berbasis aturan dan ambang, belum machine learning; akurasi diukur di lab, bukan di jaringan produksi.
+- Sensor OT baru Modbus TCP, dan berjalan pada PLC simulasi.
+- Lab berjalan di satu laptop; jaringan satuan diemulasikan dengan jaringan Docker terpisah.
+- Blokir dilakukan di firewall host agent, belum di firewall perimeter atau switch.
+- LAPSIT dari LLM adalah draf yang tetap perlu diperiksa Analis.
+- Tidak ada demo publik daring (tidak ada VPS); link karya berupa landing page dengan video dan tangkapan layar.
 
 ## Struktur repo
 
 ```
-core/    aplikasi Laravel (Core + Command), Dockerfile
-agent/   sentra_agent.py, install.sh, config.example.json, unit systemd (Python, pustaka standar saja)
-lab/     docker-compose.yml, target satuan, PLC simulasi, penyerang, spike nftables
-docs/    keputusan desain, bukti demo
-site/    landing page untuk link karya
+core/    aplikasi Laravel (Core + Command), Dockerfile, test Pest
+agent/   sentra_agent.py, install.sh, config.example.json, unit systemd, test (Python, pustaka standar saja)
+lab/     docker-compose.yml, target satuan, PLC simulasi, penyerang, skrip Windows, spike nftables
+docs/    arsitektur, keputusan desain, panduan pemula Windows, bukti demo
+site/    landing page statis untuk link karya (GitHub Pages)
 ```
 
 ## Stack
 
-Laravel 13 (PHP 8.3), MySQL 8.4, Blade + Livewire + Tailwind CSS + Chart.js, Laravel Breeze (login), Laravel Sanctum (token agent), Laravel Reverb (realtime, dengan cadangan polling), agent Python 3.10+ tanpa dependensi eksternal, image lab berbasis Ubuntu 24.04.
+Laravel 13 (PHP 8.3), MySQL 8.4, Blade + Livewire 3 + Tailwind CSS + Chart.js, Laravel Breeze (login), Laravel Sanctum (token agent), Laravel Reverb (realtime, dengan cadangan polling), Dompdf (PDF LAPSIT), Ollama (LLM lokal, opsional), agent Python 3.10+ tanpa dependensi eksternal, image lab berbasis Ubuntu 24.04.
 
 Tidak ada font, CDN, atau layanan cloud yang dimuat saat runtime.
 
 ## Pengembangan dan test
 
-### Test
-
-Test Core memakai MySQL 8 (database `sentra_test`):
+Test otomatis: Core (Pest, MySQL 8) dan agent (unittest pustaka standar). Test Core memakai database `sentra_test`:
 
 ```bash
 docker run -d --name sentra-mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=sentra -e MYSQL_USER=sentra -e MYSQL_PASSWORD=sentra -p 127.0.0.1:3306:3306 mysql:8.4
@@ -137,33 +161,36 @@ docker exec sentra-mysql mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS s
 cd core && composer install && npm ci && npm run build && cp .env.example .env && php artisan key:generate && php artisan migrate:fresh --seed && php artisan test
 ```
 
-Test agent (pustaka standar saja), dari root repo:
+Test agent, dari root repo:
 
 ```bash
 python3 -m unittest discover -s agent/tests -v
 ```
 
-### Menjalankan Core tanpa Docker
-
-Setelah langkah test di atas: `php artisan serve`, lalu buka http://127.0.0.1:8000. Kebutuhan: PHP 8.3+ (ekstensi `pdo_mysql`, `mbstring`, `xml`, `curl`, `zip`, `intl`), Composer 2, Node.js 20+.
+Menjalankan Core tanpa Docker (setelah langkah di atas): `php artisan serve`, lalu buka http://127.0.0.1:8000. Kebutuhan: PHP 8.3+ (ekstensi `pdo_mysql`, `mbstring`, `xml`, `curl`, `zip`, `intl`), Composer 2, Node.js 20+.
 
 ## Dokumentasi
 
-- [Panduan pemula Windows](docs/panduan-pemula-windows.md): pasang WSL, Docker Desktop, dan Git, lalu jalankan lab dengan skrip klik-dua-kali di `lab\windows`.
+- [Arsitektur](docs/arsitektur.md): komponen, alur data, API agent, katalog aturan, rumus skor, desain keamanan.
 - [Keputusan desain](docs/keputusan-desain.md): hal yang menyimpang dari atau memperjelas PRD, beserta alasannya.
+- [Panduan pemula Windows](docs/panduan-pemula-windows.md): pasang WSL, Docker Desktop, dan Git, lalu jalankan lab dengan skrip klik-dua-kali.
 - [Lab demo](lab/README.md): topologi, skenario serangan, reset.
-- [Agent](agent/README.md): sumber telemetri, perintah daftar tetap, pemasangan di host nyata.
+- [Agent](agent/README.md): sumber telemetri, perintah daftar tetap, Uji Kesiapan, pemasangan di host nyata.
 - [Spike nftables](lab/spike/nftables/README.md): bukti log firewall dan blokir dari dalam container.
+- [Landing page](site/README.md): memasang video dan menerbitkan ke GitHub Pages.
 
 ## Pernyataan karya dasar
 
 Proyek ini dibangun di atas perangkat lunak sumber terbuka yang sudah ada:
-- Berlisensi MIT: kerangka aplikasi Laravel, Laravel Breeze (scaffolding login, tampilan Livewire/Volt), Livewire, Laravel Sanctum, Laravel Reverb, Tailwind CSS, Chart.js, Laravel Echo, pusher-js, dan barryvdh/laravel-dompdf.
-- Berlisensi LGPL (dipakai sebagai pustaka, tidak diubah): Dompdf beserta php-font-lib dan php-svg-lib, untuk PDF LAPSIT. Font DejaVu ikut paket Dompdf.
-- Dijalankan terpisah sebagai layanan opsional: Ollama (MIT) dan model Qwen2.5-3B (lisensi model dari pembuatnya), untuk draf LAPSIT.
-- Hanya dipakai di lab (lisensi masing-masing): pymodbus untuk PLC simulasi serta nmap, hydra, dan sqlmap untuk penyerang.
 
-Logika SENTRA SHIELD (agent, deteksi, korelasi, skor, respons, Uji Kesiapan, dan seterusnya) ditulis untuk lomba ini.
+- **Berlisensi MIT:** kerangka aplikasi Laravel, Laravel Breeze (scaffolding login, tampilan Livewire/Volt), Livewire, Laravel Sanctum, Laravel Reverb, Tailwind CSS dan @tailwindcss/forms, Chart.js, Laravel Echo, pusher-js, barryvdh/laravel-dompdf, serta Pest (hanya untuk test).
+- **Berlisensi LGPL (dipakai sebagai pustaka, tidak diubah):** Dompdf beserta php-font-lib dan php-svg-lib, untuk PDF LAPSIT. Font DejaVu ikut paket Dompdf.
+- **Layanan opsional yang dijalankan terpisah:** Ollama (MIT). Model bawaan Qwen2.5-3B memakai lisensi Qwen Research dari pembuatnya (penggunaan non-komersial); model bisa diganti di halaman Pengaturan.
+- **Komponen sistem di image lab** (lisensi masing-masing): Ubuntu 24.04, MySQL 8.4, nginx, PHP-FPM, OpenSSH, nftables, supervisor.
+- **Hanya dipakai di lab** (lisensi masing-masing): pymodbus untuk PLC simulasi; nmap, hydra, sqlmap, dan curl untuk mesin penyerang.
+- **Rujukan:** MITRE ATT&CK Enterprise dan ATT&CK for ICS untuk pemetaan teknik.
+
+Logika SENTRA SHIELD ditulis untuk lomba ini: agent dan sensornya, mesin deteksi dan korelasi, rumus skor, respons berjenjang, Sensor Buta, Kampanye, Uji Kesiapan, Penjaga Situs, LAPSIT dan validasi sitasinya, audit log berantai, dashboard, lab demo, dan skrip Windows.
 
 ## Lisensi
 

@@ -1,6 +1,6 @@
 # Menjalankan seluruh skenario demo berurutan (naskah video PRD bagian 12).
 # Setiap langkah berhenti menunggu Enter agar ada waktu menjelaskan di dashboard.
-# Beberapa tampilan dashboard baru muncul setelah fase terkait selesai dikerjakan.
+# Rekaman terminal dan log container disimpan ke docs\bukti-demo (bukti demo PRD).
 . (Join-Path $PSScriptRoot '_umum.ps1')
 
 $KodimA = '172.30.0.11'
@@ -9,11 +9,18 @@ $Plc = '172.30.0.20'
 
 function Serang([string]$Judul, [string[]]$Perintah) {
     Tulis-Info ('Menjalankan: ' + $Judul)
-    Compose exec -T attacker @Perintah
+    # 2>&1 + teks biasa: pesan stderr alat serang tidak tampil sebagai error merah di rekaman.
+    Compose exec -T attacker @Perintah 2>&1 | ForEach-Object { "$_" }
 }
 
 Tulis-Judul 'SENTRA SHIELD - Demo lengkap'
 if (-not (Pastikan-Docker)) { Selesai 1 }
+$stempel = Get-Date -Format 'yyyyMMdd-HHmmss'
+$buktiDir = Join-Path $SentraRoot 'docs\bukti-demo'
+New-Item -ItemType Directory -Force -Path $buktiDir | Out-Null
+$rekaman = Join-Path $buktiDir "demo-$stempel.txt"
+Start-Transcript -Path $rekaman -Force | Out-Null
+Tulis-Info "Rekaman terminal: $rekaman"
 if (-not (Lab-Menyala)) {
     Tulis-Gagal 'Lab belum menyala. Jalankan mulai-lab.bat terlebih dahulu.'
     Selesai 1
@@ -94,5 +101,12 @@ Tunggu-Enter
 
 Tulis-Judul 'Demo selesai'
 Compose exec -T sentra-core php artisan sentra:status
+$logFile = Join-Path $buktiDir "log-container-$stempel.txt"
+Tulis-Info 'Menyimpan log container (2000 baris terakhir per container)...'
+cmd /c "docker compose -f ""$SentraCompose"" logs --no-color --timestamps --tail 2000 > ""$logFile"" 2>nul"
+Stop-Transcript | Out-Null
+Tulis-Ok 'Bukti demo tersimpan di folder docs\bukti-demo:'
+Tulis-Info ("  " + (Split-Path $rekaman -Leaf) + '  (rekaman terminal, termasuk hasil Uji Kesiapan dan verifikasi audit)')
+Tulis-Info ("  " + (Split-Path $logFile -Leaf) + '  (log mentah container)')
 Tulis-Info 'Untuk mengulang dari awal: reset-lab.bat'
 Selesai 0

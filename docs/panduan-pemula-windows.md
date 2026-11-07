@@ -291,7 +291,7 @@ Semua dilakukan dengan **klik dua kali** file di folder `lab\windows`:
 |---|---|---|
 | `mulai-lab.bat` | Memastikan image dasar ada (unduh ulang otomatis bila gagal), menyalakan seluruh lab, lalu membuka dashboard di browser | Pertama kali 5–15 menit, berikutnya ±30 detik |
 | `cek-lab.bat` | Memeriksa: agent online, jumlah event, insiden, tindakan | Beberapa detik |
-| `jalankan-demo.bat` | Menjalankan seluruh skenario serangan berurutan, berhenti di tiap langkah untuk penjelasan | ±10 menit |
+| `jalankan-demo.bat` | Menjalankan seluruh skenario serangan berurutan, berhenti di tiap langkah untuk penjelasan. Rekaman terminal dan log container otomatis disimpan di `docs\bukti-demo` | ±10 menit |
 | `matikan-lab.bat` | Mematikan lab; data tetap tersimpan | ±10 detik |
 | `reset-lab.bat` | Menghapus semua data lab lalu menyalakan dari nol (sebelum latihan demo) | ±1 menit |
 | `perbarui-kode.bat` | Mengambil versi terbaru dari pengembang | Beberapa detik |
@@ -350,7 +350,7 @@ Di kanan atas dashboard ada tanda kecil:
 
 - [ ] Jalankan `perbarui-kode.bat` lalu `mulai-lab.bat` **saat masih ada internet**, supaya semua image sudah terunduh.
 - [ ] Bila memakai LLM: `siapkan-llm.bat` sudah selesai, lalu buat satu LAPSIT percobaan dan catat berapa detik munculnya.
-- [ ] Latihan penuh `reset-lab.bat` → `jalankan-demo.bat` minimal **3 kali tanpa gagal**.
+- [ ] Latihan penuh `reset-lab.bat` → `jalankan-demo.bat` minimal **3 kali tanpa gagal**. Setiap latihan meninggalkan dua file di `docs\bukti-demo` (rekaman terminal dan log container); kirim file dari latihan terbaik ke pengembang untuk dimasukkan ke repo sebagai bukti demo.
 - [ ] Siapkan video demo cadangan di laptop dan flashdisk.
 
 **Hari H, sebelum tampil:**

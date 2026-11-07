@@ -3,6 +3,7 @@
 use App\Enums\AgentStatus;
 use App\Models\Agent;
 use App\Models\SecurityEvent;
+use App\Services\AuditLogger;
 
 test('sentra:status menampilkan agent dan event asli', function () {
     $agent = Agent::factory()->create(['hostname' => 'kodim-a', 'sources' => ['web' => ['status' => 'ok'], 'modbus' => ['status' => 'disabled']]]);
@@ -35,4 +36,14 @@ test('sentra:status menampilkan mode log firewall', function () {
     $this->artisan('sentra:status')
         ->expectsOutputToContain('firewall=ok(raw socket)')
         ->assertSuccessful();
+});
+
+test('sentra:status merangkum Uji Kesiapan terakhir dan verifikasi rantai audit (bukti demo)', function () {
+    $this->seed();
+    app(AuditLogger::class)->record('login');
+
+    $this->artisan('sentra:status')
+        ->expectsOutputToContain('UJI KESIAPAN TERAKHIR')
+        ->expectsOutputToContain('(belum pernah dijalankan)')
+        ->expectsOutputToContain('Rantai utuh: 1 baris diperiksa, semua hash cocok.');
 });
