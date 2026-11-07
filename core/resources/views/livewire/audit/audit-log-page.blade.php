@@ -12,7 +12,7 @@
 
         return $log->created_at <= $waktuVerif ? 'utuh' : 'netral';
     };
-    $warnaMata = ['utuh' => 'bg-aman', 'putus' => 'bg-awas ring-4 ring-awas/30', 'netral' => 'bg-line-strong'];
+    $warnaMata = ['utuh' => 'bg-aman', 'putus' => 'bg-awas ring-4 ring-awas/30', 'netral' => 'bg-line-control'];
     $garisMata = ['utuh' => 'bg-aman/50', 'putus' => 'bg-awas/60', 'netral' => 'bg-line-strong'];
 @endphp
 <div>
@@ -41,7 +41,8 @@
                         <x-icon :name="! $verification ? 'link-2' : ($verification['ok'] ? 'shield-check' : 'unlink')" class="size-7" />
                     </span>
                     <div class="min-w-0">
-                        <h3 id="verifikasi-judul" class="panel-title">Verifikasi Rantai</h3>
+                        <p class="flex items-baseline gap-2" aria-hidden="true"><span class="nomor-bagian">01 //</span><span class="font-stensil text-[19px] uppercase leading-none tracking-[0.08em] text-ink">Rantai bukti</span></p>
+                        <h3 id="verifikasi-judul" class="mt-1 text-sm font-semibold text-ink-2">Verifikasi Rantai</h3>
                         <p class="mt-0.5 text-sm text-ink-3">{{ number_format($total, 0, ',', '.') }} baris tercatat. Verifikasi menghitung ulang hash seluruh baris dari yang pertama.</p>
                     </div>
                 </div>
@@ -57,14 +58,18 @@
 
             @if ($verification)
                 @if ($verification['ok'])
-                    <div class="border-t border-aman/30 bg-aman/[0.07] px-5 py-4 sm:px-6" role="status" data-testid="hasil-verifikasi">
-                        <p class="font-display text-[28px] font-semibold leading-tight text-aman">Rantai utuh.</p>
-                        <p class="mt-1 text-sm text-ink-2">{{ number_format($verification['checked'], 0, ',', '.') }} baris diperiksa, semua hash cocok.
-                            <span class="data text-ink-3">({{ waktu_wib($waktuVerif, 'H:i:s') }})</span></p>
+                    <div class="flex flex-wrap items-center justify-between gap-4 border-t border-aman/30 bg-aman/[0.07] px-5 py-4 sm:px-6" role="status" data-testid="hasil-verifikasi">
+                        <div>
+                            <p class="font-stensil text-[32px] uppercase leading-tight tracking-[0.06em] text-aman">Rantai utuh.</p>
+                            <p class="mt-1 text-sm text-ink-2">{{ number_format($verification['checked'], 0, ',', '.') }} baris diperiksa, semua hash cocok.
+                                <span class="data text-ink-3">({{ waktu_wib($waktuVerif, 'H:i:s') }})</span></p>
+                        </div>
+                        <x-ui.stempel tone="aman" size="lg" aria-hidden="true">Terverifikasi</x-ui.stempel>
                     </div>
                 @else
                     <div class="border-t border-awas/40 bg-awas/[0.08] px-5 py-4 sm:px-6" role="alert" data-testid="hasil-verifikasi">
-                        <p class="font-display text-[28px] font-semibold leading-tight text-awas">Rantai RUSAK mulai baris #{{ $verification['broken_id'] }}:</p>
+                        <x-ui.stempel tone="awas" size="lg" class="float-right ms-4" aria-hidden="true">Rantai putus</x-ui.stempel>
+                        <p class="font-stensil text-[28px] uppercase leading-tight tracking-[0.04em] text-awas">Rantai RUSAK mulai baris #{{ $verification['broken_id'] }}:</p>
                         <p class="mt-1 text-sm text-ink">{{ $verification['reason'] }}.
                             {{ number_format($verification['checked'], 0, ',', '.') }} baris sebelumnya utuh.</p>
                         <x-ui.button variant="danger" size="sm" icon="eye" class="mt-3" wire:click="showRow({{ $verification['broken_id'] }})">Lihat baris #{{ $verification['broken_id'] }}</x-ui.button>
@@ -74,7 +79,8 @@
         </section>
 
         {{-- Filter: satu baris di atas tabel. --}}
-        <div class="panel grid gap-3 p-4 sm:grid-cols-2 sm:p-5 lg:grid-cols-[repeat(4,minmax(0,1fr))_auto] lg:items-end">
+        <div class="panel grid gap-3 p-4 sm:grid-cols-2 sm:p-5 lg:grid-cols-[auto_repeat(4,minmax(0,1fr))_auto] lg:items-end">
+            <p class="flex items-baseline gap-2 self-center sm:col-span-2 lg:col-span-1" aria-hidden="true"><span class="nomor-bagian">02 //</span><span class="font-stensil text-[17px] uppercase leading-none tracking-[0.08em] text-ink">Saringan</span></p>
             <div>
                 <x-input-label for="f-aksi" value="Aksi" />
                 <select wire:model.live="aksi" id="f-aksi" class="mt-1.5 block h-10 w-full text-sm">
@@ -118,7 +124,7 @@
                 @php [$label, $url] = \App\Livewire\Audit\AuditLogPage::subject($log); $m = $mata($log); @endphp
                 <li @class(['relative py-3 pl-9 pr-3', 'bg-awas/[0.08]' => $m === 'putus']) wire:key="audit-hp-{{ $log->id }}">
                     <span class="absolute inset-y-0 left-[1.1rem] w-0.5 {{ $garisMata[$m] }}" aria-hidden="true"></span>
-                    <span class="absolute left-[1.1rem] top-4 size-2.5 -translate-x-[40%] rounded-full {{ $warnaMata[$m] }}" aria-hidden="true"></span>
+                    <span class="absolute left-[1.1rem] top-4 size-2.5 -translate-x-[40%] rotate-45 {{ $warnaMata[$m] }}" aria-hidden="true"></span>
                     <div class="flex items-baseline justify-between gap-2">
                         <span class="text-sm font-medium text-ink">{{ ucfirst(str_replace('_', ' ', $log->action)) }}</span>
                         <span class="shrink-0 font-mono text-xs text-ink-3">#{{ $log->id }}</span>
@@ -137,6 +143,10 @@
         </ul>
 
         <div class="panel hidden md:block">
+            <header class="panel-head">
+                <p class="flex items-baseline gap-2" aria-hidden="true"><span class="nomor-bagian">03 //</span><span class="font-stensil text-[19px] uppercase leading-none tracking-[0.08em] text-ink">Buku log</span></p>
+                <span class="font-mono text-xs text-ink-3">hash SHA-256 · ← hash baris sebelumnya</span>
+            </header>
             <x-ui.table caption="Baris audit log berantai">
                 <x-slot:head>
                     <tr>
@@ -149,7 +159,7 @@
                     <tr wire:key="audit-{{ $log->id }}" @class(['bg-awas/[0.08] ring-1 ring-inset ring-awas/60' => $m === 'putus']) @if ($log->id === $brokenId) data-testid="baris-rusak" @endif>
                         <td class="relative !py-0">
                             <span class="absolute inset-y-0 left-1/2 w-0.5 -translate-x-1/2 {{ $garisMata[$m] }}" aria-hidden="true"></span>
-                            <span class="absolute left-1/2 top-4 size-2.5 -translate-x-1/2 rounded-full {{ $warnaMata[$m] }}" @if ($m === 'putus') title="Titik putus rantai" @endif aria-hidden="true"></span>
+                            <span class="absolute left-1/2 top-4 size-2.5 -translate-x-1/2 rotate-45 {{ $warnaMata[$m] }}" @if ($m === 'putus') title="Titik putus rantai" @endif aria-hidden="true"></span>
                         </td>
                         <td class="data text-ink-3">{{ $log->id }}</td>
                         <td class="whitespace-nowrap font-mono text-xs text-ink-2">{{ waktu_wib($log->created_at, 'd/m/Y H:i:s.v') }}</td>
