@@ -85,7 +85,7 @@ new class extends Component
                 <span class="hidden whitespace-nowrap font-stensil text-[16px] tracking-[0.06em] text-ink min-[400px]:inline">SENTRA SHIELD</span>
             </a>
 
-            <span class="hidden items-center gap-1.5 font-mono text-[13px] text-ink-2 sm:inline-flex" title="Date-time group (WIB)"
+            <span wire:ignore class="hidden items-center gap-1.5 font-mono text-[13px] text-ink-2 sm:inline-flex" title="Date-time group (WIB)"
                 x-data="{ t: @js(dtg(now())) }" x-init="setInterval(() => { const d = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta' })); const b = ['JAN','FEB','MAR','APR','MEI','JUN','JUL','AGT','SEP','OKT','NOV','DES'][d.getMonth()]; const p = (n) => String(n).padStart(2, '0'); t = p(d.getDate()) + p(d.getHours()) + p(d.getMinutes()) + ' WIB ' + b + ' ' + String(d.getFullYear()).slice(2); }, 15000)">
                 <x-icon name="clock" class="size-4 text-accent" /><span class="tracking-[0.06em]" x-text="t">{{ dtg(now()) }}</span>
             </span>
@@ -96,7 +96,7 @@ new class extends Component
                         <x-icon :name="$ikonTingkat[$tingkat->value]" class="size-4" /><span class="hidden sm:inline">Siaga:</span> {{ $tingkat->label() }}
                     </a>
                 @endif
-                <span data-sentra-live class="inline-flex h-7 items-center whitespace-nowrap rounded-chip border border-line-strong bg-canvas px-2 font-display text-xs font-bold uppercase tracking-[0.14em] text-ink-2" role="status" title="WebSocket belum tersambung; diperbarui tiap 3 detik">Polling</span>
+                <span data-sentra-live wire:ignore class="inline-flex h-7 items-center whitespace-nowrap rounded-chip border border-line-strong bg-canvas px-2 font-display text-xs font-bold uppercase tracking-[0.14em] text-ink-2" role="status" title="WebSocket belum tersambung; diperbarui tiap 3 detik">Polling</span>
                 <x-dropdown align="right" width="w-60">
                     <x-slot name="trigger">
                         <button aria-label="Menu pengguna {{ $user->name }}" class="flex items-center gap-1.5 rounded-control px-1.5 py-1 text-start transition-colors duration-150 hover:bg-raised focus:outline-none focus-visible:ring-2 focus-visible:ring-accent">
