@@ -3032,7 +3032,9 @@
   "sensorMatiKeButaMs": 29189,
   "sensorHidupKeOnlineMs": 3713,
   "ujiKesiapanDurasiMs": 69851,
-  "auditTeks": "Rantai utuh. 21 baris diperiksa, semua hash cocok. (09:50:18 WIB) Terverifikasi"
+  "auditTeks": "Rantai utuh. 21 baris diperiksa, semua hash cocok. (09:50:18 WIB) Terverifikasi",
+  "nmapKeInsidenDiBerandaMs": 2500,
+  "catatanNmapKeInsidenDiBeranda": "Diukur dari frame video Analis: kartu Insiden berubah di 22,36 dtk, nmap dimulai di 19,86 dtk (penanda nmap-a). Sampel layar (tiap 0,4 dtk) mencatat 22,8 dtk."
  },
  "db": {
   "insiden": [
@@ -3453,7 +3455,45 @@
    "checked": 22,
    "broken_id": null,
    "reason": null
-  }
+  },
+  "eventPenyerangPerSumber": [
+   {
+    "dari": "2026-11-08 02:42:14.462000",
+    "jumlah": 805,
+    "sampai": "2026-11-08 02:42:15.537000",
+    "satuan": "KODIM-LAT-A",
+    "sumber": "firewall"
+   },
+   {
+    "dari": "2026-11-08 02:43:22.210000",
+    "jumlah": 128,
+    "sampai": "2026-11-08 02:44:50.661000",
+    "satuan": "KODIM-LAT-A",
+    "sumber": "ssh"
+   },
+   {
+    "dari": "2026-11-08 02:44:52.413000",
+    "jumlah": 803,
+    "sampai": "2026-11-08 02:44:53.456000",
+    "satuan": "KODIM-LAT-B",
+    "sumber": "firewall"
+   },
+   {
+    "dari": "2026-11-08 02:45:30.000000",
+    "jumlah": 85,
+    "sampai": "2026-11-08 02:46:54.000000",
+    "satuan": "KODIM-LAT-A",
+    "sumber": "web"
+   },
+   {
+    "dari": "2026-11-08 02:45:43.988000",
+    "jumlah": 2,
+    "sampai": "2026-11-08 02:45:43.990000",
+    "satuan": "KODIM-LAT-A",
+    "sumber": "modbus"
+   }
+  ],
+  "catatanEventPenyerangPerSumber": "Diambil 8 Nov 2026 03:0x UTC dari lab yang sama setelah perekaman (data belum di-reset); kueri sama dengan rekam.cjs versi berikutnya."
  },
  "galat": [
   {

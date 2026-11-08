@@ -1,0 +1,101 @@
+{
+ "mulai": 1794106800914,
+ "video": {
+  "operator": {
+   "berkas": "rekaman/akses-operator.webm",
+   "akun": "operator.a@sentra.lab",
+   "mulai": 1794106801046
+  },
+  "analis": {
+   "berkas": "rekaman/akses-analis.webm",
+   "akun": "analis@sentra.lab",
+   "mulai": 1794106801084
+  }
+ },
+ "penanda": [
+  {
+   "t": 1794106804175,
+   "video": "operator",
+   "id": "beranda",
+   "ket": "Beranda operator.a@sentra.lab",
+   "agent": "Agent online 2 / 2 Tidak ada agent buta",
+   "insiden": "Insiden terbuka 1 Kritis 1",
+   "kotak": {
+    "agent": {
+     "x": 536,
+     "y": 657,
+     "w": 209,
+     "h": 191
+    },
+    "menu": {
+     "x": 0,
+     "y": 90,
+     "w": 263,
+     "h": 910
+    },
+    "peta": {
+     "x": 971,
+     "y": 220,
+     "w": 887,
+     "h": 881
+    },
+    "pengguna": {
+     "x": 0,
+     "y": 1000,
+     "w": 263,
+     "h": 80
+    }
+   }
+  },
+  {
+   "t": 1794106804177,
+   "video": "analis",
+   "id": "beranda",
+   "ket": "Beranda analis@sentra.lab",
+   "agent": "Agent online 3 / 3 Tidak ada agent buta",
+   "insiden": "Insiden terbuka 3 Kritis 1 Tinggi 1 Rendah 1",
+   "kotak": {
+    "agent": {
+     "x": 536,
+     "y": 657,
+     "w": 209,
+     "h": 255
+    },
+    "menu": {
+     "x": 0,
+     "y": 90,
+     "w": 263,
+     "h": 910
+    },
+    "peta": {
+     "x": 971,
+     "y": 220,
+     "w": 887,
+     "h": 881
+    },
+    "pengguna": {
+     "x": 0,
+     "y": 1000,
+     "w": 263,
+     "h": 80
+    }
+   }
+  },
+  {
+   "t": 1794106815893,
+   "video": "operator",
+   "id": "insiden",
+   "ket": "Daftar insiden operator.a@sentra.lab",
+   "baris": 1
+  },
+  {
+   "t": 1794106816417,
+   "video": "analis",
+   "id": "insiden",
+   "ket": "Daftar insiden analis@sentra.lab",
+   "baris": 3
+  }
+ ],
+ "galat": [],
+ "selesai": 1794106823741
+}

@@ -1,17 +1,17 @@
 import { Composition } from "remotion";
+import { DURASI_TOTAL } from "./adegan/daftar";
 import { muatFont } from "./fonts";
-import { Placeholder } from "./Placeholder";
 import { VIDEO } from "./tema";
+import { SentraDemo } from "./Video";
 
 muatFont();
 
-// Satu komposisi utama. Adegan baru dibuat setelah storyboard diterima.
 export const RemotionRoot: React.FC = () => {
   return (
     <Composition
       id="SentraDemo"
-      component={Placeholder}
-      durationInFrames={VIDEO.fps * 10}
+      component={SentraDemo}
+      durationInFrames={DURASI_TOTAL * VIDEO.fps}
       fps={VIDEO.fps}
       width={VIDEO.width}
       height={VIDEO.height}

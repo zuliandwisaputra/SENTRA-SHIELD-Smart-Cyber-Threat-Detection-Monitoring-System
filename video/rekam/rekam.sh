@@ -23,11 +23,17 @@ echo "== $(date +%T) Merekam"
 rm -rf public/rekaman/stills
 node rekam/rekam.cjs
 
+echo "== $(date +%T) Footage hak akses (Operator vs Analis, lab yang sama)"
+node rekam/rekam-akses.cjs
+
 echo "== $(date +%T) Pasca-proses"
 if [ -f public/rekaman/lapsit.pdf ] && command -v pdftoppm >/dev/null; then
   pdftoppm -png -r 120 -f 1 -l 2 public/rekaman/lapsit.pdf public/rekaman/stills/lapsit-pdf
+  pdftoppm -png -r 220 -f 1 -l 1 public/rekaman/lapsit.pdf public/rekaman/stills/lapsit-hd
 fi
+# WebM (VP8) dari Playwright diubah ke MP4 H.264 berkeyframe rapat agar seek di Remotion akurat.
 for f in public/rekaman/*.webm; do
+  ffmpeg -v error -y -i "$f" -c:v libx264 -preset slow -crf 14 -g 25 -pix_fmt yuv420p -movflags +faststart -an "${f%.webm}.mp4"
   echo "$f: $(ffprobe -v error -show_entries format=duration,size -of csv=p=0 "$f")"
 done
 $DC exec -T sentra-core php artisan sentra:status || true

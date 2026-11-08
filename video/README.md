@@ -2,7 +2,7 @@
 
 Video demo untuk juri Kartika Cyber Hackathon 2026. Tujuannya: setelah menonton, juri paham cara kerja SENTRA dari serangan sampai blokir.
 
-Status: **persiapan**. Proyek dan footage asli sudah siap; adegan dibuat setelah storyboard diterima. Belum ada render final.
+Status: **pratinjau menunggu persetujuan**. 11 adegan sesuai storyboard sudah dibuat (5:00). Naskah narasi: [`docs/naskah-video.md`](../docs/naskah-video.md). Render final dilakukan setelah pratinjau disetujui; berkas MP4 final tidak di-commit.
 
 ## Spesifikasi keluaran
 
@@ -27,17 +27,24 @@ Status: **persiapan**. Proyek dan footage asli sudah siap; adegan dibuat setelah
 ```
 video/
   src/
-    Root.tsx          komposisi SentraDemo (1920x1080, 60 fps); saat ini penanda sementara
-    tema.ts           token warna dan huruf (sama dengan Core)
-    fonts.ts          memuat font lokal lewat @remotion/fonts
-    data/rekaman.json transkrip terminal, penanda waktu, sampel layar, dan angka hasil ukur
+    Root.tsx            komposisi SentraDemo (1920x1080, 60 fps, 5:00)
+    Video.tsx           urutan 11 adegan + slot narasi per adegan
+    adegan/             A01Intro ... A11Penutup, daftar.ts (urutan dan durasi), Bingkai.tsx
+    komponen/           Footage (kamera, sorotan, tanda klik, bingkai HP), Terminal (keluaran asli), dasar (panel, keterangan, stempel, logo)
+    tema.ts, fonts.ts   token warna/huruf dan font lokal
+    data/rekaman.json   transkrip terminal, penanda waktu, sampel layar, angka hasil ukur
+    data/akses.json     penanda footage hak akses (Operator vs Analis)
+    data/identitas.ts   nama tim, link repo (isi NAMA_TIM sebelum render final)
   public/
-    fonts/            Saira Stencil One, Saira Condensed, Fira Code (+ lisensi OFL)
-    rekaman/          footage hasil rekam (tidak di-commit, lihat di bawah)
+    fonts/              Saira Stencil One, Saira Condensed, Fira Code (+ lisensi OFL)
+    narasi/             taruh rekaman suara per adegan di sini (lihat docs/naskah-video.md)
+    rekaman/            footage hasil rekam (tidak di-commit)
   rekam/
-    rekam.sh          reset lab dari nol lalu jalankan perekam
-    rekam.cjs         skenario perekaman Playwright + serangan sungguhan + pengukuran
-  .agents/skills/     Remotion Agent Skills resmi (dipasang dengan npx remotion skills add)
+    rekam.sh            reset lab dari nol, rekam, footage hak akses, konversi MP4
+    rekam.cjs           skenario perekaman Playwright + serangan sungguhan + pengukuran
+    rekam-akses.cjs     footage Operator Kodim A vs Analis Kodam pada lab yang sama
+    pratinjau.cjs       render gambar diam di detik tertentu
+  .agents/skills/       Remotion Agent Skills resmi (dipasang dengan npx remotion skills add)
 ```
 
 ## Footage asli
@@ -60,6 +67,8 @@ Berkas yang dihasilkan:
 | --- | --- | --- |
 | `public/rekaman/analis-desktop.webm` | Rekaman layar Analis, 1920 x 1080, 25 fps (VP8, bawaan Playwright) | Tidak |
 | `public/rekaman/komandan-hp.webm` | Rekaman layar Komandan, 390 x 844 | Tidak |
+| `public/rekaman/akses-operator.webm`, `akses-analis.webm` | Beranda Operator Kodim A dan Analis Kodam, direkam bersamaan setelah rekaman utama | Tidak |
+| `public/rekaman/*.mp4` | Salinan H.264 dari tiap WebM (keyframe tiap 1 detik) yang dipakai Remotion | Tidak |
 | `public/rekaman/stills/*.png` | Tangkapan layar di momen penting. HP pada skala 3x agar tetap tajam saat diperbesar | Tidak |
 | `public/rekaman/lapsit.pdf` | LAPSIT asli yang diunduh Analis | Tidak |
 | `src/data/rekaman.json` | Transkrip terminal, penanda waktu, sampel layar, angka | Ya |
@@ -172,7 +181,7 @@ Waktu di footage mentah (menit:detik).
 ### Catatan untuk storyboard
 
 - Di HP (390 px), Antrean Persetujuan memecah IP menjadi `172.30.0.6` / `6`. Ini cacat tampilan Core. Sudah diusulkan sebagai tugas terpisah di branch utama. Bila diperbaiki, rekam ulang sebelum render final.
-- Banner hydra asli memuat kalimat "Please do not use in military or secret service organizations...". Itu keluaran asli alat; panel terminal bisa menampilkan baris yang relevan saja.
+- Banner hydra asli memuat kalimat "Please do not use in military or secret service organizations...". Panel terminal di adegan 4 tidak menampilkan baris banner itu; baris lain tampil apa adanya, tanpa diubah.
 - Nmap mencetak jam UTC (`02:42 UTC`); dashboard dan terminal akses portal memakai WIB. Keduanya keluaran asli.
 - LAPSIT di footage dibuat oleh template (bukan LLM) dan dokumennya mengatakan begitu.
 
@@ -202,4 +211,20 @@ npm run dev           # buka Remotion Studio untuk pratinjau
 npm run lint          # eslint + tsc
 ```
 
-Render final dilakukan setelah storyboard disetujui.
+Gambar diam di titik pratinjau bawaan (atau detik tertentu):
+
+```bash
+node rekam/pratinjau.cjs out/pratinjau
+```
+
+Render final (setelah pratinjau disetujui), 1920 x 1080, 60 fps, H.264:
+
+```bash
+npx remotion render SentraDemo out/sentra-shield-demo.mp4 --codec=h264 --crf=18
+```
+
+Bila Remotion tidak bisa mengunduh Chrome Headless Shell (jaringan dibatasi), tambahkan `--browser-executable=<path chrome-headless-shell>`; untuk `pratinjau.cjs` pakai variabel `REMOTION_CHROME`. Folder `out/` tidak di-commit.
+
+## Narasi
+
+Slot narasi ada di tiap adegan. Taruh `public/narasi/<id adegan>.wav` (atau `.mp3`/`.m4a`), misalnya `public/narasi/04-deteksi.wav`; berkas yang ada otomatis diputar mulai detik pertama adegannya. Naskah, durasi, dan id tiap adegan: [`docs/naskah-video.md`](../docs/naskah-video.md). Tanpa berkas narasi, video hening (tidak ada musik).

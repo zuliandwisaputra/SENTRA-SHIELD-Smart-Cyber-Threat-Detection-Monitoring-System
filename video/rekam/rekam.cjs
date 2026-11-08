@@ -625,6 +625,10 @@ async function tunggu(page, fn, arg, batas, label) {
     "deteksiPerAturan",
     `select json_arrayagg(json_object('aturan', x.code, 'nama', x.name, 'jumlah', x.n, 'insiden', x.inc, 'pertama', x.pertama)) from (select r.code, r.name, count(*) n, min(d.incident_id) inc, date_format(min(d.detected_at), '%Y-%m-%d %H:%i:%s.%f') pertama from detections d join detection_rules r on r.id=d.rule_id join events e on e.id=d.event_id where e.is_test=0 group by r.code, r.name order by r.code) x`,
   );
+  ambil(
+    "eventPenyerangPerSumber",
+    `select json_arrayagg(json_object('satuan', x.code, 'sumber', x.source, 'jumlah', x.n, 'dari', x.dari, 'sampai', x.sampai)) from (select u.code, e.source, count(*) n, date_format(min(e.occurred_at), '%Y-%m-%d %H:%i:%s.%f') dari, date_format(max(e.occurred_at), '%Y-%m-%d %H:%i:%s.%f') sampai from events e join units u on u.id=e.unit_id where e.src_ip='172.30.0.66' group by u.code, e.source order by min(e.occurred_at)) x`,
+  );
   ambil("jumlahEvent", `select json_object('semua', count(*), 'uji', sum(is_test), 'serangan', sum(src_ip='172.30.0.66')) from events`);
   ambil(
     "eventPerInsiden",
