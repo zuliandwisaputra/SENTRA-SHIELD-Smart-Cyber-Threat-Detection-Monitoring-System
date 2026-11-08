@@ -27,7 +27,7 @@ const D_UNDUH = detikPenanda("unduh-pdf");
 
 // Bagian (detik adegan).
 const B_KUTIPAN = kalimatMulai(ID, 2) - 0.3; // "disusun dari data insiden ... mengutip nomor bukti"
-const B_UNDUH = pada(ID, "PDF-nya") - 1.0;
+const B_UNDUH = pada(ID, "Berkas PDF-nya") - 1.0;
 const B_SEGEL = pada(ID, "disegel") - 0.2;
 
 const POT_BUAT = dariJangkar(
@@ -66,13 +66,13 @@ export const S12Lapsit: React.FC<{ durasi: number }> = ({ durasi }) => {
   const ukur = interpolate(d, [tTerbit, tTerbit + 0.3, B_KUTIPAN - 0.3, B_KUTIPAN], [0, 1, 1, 0], klem);
   const tStempel = pada(ID, "SHA-256") + 0.1;
   const stempel = interpolate(d, [tStempel, tStempel + 0.3], [0, 1], klem);
-  const mulaiUnduh = D_UNDUH - (pada(ID, "PDF-nya") - B_UNDUH);
+  const mulaiUnduh = D_UNDUH - (pada(ID, "Berkas PDF-nya") - B_UNDUH);
   return (
     <Bingkai id={ID} nomor="12" judul="Demo 8 · LAPSIT" durasi={durasi} dataLatihan dtgTeks={dtg(penanda("buat-lapsit").t)} tigaBagian={[kalimatMulai(ID, 0), kalimatMulai(ID, 1), kalimatMulai(ID, 3)]}>
       <Bunyi jenis="klik" pada={pada(ID, "satu klik")} />
       <Bunyi jenis="ketik-panjang" pada={tTerbit} keras={0.8} />
       <Bunyi jenis="whoosh" pada={B_KUTIPAN - 0.1} keras={0.6} />
-      <Bunyi jenis="klik" pada={pada(ID, "PDF-nya")} />
+      <Bunyi jenis="klik" pada={pada(ID, "Berkas PDF-nya")} />
       <Bunyi jenis="stempel" pada={tStempel} />
 
       <Sequence durationInFrames={fr(B_KUTIPAN)} layout="none">

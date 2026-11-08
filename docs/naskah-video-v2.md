@@ -149,7 +149,7 @@ Durasi per adegan adalah perkiraan. Teks narasi ditulis dengan ejaan asli dan se
 **SFX:** teleprinter untuk baris terminal, bip saat insiden muncul dan saat Tingkat Siaga naik.
 
 **Narasi:**
-> Demo dimulai. Semua tampilan aplikasi adalah rekaman asli dari lab. Apa yang terjadi: penyerang memindai port Kodim A dengan nmap, lalu dengan hydra mencoba 128 kombinasi nama pengguna dan kata sandi. Apa yang dilakukan SENTRA: 3,6 detik setelah pemindaian dimulai, insiden baru muncul di layar, tanpa perlu dimuat ulang. Insiden adalah satu berkas kasus yang mengumpulkan semua jejak dari penyerang yang sama. Begitu percobaan login menumpuk, Tingkat Siaga naik dari Aman ke Siaga. Kenapa ini penting: petugas tidak perlu membaca ratusan baris catatan; layar memberi tahu sendiri saat ada bahaya.
+> Demo dimulai. Semua tampilan aplikasi adalah rekaman asli dari lab. Apa yang terjadi: penyerang memindai port Kodim A dengan nmap. Lalu dengan hydra, ia mencoba 128 kombinasi nama pengguna dan kata sandi. Apa yang dilakukan SENTRA: 3,6 detik setelah pemindaian dimulai, insiden baru muncul di layar, tanpa perlu dimuat ulang. Insiden adalah satu berkas kasus yang mengumpulkan semua jejak dari penyerang yang sama. Begitu percobaan login menumpuk, Tingkat Siaga naik dari Aman ke Siaga. Kenapa ini penting: petugas tidak perlu membaca ratusan baris catatan; layar memberi tahu sendiri saat ada bahaya.
 
 ### 06. Demo 2: satu insiden, satu cerita (≈ 2:45–3:15)
 
@@ -243,7 +243,7 @@ Lalu footage asli tiga varian di Penjaga Situs.
 **SFX:** klik, teleprinter, stempel.
 
 **Narasi:**
-> Setelah itu, analis membuat Laporan Situasi, atau LAPSIT, dengan satu klik. Laporan selesai dalam kurang dari satu detik. Laporan ini disusun dari data insiden, bukan dikarang, dan setiap temuan mengutip nomor bukti aslinya. PDF-nya disegel dengan sidik jari SHA-256, sehingga perubahan sekecil apa pun akan ketahuan.
+> Setelah itu, analis membuat Laporan Situasi, atau LAPSIT, dengan satu klik. Laporan selesai dalam kurang dari satu detik. Laporan ini disusun dari data insiden, bukan dikarang, dan setiap temuan mengutip nomor bukti aslinya. Berkas PDF-nya disegel dengan sidik jari SHA-256, sehingga perubahan sekecil apa pun akan ketahuan.
 
 ### 13. Demo 9: Sensor Buta (≈ 6:10–6:34)
 
@@ -286,7 +286,7 @@ Lalu footage asli tiga varian di Penjaga Situs.
 **Visual:** tabel angka asli (seperti v1) dan empat kartu kelayakan.
 
 **Narasi:**
-> Semua angka di video ini diukur dari rekaman lab yang sama. Dan SENTRA siap dipasang: satu klik untuk menyalakan, berjalan tanpa internet, cukup di mini-PC, dan agent dipasang dengan satu skrip.
+> Semua angka di video ini diukur dari rekaman lab yang sama. Dan SENTRA siap dipasang: satu klik untuk menyalakan, berjalan tanpa internet, cukup di mini-PC, dan agent dipasang dengan satu perintah.
 
 ### 18. Rekap 30 detik (≈ 7:47–8:17)
 
@@ -323,6 +323,10 @@ Hal-hal yang disesuaikan saat membuat video final, tanpa mengubah isi yang diset
 
 - **Angka mengikuti rekaman ulang.** Contoh: insiden tampil 3,6 detik setelah nmap dimulai (diukur dari frame video), dan penyerang terputus 3,19 detik setelah Setujui (diukur dari jam di terminal penyerang). Angka lain tetap sama: 128 percobaan, 933 catatan, skor 946, 7% / 8 kata judi, 11/11, rata-rata 4,5 detik, dan 21 catatan.
 - **Sensor Buta.** Heartbeat dikirim tiap 10 detik, dan ambang BUTA adalah 30 detik sejak heartbeat *terakhir*. Di rekaman ulang, tanda BUTA tampil 23 detik setelah sensor dimatikan karena heartbeat terakhir sudah terkirim sekitar 9 detik sebelum sensor dimatikan. Supaya tidak membingungkan, kalimatnya menjadi "tanda buta muncul 31 detik setelah sinyal terakhir" (heartbeat terakhir 19:21:19, BUTA 19:21:50, dari audit log Core).
+- **Empat kalimat disesuaikan agar TTS mengucapkannya utuh.** Model TTS berulang kali memotong atau mengaburkan bagian tertentu, walaupun sudah dicoba dengan banyak seed. Penyesuaiannya:
+  - kalimat panjang "Apa yang terjadi…" di adegan 05 dipecah dua tanpa mengubah isi;
+  - "PDF-nya disegel" menjadi "Berkas PDF-nya disegel";
+  - kalimat kelayakan di adegan 17 dipecah dua, dan "dipasang dengan satu skrip" menjadi "Agent dipasang dengan satu perintah" (pemasangan memang cukup satu perintah `install.sh`).
 - **Subtitle memakai angka** ("3,19 detik"), sedangkan TTS mengucapkannya sebagai kata ("tiga koma satu sembilan detik") lewat kamus pelafalan.
 - **Skor 946.** Tangkapan layar rincian skor di Detail Insiden diambil saat skor masih 858 (sebelum Penjaga Situs menambah deteksi judi). Karena itu bukti 946 diambil dari panel Perhitungan yang terlihat di halaman LAPSIT dan dari PDF LAPSIT.
 - **Hak akses** memakai tangkapan layar asli Beranda kedua akun. Footage-nya sudah berpindah ke halaman Insiden saat kalimat itu diucapkan.

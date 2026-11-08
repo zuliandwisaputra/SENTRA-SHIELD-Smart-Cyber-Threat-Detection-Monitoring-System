@@ -131,7 +131,8 @@ ADEGAN = {
     "05-pindai": [
         "Demo dimulai.",
         "Semua tampilan aplikasi adalah rekaman asli dari lab.",
-        f"Apa yang terjadi: penyerang memindai port Kodim A dengan nmap, lalu dengan hydra mencoba {A['hydra']} kombinasi nama pengguna dan kata sandi.",
+        "Apa yang terjadi: penyerang memindai port Kodim A dengan nmap.",
+        f"Lalu dengan hydra, ia mencoba {A['hydra']} kombinasi nama pengguna dan kata sandi.",
         f"Apa yang dilakukan SENTRA: {A['nmapKeInsiden']} detik setelah pemindaian dimulai, insiden baru muncul di layar, tanpa perlu dimuat ulang.",
         "Insiden adalah satu berkas kasus yang mengumpulkan semua jejak dari penyerang yang sama.",
         f"Begitu percobaan login menumpuk, Tingkat Siaga naik dari {A['siagaAwal']} ke {A['siagaHydra']}.",
@@ -188,7 +189,7 @@ ADEGAN = {
         "Setelah itu, analis membuat Laporan Situasi, atau LAPSIT, dengan satu klik.",
         lapsit,
         "Laporan ini disusun dari data insiden, bukan dikarang, dan setiap temuan mengutip nomor bukti aslinya.",
-        "PDF-nya disegel dengan sidik jari SHA-256, sehingga perubahan sekecil apa pun akan ketahuan.",
+        "Berkas PDF-nya disegel dengan sidik jari SHA-256, sehingga perubahan sekecil apa pun akan ketahuan.",
     ],
     "13-sensor-buta": [
         "Apa yang terjadi kalau penyerang mematikan sensor?",
@@ -217,7 +218,8 @@ ADEGAN = {
     ],
     "17-angka": [
         "Semua angka di video ini diukur dari rekaman lab yang sama.",
-        "Dan SENTRA siap dipasang: satu klik untuk menyalakan, berjalan tanpa internet, cukup di mini-PC, dan agent dipasang dengan satu skrip.",
+        "Dan SENTRA siap dipasang: satu klik untuk menyalakan, berjalan tanpa internet, dan cukup di mini-PC.",
+        "Agent dipasang dengan satu perintah.",
     ],
     "18-rekap": [
         "Sekali lagi, alurnya.",

@@ -27,10 +27,13 @@ KAMUS = [
     (r"\bSSH\b", "es es ha"),
     (r"\bHP\b", "ha pe"),
     (r"\bIP\b", "ai pi"),
+    (r"\bPDF-nya\b", "pe de ef nya"),
     (r"\bPDF\b", "pe de ef"),
+    (r"\bskrip\b", "sekrip"),
     (r"\bmini-PC\b", "mini pe se"),
     (r"\bKodim A\b", "Kodim A"),
     (r"\bKodim B\b", "Kodim Be"),
+    (r"^Agent\b", "Ejen"),  # di awal kalimat tanpa aksen: "éjen" di posisi ini sempat terbaca ngawur
     (r"\bagent\b", "éjen"),
     (r"\bhash\b", "hesy"),
     (r"\bCore\b", "Kor"),

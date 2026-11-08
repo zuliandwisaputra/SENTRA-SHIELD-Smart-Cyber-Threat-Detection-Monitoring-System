@@ -33,7 +33,7 @@ const LAYAK = [
   { judul: "Satu klik", isi: "mulai-lab.bat menyalakan seluruh lab di Windows." },
   { judul: "Offline", isi: "Tanpa internet setelah image diunduh sekali. Tanpa cloud." },
   { judul: "Mini-PC", isi: "Docker dengan RAM kosong ±3 GB." },
-  { judul: "Agent satu skrip", isi: "sudo ./install.sh --core-url … --code …" },
+  { judul: "Agent satu perintah", isi: "sudo ./install.sh --core-url … --code …" },
 ];
 
 export const S17Angka: React.FC<{ durasi: number }> = ({ durasi }) => {
@@ -41,7 +41,7 @@ export const S17Angka: React.FC<{ durasi: number }> = ({ durasi }) => {
   const { fps } = useVideoConfig();
   const d = f / fps;
   // Kartu kelayakan muncul saat masing-masing diucapkan: satu klik, offline, mini-PC, agent satu skrip.
-  const tKartu = [pada(ID, "satu klik"), pada(ID, "tanpa internet"), pada(ID, "mini-PC"), pada(ID, "satu skrip")].map((t) => t - 0.25);
+  const tKartu = [pada(ID, "satu klik"), pada(ID, "tanpa internet"), pada(ID, "mini-PC"), pada(ID, "satu perintah")].map((t) => t - 0.25);
   const oKartu = tKartu.map((t) => interpolate(d, [t, t + 0.35], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }));
   return (
     <Bingkai id={ID} nomor="17" judul="Angka & kelayakan" durasi={durasi} dtgTeks={dtg(R.video.analis.mulai)}>

@@ -51,6 +51,7 @@ JEDA_BAGIAN = 0.6  # sebelum "Apa yang dilakukan SENTRA" dan "Kenapa ini penting
 F0_MIN, F0_MAX = 88.0, 165.0
 COCOK_MIN = 0.86
 PERCOBAAN = 6
+SEED_GESER = int(os.environ.get("SEED_GESER", "0"))  # ganti untuk membuat ulang kalimat dengan seed lain
 
 
 def kunci(teks: str) -> str:
@@ -102,12 +103,17 @@ def nilai(naskah: str, transkrip: str) -> dict:
     cocok = difflib.SequenceMatcher(None, a, b, autojunk=False).ratio()
     ekor_n = min(14, len(a))
     ekor = difflib.SequenceMatcher(None, a[-ekor_n:], b[-ekor_n:], autojunk=False).ratio() if b else 0.0
+    kepala = difflib.SequenceMatcher(None, a[:ekor_n], b[:ekor_n], autojunk=False).ratio() if b else 0.0
     rasio = len(b) / max(1, len(a))
-    return {"cocok": round(cocok, 3), "ekor": round(ekor, 3), "rasio_panjang": round(rasio, 3)}
+    # Kata terakhir naskah harus benar-benar terdengar (model kadang berhenti sebelum kata terakhir).
+    akhir = kunci(naskah.split()[-1])
+    kata_t = [kunci(w) for w in transkrip.split() if kunci(w)][-3:]
+    akhir_ok = max((difflib.SequenceMatcher(None, akhir, w).ratio() for w in kata_t), default=0.0)
+    return {"cocok": round(cocok, 3), "kepala": round(kepala, 3), "ekor": round(ekor, 3), "akhir": round(akhir_ok, 3), "rasio_panjang": round(rasio, 3)}
 
 
 def lulus(n: dict, f0: float) -> bool:
-    return n["cocok"] >= COCOK_MIN and n["ekor"] >= 0.6 and 0.85 <= n["rasio_panjang"] <= 1.15 and F0_MIN <= f0 <= F0_MAX
+    return n["cocok"] >= COCOK_MIN and n.get("kepala", 1) >= 0.7 and n["ekor"] >= 0.75 and n.get("akhir", 1) >= 0.8 and 0.85 <= n["rasio_panjang"] <= 1.15 and F0_MIN <= f0 <= F0_MAX
 
 
 def selaraskan(kalimat: str, kata_whisper: list, durasi: float) -> list:
@@ -184,7 +190,7 @@ def main(pilihan: list[str]) -> None:
             if not (meta and meta.get("sidik") == sidik and berkas.exists()):
                 terbaik = None
                 for coba in range(PERCOBAAN):
-                    seed = int(sidik[:6], 16) + coba * 7919
+                    seed = int(sidik[:6], 16) + coba * 7919 + SEED_GESER
                     torch.manual_seed(seed)
                     t0 = time.time()
                     wav = model.generate(text=lafal, prompt_wav_path=str(REFERENSI), prompt_text=TEKS_REFERENSI, cfg_value=2.0, inference_timesteps=10)

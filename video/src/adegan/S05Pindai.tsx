@@ -28,8 +28,8 @@ const BERANDA_KIRI = fokusMuat({ x: 312, y: 200, w: 1160, h: 760 }, RF, 0);
 const BERANDA_LEBAR = fokusMuat({ x: 290, y: 100, w: 1590, h: 960 }, RF, 0);
 
 // Bagian (detik adegan).
-const B_ULANG = kalimatMulai(ID, 3) - 0.2; // "Apa yang dilakukan SENTRA": putar ulang momen nmap -> insiden, 1x
-const B_HYDRA = kalimatMulai(ID, 5) - 0.3; // "Begitu percobaan login menumpuk"
+const B_ULANG = kalimatMulai(ID, 4) - 0.2; // "Apa yang dilakukan SENTRA": putar ulang momen nmap -> insiden, 1x
+const B_HYDRA = kalimatMulai(ID, 6) - 0.3; // "Begitu percobaan login menumpuk"
 
 // A: serangan berjalan; nmap dimulai saat narasi menyebut "memindai port".
 const MULAI_A = D_NMAP - (pada(ID, "memindai port") - 0.1);
@@ -101,7 +101,7 @@ export const S05Pindai: React.FC<{ durasi: number }> = ({ durasi }) => {
       durasi={durasi}
       dataLatihan
       dtgTeks={dtg(NMAP.mulai)}
-      tigaBagian={[kalimatMulai(ID, 2), kalimatMulai(ID, 3), kalimatMulai(ID, 6)]}
+      tigaBagian={[kalimatMulai(ID, 2), kalimatMulai(ID, 4), kalimatMulai(ID, 7)]}
     >
       <Bunyi jenis="ketik-panjang" pada={tNmapA} />
       {tInsidenA < B_ULANG && <Bunyi jenis="bip" pada={tInsidenA} />}
@@ -129,7 +129,7 @@ export const S05Pindai: React.FC<{ durasi: number }> = ({ durasi }) => {
         lebar={640}
         kartu={[
           { istilah: "Pemindaian port", isi: "Mengetuk semua “pintu” sebuah komputer untuk mencari yang terbuka.", dari: pada(ID, "memindai port") },
-          { istilah: "Brute force", isi: "Menebak kata sandi berulang-ulang sampai cocok.", dari: pada(ID, "dengan hydra mencoba"), sampai: pada(ID, "dengan hydra mencoba") + 6.5 },
+          { istilah: "Brute force", isi: "Menebak kata sandi berulang-ulang sampai cocok.", dari: pada(ID, "Lalu dengan hydra"), sampai: pada(ID, "Lalu dengan hydra") + 6.5 },
         ]}
       />
     </Bingkai>
