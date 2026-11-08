@@ -59,7 +59,8 @@ const Kartu: React.FC = () => {
   return (
     <div style={{ position: "absolute", left: ISI.kiri, top: ISI.atasDemo + 20, width: 1728, display: "flex", gap: 30 }}>
       {VARIAN.map((v, i) => {
-        const m = o(pada(ID, v.frasa) - 0.15);
+        // Kerangka kartu tampil samar sejak awal adegan, lalu penuh saat varian itu disebut.
+        const m = Math.max(0.25 * o(0.4), o(pada(ID, v.frasa) - 0.15));
         const judi = v.data.ditandai === 1;
         const c = d >= tMirip - 0.1 ? (judi ? warna.awas : warna.aman) : warna.accent;
         const persen = Math.round(v.data.kemiripan * 100);

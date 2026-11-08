@@ -16,7 +16,8 @@ const MASALAH = [
 ];
 const ID = "03-masalah";
 // Tiap masalah tampil saat mulai diucapkan.
-const MULAI = [kalimatMulai(ID, 1), kalimatMulai(ID, 2), kalimatMulai(ID, 3), pada(ID, "bahkan mematikan sensor"), kalimatMulai(ID, 4)].map((t) => t - 0.2);
+// Masalah pertama sudah tampil sejak awal (kalimat pembuka "Kenapa SENTRA dibutuhkan?").
+const MULAI = [0.5, kalimatMulai(ID, 2) - 0.2, kalimatMulai(ID, 3) - 0.2, pada(ID, "bahkan mematikan sensor") - 0.2, kalimatMulai(ID, 4) - 0.2];
 
 // Angka asli dari rekaman: semua event dari 172.30.0.66 ke Kodim Latihan A.
 const EVENT_KE_A = R.db.eventPenyerangPerSumber.filter((x) => x.satuan === "KODIM-LAT-A").reduce((a, x) => a + x.jumlah, 0);
@@ -42,8 +43,8 @@ const Visual: React.FC<{ i: number; t: number }> = ({ i, t }) => {
     return (
       <div style={{ ...mid, flexDirection: "column", gap: 10 }}>
         <div style={{ fontFamily: huruf.stensil, fontSize: 200, color: warna.waspada, lineHeight: 1 }}>{ribuan(n)}</div>
-        <div style={{ fontFamily: huruf.kondensasi, fontSize: 40, color: warna.ink2, textAlign: "center", maxWidth: 760, textWrap: "balance" }}>
-          event dari satu penyerang ke satu satuan dalam kurang dari 5 menit
+        <div style={{ fontFamily: huruf.kondensasi, fontWeight: 600, fontSize: 36, color: warna.ink2, textAlign: "center", whiteSpace: "nowrap" }}>
+          catatan dari 1 penyerang ke 1 satuan, kurang dari 5 menit
         </div>
         <div style={{ fontFamily: huruf.mono, fontSize: 22, color: warna.ink3, marginTop: 14 }}>angka asli dari rekaman lab di video ini</div>
       </div>
@@ -91,19 +92,18 @@ const Visual: React.FC<{ i: number; t: number }> = ({ i, t }) => {
       </div>
     );
   }
+  // Dua kotak bertumpuk selebar panel agar label dan isi masing-masing satu baris.
   const kotak = (label: string, isi: string, c: string, o: number) => (
-    <div style={{ width: 420, minHeight: 260, padding: 30, border: `3px solid ${c}`, backgroundColor: warna.panel, opacity: o }}>
-      <div style={{ fontFamily: huruf.kondensasi, fontWeight: 700, fontSize: 28, letterSpacing: "0.12em", color: c, textTransform: "uppercase" }}>{label}</div>
-      <div style={{ marginTop: 22, fontFamily: huruf.mono, fontSize: 36, lineHeight: 1.3, color: warna.ink }}>{isi}</div>
+    <div style={{ width: 860, padding: "22px 30px", border: `3px solid ${c}`, backgroundColor: warna.panel, opacity: o, whiteSpace: "nowrap" }}>
+      <div style={{ fontFamily: huruf.kondensasi, fontWeight: 700, fontSize: 26, letterSpacing: "0.12em", color: c, textTransform: "uppercase" }}>{label}</div>
+      <div style={{ marginTop: 12, fontFamily: huruf.mono, fontSize: 40, color: warna.ink }}>{isi}</div>
     </div>
   );
   return (
-    <div style={{ ...mid, gap: 40, flexDirection: "column" }}>
-      <div style={{ fontFamily: huruf.kondensasi, fontSize: 28, color: warna.ink3 }}>Halaman yang sama, dibuka oleh dua pengunjung (keluaran asli skenario lab):</div>
-      <div style={{ display: "flex", gap: 40 }}>
+    <div style={{ ...mid, gap: 28, flexDirection: "column" }}>
+      <div style={{ fontFamily: huruf.kondensasi, fontWeight: 600, fontSize: 28, color: warna.ink3, whiteSpace: "nowrap" }}>Halaman yang sama, dibuka dua pengunjung (keluaran asli skenario lab)</div>
       {kotak("Dilihat pengunjung biasa", JUDOL_BIASA, warna.aman, 1)}
       {kotak("Dilihat Googlebot", JUDOL_BOT, warna.awas, interpolate(t, [0.8, 1.2], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }))}
-      </div>
     </div>
   );
 };

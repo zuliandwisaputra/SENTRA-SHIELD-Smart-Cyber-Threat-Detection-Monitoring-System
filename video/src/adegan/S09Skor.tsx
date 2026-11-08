@@ -76,9 +76,11 @@ export const S09Skor: React.FC<{ durasi: number }> = ({ durasi }) => {
       {/* Bobot aturan yang terpicu (asli dari Core). */}
       <div style={{ position: "absolute", left: ISI.kiri, top: 256, width: 1728, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, opacity: 1 - o(tPdf - 0.1, 0.3) }}>
         {RIN.aturan.map((a, i) => {
+          // Tampil samar sejak awal, lalu menyala saat bobotnya dijumlahkan.
           const m = o(tChip0 + i * langkah, 0.25);
+          const dasar = o(0.4, 0.5) * 0.3;
           return (
-            <div key={a.kode} style={{ position: "relative", height: 56, display: "flex", alignItems: "center", gap: 14, padding: "0 18px", backgroundColor: warna.panel, border: `1px solid ${warna.lineStrong}`, opacity: m, translate: `0px ${(1 - m) * 14}px`, whiteSpace: "nowrap" }}>
+            <div key={a.kode} style={{ position: "relative", height: 56, display: "flex", alignItems: "center", gap: 14, padding: "0 18px", backgroundColor: m > 0.5 ? warna.raised : warna.panel, border: `1px solid ${m > 0.5 ? warna.accent : warna.lineStrong}`, opacity: Math.max(dasar, m), whiteSpace: "nowrap" }}>
               <span style={{ fontFamily: huruf.mono, fontSize: 22, color: warna.accent }}>{a.kode}</span>
               <span style={{ flex: 1, fontFamily: huruf.kondensasi, fontWeight: 600, fontSize: 26, color: warna.ink, overflow: "hidden", textOverflow: "ellipsis" }}>{a.label}</span>
               <span style={{ fontFamily: huruf.stensil, fontSize: 32, color: warna.waspada }}>+{a.poin}</span>
@@ -101,7 +103,7 @@ export const S09Skor: React.FC<{ durasi: number }> = ({ durasi }) => {
         <Op t="=" o={o(tTotal - 0.15)} />
         <Operand nilai={String(RIN.total)} ket="skor insiden" o={o(tTotal - 0.15)} c={warna.awas} besar />
       </div>
-      <div style={{ position: "absolute", left: 1575, top: 440, opacity: o(tKritis, 0.25), scale: `${1.35 - 0.35 * o(tKritis, 0.25)}`, rotate: "-6deg" }}>
+      <div style={{ position: "absolute", left: 1440, top: 680, opacity: o(tKritis, 0.25) * (1 - o(tPdf - 0.1, 0.3)), scale: `${1.35 - 0.35 * o(tKritis, 0.25)}`, rotate: "-6deg" }}>
         <Stempel warnaGaris={warna.awas} ukuran={46} style={{ backgroundColor: `${warna.canvas}E6` }}>
           {SEVERITY}
         </Stempel>

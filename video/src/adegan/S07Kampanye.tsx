@@ -89,6 +89,25 @@ const Peta: React.FC = () => {
   );
 };
 
+/** Ringkasan kampanye dari data asli, di sebelah peta operasi. */
+const InfoKampanye: React.FC = () => (
+  <div style={{ position: "absolute", left: ISI.kiri, top: ISI.atasDemo + 14, width: 960, display: "flex", flexDirection: "column", gap: 22, whiteSpace: "nowrap" }}>
+    <div style={{ fontFamily: huruf.mono, fontSize: 24, color: warna.accent }}>PETA OPERASI //</div>
+    <div style={{ fontFamily: huruf.kondensasi, fontWeight: 600, fontSize: 34, color: warna.ink2 }}>Garis putus-putus: serangan aktif</div>
+    {[
+      { k: "Penyerang", v: "172.30.0.66" },
+      { k: "Kodim Latihan A", v: `dipindai ${jamWib(NMAP_A)} WIB` },
+      { k: "Kodim Latihan B", v: `dipindai ${jamWib(NMAP_B)} WIB` },
+      { k: "Kampanye #1", v: `dibuat ${jamWib(KAMPANYE_DIBUAT)} WIB` },
+    ].map((x) => (
+      <div key={x.k} style={{ padding: "16px 22px", backgroundColor: warna.panel, borderLeft: `6px solid ${x.k.startsWith("Kampanye") ? warna.awas : warna.accent}` }}>
+        <div style={{ fontFamily: huruf.kondensasi, fontWeight: 700, fontSize: 30, color: warna.ink }}>{x.k}</div>
+        <div style={{ fontFamily: huruf.mono, fontSize: 26, color: warna.ink2 }}>{x.v}</div>
+      </div>
+    ))}
+  </div>
+);
+
 export const S07Kampanye: React.FC<{ durasi: number }> = ({ durasi }) => {
   const { fps } = useVideoConfig();
   const fr = (t: number) => Math.round(t * fps);
@@ -110,15 +129,20 @@ export const S07Kampanye: React.FC<{ durasi: number }> = ({ durasi }) => {
         <Peta />
       </Sequence>
       <Sequence from={fr(B_PETA)} durationInFrames={fr(B_HALAMAN) - fr(B_PETA)} layout="none">
+        {/* Panel ramping agar seluruh peta operasi masuk tanpa terpotong; info kampanye di kiri. */}
         <Footage
           src={SRC}
           epochMulaiVideo={EP}
           mulai={mulaiPeta}
-          {...FL}
+          kiri={ISI.kiri + 1028}
+          atas={FL.atas}
+          lebar={700}
+          tinggi={FL.tinggi}
           label="Rekaman asli · Analis · Peta operasi"
-          fokus={[{ pada: 0, kotak: fokusMuat({ x: PETA.x, y: PETA.y + 90, w: PETA.w, h: 760 }, RFL, 0) }]}
-          sorot={[{ dari: D_DUA - 0.2, sampai: mulaiPeta + 30, kotak: { x: 1660, y: 420, w: 170, h: 120 }, label: "IP sama → 2 satuan sasaran", warna: warna.awas, labelBawah: true, labelKanan: true }]}
+          fokus={[{ pada: 0, kotak: fokusMuat({ x: PETA.x, y: PETA.y, w: PETA.w, h: PETA.h - 20 }, 700 / (FL.tinggi - 44), 0) }]}
+          sorot={[{ dari: D_DUA - 0.2, sampai: mulaiPeta + 30, kotak: { x: 1660, y: 420, w: 170, h: 120 }, label: "IP sama → 2 satuan", warna: warna.awas, labelBawah: true, labelKanan: true }]}
         />
+        <InfoKampanye />
       </Sequence>
       <Sequence from={fr(B_HALAMAN)} layout="none">
         <Footage

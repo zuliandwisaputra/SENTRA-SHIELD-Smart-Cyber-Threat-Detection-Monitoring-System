@@ -38,7 +38,7 @@ const Rantai: React.FC = () => {
   const putus = o(tPutus, 0.25);
   return (
     <>
-      <div style={{ position: "absolute", left: KIRI, top: 214, display: "flex", alignItems: "baseline", gap: 14, opacity: o(tBlok), whiteSpace: "nowrap" }}>
+      <div style={{ position: "absolute", left: KIRI, top: 214, display: "flex", alignItems: "baseline", gap: 14, opacity: o(0.3), whiteSpace: "nowrap" }}>
         <span style={{ fontFamily: huruf.mono, fontSize: 24, color: warna.accent }}>AUDIT LOG //</span>
         <span style={{ fontFamily: huruf.kondensasi, fontWeight: 600, fontSize: 28, color: warna.ink2 }}>catatan asli dari lab, hash SHA-256 dipendekkan</span>
       </div>
@@ -64,7 +64,8 @@ const Rantai: React.FC = () => {
         })}
       </svg>
       {RANTAI.map((c, i) => {
-        const m = o(tBlok + i * 0.3);
+        // Blok tampil samar sejak awal adegan, lalu penuh saat rantai dijelaskan.
+        const m = Math.max(0.25 * o(0.3), o(tBlok + i * 0.3));
         const diubah = i === DIUBAH && ubah > 0;
         const terputus = i === DIUBAH + 1 && putus > 0;
         const garis = diubah ? warna.waspada : terputus ? warna.awas : warna.lineStrong;

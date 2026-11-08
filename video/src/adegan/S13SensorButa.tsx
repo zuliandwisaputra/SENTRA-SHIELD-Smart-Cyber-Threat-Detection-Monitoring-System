@@ -27,15 +27,19 @@ const T_LAYAR = penanda("agent-buta").t; // status BUTA tampil di Beranda
 const TANPA_SINYAL = Math.floor((T_BUTA_CORE - T_HB) / 1000);
 const KARTU_AGENT = (penanda("agent-buta").kotak as unknown as { agent: { x: number; y: number; w: number; h: number } }).agent;
 
+const D_BERANDA = detikDi(R.sampel.analis.find((x) => x.path === "/beranda" && x.t > penanda("menu-beranda-sensor").t)!.t) + 0.3;
 const B_INSIDEN = kalimatMulai(ID, 4) - 0.3; // "Ini penting ..." : daftar insiden Sensor Buta
 const POT = dariJangkar(
   [
-    { footage: detikDi(T_HB) - 1.5, adegan: 0 },
+    // Mulai saat Beranda sudah termuat (sebelumnya analis masih di halaman LAPSIT).
+    { footage: Math.max(detikDi(T_HB) - 1.5, D_BERANDA), adegan: 0 },
     { footage: detikDi(T_MATI), adegan: kalimatMulai(ID, 1) - 0.4 },
     { footage: detikDi(T_LAYAR), adegan: pada(ID, "menandai agent itu buta") },
   ],
-  20,
+  // Lanjut 1x sampai sebelum analis pindah halaman, lalu Beranda ditahan.
+  Math.max(0, detikPenanda("menu-insiden-sensor") - 0.6 - detikDi(T_LAYAR)),
 );
+POT.push({ mulai: detikPenanda("menu-insiden-sensor") - 0.6, sampai: detikPenanda("menu-insiden-sensor") - 0.6, tahan: 120 });
 
 const Isi: React.FC<{ mulai: number; k: number }> = ({ mulai, k }) => {
   const { epoch } = useJam(mulai, k, EP);
@@ -89,7 +93,7 @@ export const S13SensorButa: React.FC<{ durasi: number }> = ({ durasi }) => {
   const mulaiDaftar = detikPenanda("insiden-sensor-buta") - 0.5;
   return (
     <Bingkai id={ID} nomor="13" judul="Demo 9 · Sensor Buta" durasi={durasi} dataLatihan dtgTeks={dtg(T_MATI)} tigaBagian={[kalimatMulai(ID, 0), kalimatMulai(ID, 2), kalimatMulai(ID, 4)]}>
-      <Bunyi jenis="detak" pada={ke(T_HB)} />
+      {detikDi(T_HB) >= D_BERANDA && <Bunyi jenis="detak" pada={ke(T_HB)} />}
       <Bunyi jenis="ketik" pada={ke(T_MATI)} />
       <Bunyi jenis="bip" pada={ke(T_LAYAR)} />
       <Bunyi jenis="whoosh" pada={B_INSIDEN - 0.1} keras={0.6} />

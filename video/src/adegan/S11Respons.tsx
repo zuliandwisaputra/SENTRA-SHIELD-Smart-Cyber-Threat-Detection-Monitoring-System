@@ -131,7 +131,8 @@ const Isi: React.FC<{ mulai: number; k: number }> = ({ mulai, k }) => {
           ]}
         />
       </BingkaiPonsel>
-      <div style={{ position: "absolute", left: HP.kiri, top: HP.atas - 4, width: 390 * SKALA_HP + 32, display: "flex", justifyContent: "center" }}>
+      {/* Label di bingkai bawah HP agar tidak bertumpuk dengan label PERTAHANAN. */}
+      <div style={{ position: "absolute", left: HP.kiri, top: HP.atas + 844 * SKALA_HP + 32 - 30, width: 390 * SKALA_HP + 32, display: "flex", justifyContent: "center" }}>
         <Chip warnaLatar={warna.raised} warnaTeks={warna.ink2} style={{ fontSize: 17, padding: "3px 10px" }}>
           {k > 1 ? `HP Komandan · dipercepat ${String(k).replace(".", ",")}×` : "Rekaman asli · HP Komandan"}
         </Chip>

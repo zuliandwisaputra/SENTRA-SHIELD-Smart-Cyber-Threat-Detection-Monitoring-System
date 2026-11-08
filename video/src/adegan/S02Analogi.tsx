@@ -104,11 +104,18 @@ export const S02Analogi: React.FC<{ durasi: number }> = ({ durasi }) => {
       <Bunyi jenis="stempel" pada={BARIS[4].tSentra + 0.1} />
 
       {/* Kepala kolom */}
-      <div style={{ position: "absolute", left: 96, top: 140, width: 760, display: "flex", alignItems: "baseline", gap: 14, opacity: o(tJudul), whiteSpace: "nowrap" }}>
+      {/* Kerangka lima baris sejak awal; terisi satu per satu mengikuti narasi. */}
+      {BARIS.map((b, i) => (
+        <React.Fragment key={`k-${b.analog}`}>
+          <div style={{ position: "absolute", left: 96, top: ATAS + i * (TINGGI + JARAK), width: 760, height: TINGGI, border: `2px dashed ${warna.line}`, opacity: o(0.4) * (1 - o(b.tAnalog)) }} />
+          <div style={{ position: "absolute", left: 1000, top: ATAS + i * (TINGGI + JARAK), width: 824, height: TINGGI, border: `2px dashed ${warna.line}`, opacity: o(0.4) * (1 - o(b.tSentra)) }} />
+        </React.Fragment>
+      ))}
+      <div style={{ position: "absolute", left: 96, top: 140, width: 760, display: "flex", alignItems: "baseline", gap: 14, opacity: o(0.5), whiteSpace: "nowrap" }}>
         <span style={{ fontFamily: huruf.mono, fontSize: 24, color: warna.accent }}>A //</span>
         <span style={{ fontFamily: huruf.stensil, fontSize: 36, letterSpacing: "0.08em", color: warna.ink }}>POS JAGA MARKAS</span>
       </div>
-      <div style={{ position: "absolute", left: 1000, top: 140, width: 824, display: "flex", alignItems: "baseline", gap: 14, opacity: o(BARIS[0].tSentra), whiteSpace: "nowrap" }}>
+      <div style={{ position: "absolute", left: 1000, top: 140, width: 824, display: "flex", alignItems: "baseline", gap: 14, opacity: o(0.7), whiteSpace: "nowrap" }}>
         <span style={{ fontFamily: huruf.mono, fontSize: 24, color: warna.aman }}>B //</span>
         <span style={{ fontFamily: huruf.stensil, fontSize: 36, letterSpacing: "0.08em", color: warna.ink }}>DI SENTRA</span>
       </div>

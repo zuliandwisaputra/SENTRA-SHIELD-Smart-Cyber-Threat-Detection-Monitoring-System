@@ -37,7 +37,8 @@ const MULAI_A = D_NMAP - (pada(ID, "memindai port") - 0.1);
 const MULAI_B = D_INSIDEN - (pada(ID, "insiden baru muncul") - B_ULANG);
 // C: hydra; Tingkat Siaga berubah saat "Tingkat Siaga naik" diucapkan. Gambar Beranda lalu ditahan
 // sebelum analis pindah ke halaman Arus Event.
-const D_PINDAH = detikPenanda("arus-event") - 0.4;
+// Sampel layar terakhir yang masih di Beranda sebelum pindah ke Arus Event (penanda dicatat setelah halaman baru termuat).
+const D_PINDAH = detikDi(R.sampel.analis.filter((x) => x.path === "/beranda" && detikDi(x.t) < detikPenanda("arus-event")).slice(-1)[0].t) - 0.4;
 const POT_C = dariJangkar([{ footage: D_SIAGA - (pada(ID, "Tingkat Siaga naik") - B_HYDRA), adegan: 0 }, { footage: D_SIAGA, adegan: pada(ID, "Tingkat Siaga naik") - B_HYDRA }], Math.max(0, D_PINDAH - D_SIAGA));
 POT_C.push({ mulai: Math.max(D_SIAGA, D_PINDAH), sampai: Math.max(D_SIAGA, D_PINDAH), tahan: 120 });
 
