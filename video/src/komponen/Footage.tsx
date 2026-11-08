@@ -123,7 +123,7 @@ export const Footage: React.FC<{
           <span style={{ flex: 1 }} />
           {kecepatan > 1 && (
             <Chip warnaLatar={warna.accent} warnaTeks={warna.accentInk} style={{ fontSize: 18, padding: "3px 10px" }}>
-              Dipercepat {kecepatan}×
+              Dipercepat {String(kecepatan).replace(".", ",")}×
             </Chip>
           )}
           <span style={{ fontFamily: huruf.mono, fontWeight: 400, fontSize: 20, letterSpacing: "0.04em", color: warna.ink3 }}>{jamWib(epoch)} WIB</span>

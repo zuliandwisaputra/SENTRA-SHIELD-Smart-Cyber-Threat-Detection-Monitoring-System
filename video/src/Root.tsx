@@ -1,5 +1,5 @@
 import { Composition } from "remotion";
-import { DURASI_TOTAL } from "./adegan/daftar";
+import { FRAME_TOTAL } from "./adegan/daftar";
 import { muatFont } from "./fonts";
 import { VIDEO } from "./tema";
 import { SentraDemo } from "./Video";
@@ -11,7 +11,7 @@ export const RemotionRoot: React.FC = () => {
     <Composition
       id="SentraDemo"
       component={SentraDemo}
-      durationInFrames={DURASI_TOTAL * VIDEO.fps}
+      durationInFrames={FRAME_TOTAL}
       fps={VIDEO.fps}
       width={VIDEO.width}
       height={VIDEO.height}

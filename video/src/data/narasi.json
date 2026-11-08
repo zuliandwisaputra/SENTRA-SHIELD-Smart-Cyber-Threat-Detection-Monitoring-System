@@ -1,0 +1,68 @@
+{
+ "10-angka": {
+  "sumber": "angka.m4a.mp4",
+  "durasiAsli": 12.906,
+  "durasi": 11.711,
+  "lufsAsli": -23.12
+ },
+ "03-arsitektur": {
+  "sumber": "arsitektur.m4a.mp4",
+  "durasiAsli": 35.839,
+  "durasi": 34.318,
+  "lufsAsli": -23.13
+ },
+ "04-deteksi": {
+  "sumber": "deteksi.m4a.mp4",
+  "durasiAsli": 22.506,
+  "durasi": 20.812,
+  "lufsAsli": -23.24
+ },
+ "09-hak-akses": {
+  "sumber": "hak akses.m4a.mp4",
+  "durasiAsli": 10.197,
+  "durasi": 8.926,
+  "lufsAsli": -23.29
+ },
+ "01-intro": {
+  "sumber": "intro.m4a.mp4",
+  "durasiAsli": 17.109,
+  "durasi": 15.691,
+  "lufsAsli": -24.53
+ },
+ "08-ketahanan": {
+  "sumber": "ketahanan.m4a.mp4",
+  "durasiAsli": 19.733,
+  "durasi": 18.177,
+  "lufsAsli": -22.07
+ },
+ "07-lapsit": {
+  "sumber": "lapsit.m4a.mp4",
+  "durasiAsli": 16.576,
+  "durasi": 15.895,
+  "lufsAsli": -22.82
+ },
+ "02-masalah": {
+  "sumber": "masalah.m4a.mp4",
+  "durasiAsli": 22.613,
+  "durasi": 20.681,
+  "lufsAsli": -24.46
+ },
+ "11-penutup": {
+  "sumber": "penutup.m4a.mp4",
+  "durasiAsli": 12.736,
+  "durasi": 11.414,
+  "lufsAsli": -24.55
+ },
+ "06-respons": {
+  "sumber": "respons.m4a.mp4",
+  "durasiAsli": 19.818,
+  "durasi": 18.653,
+  "lufsAsli": -22.65
+ },
+ "05-serangan-lanjut": {
+  "sumber": "serangan lanjut.m4a.mpeg",
+  "durasiAsli": 25.6,
+  "durasi": 24.282,
+  "lufsAsli": -23.45
+ }
+}

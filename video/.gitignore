@@ -8,3 +8,7 @@ out
 
 # Footage mentah hasil rekam/rekam.sh (besar; dibuat ulang dengan satu perintah).
 public/rekaman/
+
+# Rekaman suara narasi (milik pembicara; dibuat ulang dengan rekam/pasang-narasi.cjs dari berkas HP).
+public/narasi/*.wav
+public/narasi/*.m4a

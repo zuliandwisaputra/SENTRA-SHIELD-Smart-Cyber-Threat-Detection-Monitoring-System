@@ -3,6 +3,26 @@ import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { Braket, Chip, Logo, SimbolPenyerang, SimbolSatuan, Stempel } from "../komponen/dasar";
 import { huruf, warna } from "../tema";
 import { Bingkai } from "./Bingkai";
+import { kata, teksNarasi } from "../data/narasi";
+
+const ID = "03-arsitektur";
+// Waktu muncul tiap bagian mengikuti narasi (indeks kata).
+const T = {
+  kepala: kata(ID, 2),
+  agent: kata(ID, 4) - 0.2,
+  core: kata(ID, 18) - 0.2,
+  command: kata(ID, 29) - 0.2,
+  hp: kata(ID, 35) - 0.3,
+  kembali: kata(ID, 35) + 0.5,
+  lab: kata(ID, 36) - 0.4,
+  kodimA: kata(ID, 40) - 0.1,
+  kodimB: kata(ID, 42) - 0.1,
+  plc: kata(ID, 44) - 0.1,
+  penyerang: kata(ID, 47) - 0.1,
+  panahPenyerang: kata(ID, 49),
+  pusat: kata(ID, 51),
+  offline: kata(ID, 52) - 0.2,
+};
 
 const klem = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
@@ -51,9 +71,9 @@ export const A03Arsitektur: React.FC<{ durasi: number }> = ({ durasi }) => {
   const d = f / fps;
   const geser = f * 1.6;
   const a = (t: number) => interpolate(d, [t, t + 0.5], [0, 1], klem);
-  const bagianA = interpolate(d, [15, 15.6], [1, 0], klem);
-  const bagianB = interpolate(d, [15.4, 16], [0, 1], klem);
-  const stempel = interpolate(d, [33, 33.4], [0, 1], klem);
+  const bagianA = interpolate(d, [T.lab, T.lab + 0.5], [1, 0], klem);
+  const bagianB = interpolate(d, [T.lab + 0.3, T.lab + 0.8], [0, 1], klem);
+  const stempel = interpolate(d, [T.offline, T.offline + 0.4], [0, 1], klem);
   const ujung = [warna.accent, warna.awas, warna.aman];
 
   return (
@@ -61,13 +81,17 @@ export const A03Arsitektur: React.FC<{ durasi: number }> = ({ durasi }) => {
       nomor="03"
       judul="Arsitektur"
       durasi={durasi}
-      keterangan={[
-        { dari: 0.8, sampai: 7.5, teks: "Agent ringan di tiap satuan mengirim log web, SSH, firewall, integritas file, dan Modbus ke Core." },
-        { dari: 7.5, sampai: 15, teks: "Core mendeteksi dengan 13 aturan, merangkai Attack Story, memberi skor, lalu tampil live di dashboard dan HP Komandan." },
-        { dari: 15.6, sampai: 24, teks: "Lab: Kodim A dengan PLC, Kodim B, dan penyerang 172.30.0.66 di jaringan terpisah." },
-        { dari: 24, sampai: 33, teks: "Penyerang memakai satu IP tetap, sehingga serangannya ke dua satuan bisa dikaitkan." },
-        { dari: 33.2, sampai: 39.8, teks: "Semua berjalan offline, tanpa cloud: Docker di satu laptop atau mini-PC." },
-      ]}
+      keterangan={teksNarasi(ID, [
+        [0, "SENTRA punya tiga bagian."],
+        [4, "Agent: program kecil di setiap server satuan,"],
+        [11, "membaca log, firewall, file, dan mesin industri."],
+        [18, "Core: otak di pusat, menjalankan 13 aturan deteksi"],
+        [26, "dan merangkum serangan."],
+        [29, "Command: dashboard untuk operator dan komandan."],
+        [36, "Di lab ini ada Kodim A, Kodim B, mesin PLC,"],
+        [46, "dan komputer penyerang di jaringan terpisah."],
+        [52, "Semuanya berjalan tanpa internet."],
+      ])}
     >
       <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
         <defs>
@@ -78,38 +102,49 @@ export const A03Arsitektur: React.FC<{ durasi: number }> = ({ durasi }) => {
           ))}
         </defs>
         <g opacity={bagianA}>
-          <Panah d="M560 260 C 640 260, 640 420, 714 420" o={a(3.2)} geser={geser} />
-          <Panah d="M560 460 L 714 470" o={a(3.2)} geser={geser} />
-          <Panah d="M560 660 C 640 660, 640 520, 714 520" o={a(3.2)} geser={geser} />
-          <Panah d="M1206 400 L 1354 330" o={a(8)} geser={geser} />
-          <Panah d="M1354 600 L 1206 520" o={a(10)} geser={geser} c={warna.aman} />
-          <Panah d="M960 760 C 960 830, 330 830, 330 742" o={a(11.5)} geser={geser} c={warna.aman} />
+          <Panah d="M560 260 C 640 260, 640 420, 714 420" o={a(T.core + 0.3)} geser={geser} />
+          <Panah d="M560 460 L 714 470" o={a(T.core + 0.3)} geser={geser} />
+          <Panah d="M560 660 C 640 660, 640 520, 714 520" o={a(T.core + 0.3)} geser={geser} />
+          <Panah d="M1206 400 L 1354 330" o={a(T.command + 0.3)} geser={geser} />
+          <Panah d="M1354 600 L 1206 520" o={a(T.hp + 0.3)} geser={geser} c={warna.aman} />
+          <Panah d="M960 760 C 960 830, 330 830, 330 742" o={a(T.kembali)} geser={geser} c={warna.aman} />
         </g>
         <g opacity={bagianB}>
-          <Panah d="M476 470 C 640 380, 700 240, 806 240" o={a(18)} geser={geser} c={warna.awas} />
-          <Panah d="M476 490 C 640 490, 700 450, 806 450" o={a(18)} geser={geser} c={warna.awas} />
-          <Panah d="M476 510 C 640 600, 700 660, 806 660" o={a(18)} geser={geser} c={warna.awas} />
-          <Panah d="M1170 240 C 1260 240, 1260 440, 1354 440" o={a(21)} geser={geser} />
-          <Panah d="M1170 450 C 1260 450, 1260 500, 1354 500" o={a(21)} geser={geser} />
-          <Panah d="M1170 660 C 1260 660, 1260 560, 1354 560" o={a(21)} geser={geser} />
+          <Panah d="M476 470 C 640 380, 700 240, 806 240" o={a(T.panahPenyerang)} geser={geser} c={warna.awas} />
+          <Panah d="M476 490 C 640 490, 700 450, 806 450" o={a(T.panahPenyerang)} geser={geser} c={warna.awas} />
+          <Panah d="M476 510 C 640 600, 700 660, 806 660" o={a(T.panahPenyerang)} geser={geser} c={warna.awas} />
+          <Panah d="M1170 240 C 1260 240, 1260 440, 1354 440" o={a(T.pusat)} geser={geser} />
+          <Panah d="M1170 450 C 1260 450, 1260 500, 1354 500" o={a(T.pusat)} geser={geser} />
+          <Panah d="M1170 660 C 1260 660, 1260 560, 1354 560" o={a(T.pusat)} geser={geser} />
         </g>
       </svg>
 
       {/* Bagian A: aliran data */}
       <div style={{ opacity: bagianA }}>
         {[
+          { x: 96, w: 464, t: "Agent", ket: "di tiap satuan" },
+          { x: 714, w: 492, t: "Core", ket: "di pusat" },
+          { x: 1354, w: 470, t: "Command", ket: "dashboard" },
+        ].map((k, i) => (
+          <div key={k.t} style={{ position: "absolute", left: k.x, width: k.w, top: 128, display: "flex", alignItems: "baseline", gap: 12, opacity: a(T.kepala + i * 0.25) }}>
+            <span style={{ fontFamily: huruf.mono, fontSize: 22, color: warna.accent }}>0{i + 1} //</span>
+            <span style={{ fontFamily: huruf.stensil, fontSize: 30, letterSpacing: "0.1em", color: warna.ink }}>{k.t.toUpperCase()}</span>
+            <span style={{ fontFamily: huruf.kondensasi, fontSize: 24, color: warna.ink3 }}>{k.ket}</span>
+          </div>
+        ))}
+        {[
           { y: 180, kode: "AGENT · kodim-a", judul: "Kodim Latihan A", isi: "web · SSH · firewall · FIM", ikon: "sinyal" as const },
           { y: 380, kode: "AGENT · plc-sim", judul: "PLC (Kodim A)", isi: "Modbus · firewall", ikon: "plc" as const },
           { y: 580, kode: "AGENT · kodim-b", judul: "Kodim Latihan B", isi: "web · SSH · firewall · FIM", ikon: "sinyal" as const },
         ].map((x, i) => (
-          <Kotak key={x.kode} x={96} y={x.y} w={464} h={160} o={a(0.6 + i * 0.4)} judul={x.judul} kode={x.kode}>
+          <Kotak key={x.kode} x={96} y={x.y} w={464} h={160} o={a(T.agent + i * 0.35)} judul={x.judul} kode={x.kode}>
             <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
               <SimbolSatuan lebar={70} isi={x.ikon} />
               <span style={{ fontFamily: huruf.kondensasi, fontSize: 28, color: warna.ink2 }}>{x.isi}</span>
             </div>
           </Kotak>
         ))}
-        <Kotak x={714} y={250} w={492} h={510} o={a(5)} judul="SENTRA CORE" kode="PUSAT · Laravel">
+        <Kotak x={714} y={250} w={492} h={510} o={a(T.core)} judul="SENTRA CORE" kode="PUSAT · Laravel">
           <Butir>13 aturan deteksi + MITRE ATT&CK</Butir>
           <Butir>Korelasi Attack Story per tahap</Butir>
           <Butir>Skor terbuka → Tingkat Siaga</Butir>
@@ -118,17 +153,17 @@ export const A03Arsitektur: React.FC<{ durasi: number }> = ({ durasi }) => {
           <Butir>Penjaga Situs · LAPSIT</Butir>
           <Butir>Audit log berantai SHA-256</Butir>
         </Kotak>
-        <Kotak x={1354} y={210} w={470} h={220} o={a(7.6)} judul="DASHBOARD" kode="KOMANDO · browser">
+        <Kotak x={1354} y={210} w={470} h={220} o={a(T.command)} judul="DASHBOARD" kode="KOMANDO · browser">
           <Butir>Operator · Analis</Butir>
           <Butir>Beranda live (WebSocket)</Butir>
         </Kotak>
-        <Kotak x={1354} y={500} w={470} h={200} o={a(9.6)} judul="HP KOMANDAN" kode="KOMANDO · HP" aksen={warna.aman}>
+        <Kotak x={1354} y={500} w={470} h={200} o={a(T.hp)} judul="HP KOMANDAN" kode="KOMANDO · HP" aksen={warna.aman}>
           <Butir>Setujui / Tolak tindakan</Butir>
         </Kotak>
-        <LabelPanah x={637} y={232} o={a(3.4)}>HTTPS · event per 1 dtk</LabelPanah>
-        <LabelPanah x={1280} y={330} o={a(8.2)}>WebSocket</LabelPanah>
-        <LabelPanah x={1280} y={606} o={a(10.2)} c={warna.aman}>keputusan</LabelPanah>
-        <LabelPanah x={660} y={826} o={a(11.7)} c={warna.aman}>
+        <LabelPanah x={637} y={232} o={a(T.core + 0.5)}>HTTPS · event per 1 dtk</LabelPanah>
+        <LabelPanah x={1280} y={330} o={a(T.command + 0.5)}>WebSocket</LabelPanah>
+        <LabelPanah x={1280} y={606} o={a(T.hp + 0.5)} c={warna.aman}>keputusan</LabelPanah>
+        <LabelPanah x={660} y={826} o={a(T.kembali + 0.2)} c={warna.aman}>
           perintah daftar tetap: block_ip · unblock_ip · run_test
         </LabelPanah>
       </div>
@@ -138,7 +173,7 @@ export const A03Arsitektur: React.FC<{ durasi: number }> = ({ durasi }) => {
         <div style={{ position: "absolute", left: 96, top: 170, width: 380, height: 640, border: `2px dashed ${warna.awas}88`, backgroundImage: `repeating-linear-gradient(135deg, ${warna.awas}10 0 12px, transparent 12px 24px)` }}>
           <div style={{ padding: 18, fontFamily: huruf.stensil, fontSize: 28, letterSpacing: "0.08em", color: warna.awas }}>ZONA LUAR</div>
           <div style={{ paddingLeft: 18, fontFamily: huruf.mono, fontSize: 21, color: warna.ink3 }}>net-wan 172.30.0.0/24</div>
-          <div style={{ position: "absolute", top: 230, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 10, opacity: a(16.5) }}>
+          <div style={{ position: "absolute", top: 230, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 10, opacity: a(T.penyerang) }}>
             <SimbolPenyerang ukuran={130} />
             <div style={{ fontFamily: huruf.stensil, fontSize: 30, color: warna.awas }}>PENYERANG</div>
             <div style={{ fontFamily: huruf.mono, fontSize: 30, color: warna.ink }}>172.30.0.66</div>
@@ -150,7 +185,7 @@ export const A03Arsitektur: React.FC<{ durasi: number }> = ({ durasi }) => {
           { y: 420, judul: "Kodim Latihan B", ip: "172.30.0.12", agent: "agent kodim-b", ikon: "sinyal" as const },
           { y: 630, judul: "PLC (Kodim A)", ip: "172.30.0.20", agent: "agent plc-sim · Modbus", ikon: "plc" as const },
         ].map((x, i) => (
-          <div key={x.ip} style={{ position: "absolute", left: 806, top: x.y - 50, width: 364, height: 160, display: "flex", alignItems: "center", gap: 20, padding: "0 20px", backgroundColor: `${warna.panel}F5`, border: `1px solid ${warna.lineStrong}`, opacity: a(16.8 + i * 0.4) }}>
+          <div key={x.ip} style={{ position: "absolute", left: 806, top: x.y - 50, width: 364, height: 160, display: "flex", alignItems: "center", gap: 20, padding: "0 20px", backgroundColor: `${warna.panel}F5`, border: `1px solid ${warna.lineStrong}`, opacity: a([T.kodimA, T.kodimB, T.plc][i]) }}>
             <Braket />
             <SimbolSatuan lebar={90} isi={x.ikon} />
             <div>
@@ -160,7 +195,7 @@ export const A03Arsitektur: React.FC<{ durasi: number }> = ({ durasi }) => {
             </div>
           </div>
         ))}
-        <div style={{ position: "absolute", left: 1354, top: 330, width: 470, height: 340, backgroundColor: `${warna.panel}F5`, border: `1px solid ${warna.lineStrong}`, opacity: a(19.5), padding: 24 }}>
+        <div style={{ position: "absolute", left: 1354, top: 330, width: 470, height: 340, backgroundColor: `${warna.panel}F5`, border: `1px solid ${warna.lineStrong}`, opacity: a(T.pusat - 0.3), padding: 24 }}>
           <Braket />
           <div style={{ fontFamily: huruf.stensil, fontSize: 28, letterSpacing: "0.08em", color: warna.accent }}>PUSAT</div>
           <div style={{ fontFamily: huruf.mono, fontSize: 21, color: warna.ink3 }}>net-pusat 172.31.0.0/24</div>
@@ -173,10 +208,10 @@ export const A03Arsitektur: React.FC<{ durasi: number }> = ({ durasi }) => {
           </div>
           <div style={{ marginTop: 22, fontFamily: huruf.kondensasi, fontSize: 25, color: warna.ink2 }}>Agent melapor lewat jaringan pusat; penyerang tidak punya akses ke sana.</div>
         </div>
-        <LabelPanah x={640} y={350} o={a(18.2)} c={warna.awas}>
+        <LabelPanah x={640} y={350} o={a(T.panahPenyerang + 0.2)} c={warna.awas}>
           nmap · hydra · sqlmap · Modbus
         </LabelPanah>
-        <LabelPanah x={1262} y={300} o={a(21.2)}>
+        <LabelPanah x={1262} y={300} o={a(T.pusat + 0.2)}>
           telemetri
         </LabelPanah>
       </div>

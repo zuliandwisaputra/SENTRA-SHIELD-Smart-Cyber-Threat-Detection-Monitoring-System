@@ -4,6 +4,9 @@ import { R, desimal, dtg, ribuan } from "../data";
 import { Braket, Panel } from "../komponen/dasar";
 import { huruf, warna } from "../tema";
 import { Bingkai } from "./Bingkai";
+import { kata, teksNarasi } from "../data/narasi";
+
+const ID = "10-angka";
 
 // Semua angka dari src/data/rekaman.json (rekaman 8 Nov 2026).
 const insidenA = R.db.insiden.find((x) => x.satuan === "Kodim Latihan A" && /172\.30\.0\.66/.test(x.judul))!;
@@ -34,22 +37,26 @@ export const A10Angka: React.FC<{ durasi: number }> = ({ durasi }) => {
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
   const d = f / fps;
-  const kanan = interpolate(d, [10.5, 11.1], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  // Kartu kelayakan muncul saat masing-masing diucapkan: satu klik, offline, mini-PC, agent satu skrip.
+  const tKartu = [kata(ID, 10), kata(ID, 13), kata(ID, 16), kata(ID, 19)].map((t) => t - 0.25);
+  const oKartu = tKartu.map((t) => interpolate(d, [t, t + 0.35], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }));
   return (
     <Bingkai
       nomor="10"
       judul="Angka hasil uji"
       durasi={durasi}
       dtgTeks={dtg(R.video.analis.mulai)}
-      keterangan={[
-        { dari: 0.5, sampai: 10.5, teks: "Semua angka ini diukur saat perekaman video ini, dari lab yang dinyalakan dari nol." },
-        { dari: 10.5, sampai: 19.8, teks: "Siap dipasang: satu klik, offline, cukup di mini-PC, agent cukup satu skrip." },
-      ]}
+      keterangan={teksNarasi(ID, [
+        [0, "Semua angka ini hasil uji lab kami."],
+        [7, "SENTRA dinyalakan dengan satu klik,"],
+        [12, "berjalan offline, cukup di mini-PC,"],
+        [18, "dan agent dipasang dengan satu skrip."],
+      ])}
     >
       <Panel nomor="01" kode="Hasil uji" judul="Rekaman lab 8 November 2026" style={{ left: 96, top: 136, width: 1100, height: 770 }}>
         <div style={{ padding: "8px 28px" }}>
           {BARIS.map((b, i) => {
-            const o = interpolate(d, [0.4 + i * 0.55, 0.8 + i * 0.55], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+            const o = interpolate(d, [0.3 + i * 0.3, 0.6 + i * 0.3], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
             return (
               <div key={b.hal} style={{ display: "grid", gridTemplateColumns: "340px 270px 1fr", alignItems: "center", gap: 20, padding: "12px 0", borderBottom: `1px solid ${warna.line}`, opacity: o, translate: `${(1 - o) * -24}px 0px` }}>
                 <span style={{ fontFamily: huruf.kondensasi, fontWeight: 700, fontSize: 30, color: warna.ink }}>{b.hal}</span>
@@ -60,9 +67,9 @@ export const A10Angka: React.FC<{ durasi: number }> = ({ durasi }) => {
           })}
         </div>
       </Panel>
-      <div style={{ position: "absolute", left: 1226, top: 136, width: 598, display: "flex", flexDirection: "column", gap: 14, opacity: kanan, translate: `${(1 - kanan) * 30}px 0px` }}>
+      <div style={{ position: "absolute", left: 1226, top: 136, width: 598, display: "flex", flexDirection: "column", gap: 14 }}>
         {LAYAK.map((l, i) => (
-          <div key={l.judul} style={{ position: "relative", padding: "14px 24px", backgroundColor: warna.panel, border: `1px solid ${warna.lineStrong}`, borderLeft: `8px solid ${warna.accent}` }}>
+          <div key={l.judul} style={{ opacity: oKartu[i], translate: `${(1 - oKartu[i]) * 30}px 0px`, position: "relative", padding: "14px 24px", backgroundColor: warna.panel, border: `1px solid ${warna.lineStrong}`, borderLeft: `8px solid ${warna.accent}` }}>
             <Braket ukuran={16} tebal={2} />
             <div style={{ fontFamily: huruf.mono, fontSize: 22, color: warna.accent }}>0{i + 1} //</div>
             <div style={{ fontFamily: huruf.stensil, fontSize: 34, color: warna.ink }}>{l.judul.toUpperCase()}</div>

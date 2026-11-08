@@ -1,7 +1,7 @@
 // Video demo SENTRA SHIELD: 11 adegan sesuai storyboard, total 5 menit.
 import { Audio } from "@remotion/media";
 import React from "react";
-import { AbsoluteFill, Series, getStaticFiles, staticFile, useVideoConfig } from "remotion";
+import { AbsoluteFill, Sequence, Series, getStaticFiles, staticFile, useVideoConfig } from "remotion";
 import { A01Intro } from "./adegan/A01Intro";
 import { A02Masalah } from "./adegan/A02Masalah";
 import { A03Arsitektur } from "./adegan/A03Arsitektur";
@@ -14,6 +14,7 @@ import { A09HakAkses } from "./adegan/A09HakAkses";
 import { A10Angka } from "./adegan/A10Angka";
 import { A11Penutup } from "./adegan/A11Penutup";
 import { ADEGAN, IdAdegan } from "./adegan/daftar";
+import { JEDA_AWAL } from "./data/narasi";
 import { warna } from "./tema";
 
 const KOMPONEN: Record<IdAdegan, React.FC<{ durasi: number }>> = {
@@ -31,9 +32,8 @@ const KOMPONEN: Record<IdAdegan, React.FC<{ durasi: number }>> = {
 };
 
 /**
- * Slot narasi: taruh rekaman suara per adegan di public/narasi/<id adegan>.<wav|mp3|m4a>,
- * misalnya public/narasi/04-deteksi.wav. File yang ada otomatis dipakai; yang belum ada dilewati.
- * Naskahnya: docs/naskah-video.md.
+ * Slot narasi: public/narasi/<id adegan>.wav (hasil rekam/pasang-narasi.cjs dari rekaman HP .m4a).
+ * WAV diutamakan; format lain dipakai hanya bila WAV belum ada. Adegan tanpa narasi tetap hening.
  */
 const narasiUntuk = (id: string) => {
   let files: { name: string }[] = [];
@@ -42,7 +42,8 @@ const narasiUntuk = (id: string) => {
   } catch {
     files = [];
   }
-  return files.find((f) => /^narasi\//.test(f.name) && f.name.replace(/^narasi\//, "").replace(/\.(wav|mp3|m4a|aac|ogg)$/i, "") === id)?.name ?? null;
+  const cocok = files.filter((f) => /^narasi\/[^.]/.test(f.name) && f.name.replace(/^narasi\//, "").replace(/\.(wav|mp3|m4a|aac|ogg)$/i, "") === id);
+  return (cocok.find((f) => /\.wav$/i.test(f.name)) ?? cocok[0])?.name ?? null;
 };
 
 export const SentraDemo: React.FC = () => {
@@ -54,9 +55,13 @@ export const SentraDemo: React.FC = () => {
           const K = KOMPONEN[a.id];
           const narasi = narasiUntuk(a.id);
           return (
-            <Series.Sequence key={a.id} name={`${a.nomor} ${a.judul}`} durationInFrames={a.durasi * fps}>
+            <Series.Sequence key={a.id} name={`${a.nomor} ${a.judul}`} durationInFrames={a.frame}>
               <K durasi={a.durasi} />
-              {narasi && <Audio src={staticFile(narasi)} name={`Narasi ${a.id}`} />}
+              {narasi && (
+                <Sequence from={Math.round(JEDA_AWAL * fps)} layout="none" name={`Narasi ${a.id}`}>
+                  <Audio src={staticFile(narasi)} />
+                </Sequence>
+              )}
             </Series.Sequence>
           );
         })}

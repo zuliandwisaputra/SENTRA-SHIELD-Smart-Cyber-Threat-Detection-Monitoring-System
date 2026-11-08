@@ -1,6 +1,7 @@
 import React from "react";
 import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { R, barisTerminal, ribuan } from "../data";
+import { kata, teksNarasi } from "../data/narasi";
 import { Chip, Panel, SimbolPenyerang, SimbolSatuan, useMuncul } from "../komponen/dasar";
 import { huruf, warna } from "../tema";
 import { Bingkai } from "./Bingkai";
@@ -12,8 +13,9 @@ const MASALAH = [
   { judul: "Sensor dimatikan", ket: "Penyerang mematikan sensor lebih dulu. Pertahanan buta tanpa disadari." },
   { judul: "Situs disusupi judi online", ket: "Judi online ber-cloaking: hanya Google yang melihatnya, admin situs tidak." },
 ];
-const MULAI = 1.2;
-const PER = 5.6;
+const ID = "02-masalah";
+// Tiap masalah tampil saat mulai diucapkan (indeks kata di narasi).
+const MULAI = [0, 9, 18, 24, 29].map((i) => kata(ID, i) - 0.2);
 
 // Angka asli dari rekaman: semua event dari 172.30.0.66 ke Kodim Latihan A.
 const EVENT_KE_A = R.db.eventPenyerangPerSumber.filter((x) => x.satuan === "KODIM-LAT-A").reduce((a, x) => a + x.jumlah, 0);
@@ -109,15 +111,21 @@ export const A02Masalah: React.FC<{ durasi: number }> = ({ durasi }) => {
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
   const d = f / fps;
-  const aktif = Math.min(4, Math.max(0, Math.floor((d - MULAI) / PER)));
-  const tLokal = d - MULAI - aktif * PER;
+  const aktif = Math.max(0, MULAI.filter((m) => d >= m).length - 1);
+  const tLokal = d - MULAI[aktif];
   const daftar = useMuncul(0.3, 0.5);
   return (
     <Bingkai
       nomor="02"
       judul="Masalah"
       durasi={durasi}
-      keterangan={MASALAH.map((m, i) => ({ dari: MULAI + i * PER, sampai: MULAI + (i + 1) * PER - 0.05, teks: m.ket }))}
+      keterangan={teksNarasi(ID, [
+        [0, "Satuan setingkat Kodim jarang punya tim keamanan siber khusus."],
+        [9, "Alat keamanan biasa menghasilkan ribuan peringatan yang sulit dibaca."],
+        [18, "Penyerang sering menyerang beberapa satuan sekaligus,"],
+        [24, "bahkan mematikan sensor lebih dahulu."],
+        [29, "Sistem pemerintah juga sering disusupi judi online yang hanya terlihat di Google."],
+      ])}
     >
       <div style={{ position: "absolute", left: 96, top: 150, width: 700, display: "flex", flexDirection: "column", gap: 16, opacity: daftar }}>
         {MASALAH.map((m, i) => {
