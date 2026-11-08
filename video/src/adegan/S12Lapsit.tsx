@@ -17,7 +17,8 @@ const FL = { kiri: ISI.kiri, atas: ISI.atasDemo + 14, lebar: 1728, tinggi: 700 }
 const RFL = FL.lebar / (FL.tinggi - 44);
 const PDF = { w: 1819, h: 2573 };
 
-const panel = fokusMuat({ x: 326, y: 560, w: 1030, h: 360 }, RFL, 0);
+// Mulai di bawah judul Kronologi agar tidak ada teks terpotong di tepi atas.
+const panel = fokusMuat({ x: 326, y: 640, w: 1016, h: 386 }, RFL, 0);
 const atasDok = fokusMuat({ x: 330, y: 100, w: 1500, h: 560 }, RFL, 0);
 const kutipan = fokusMuat({ x: 345, y: 640, w: 820, h: 300 }, RFL, 0);
 

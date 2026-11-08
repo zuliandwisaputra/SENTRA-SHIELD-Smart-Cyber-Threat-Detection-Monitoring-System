@@ -60,7 +60,7 @@ const Visual: React.FC<{ i: number; t: number }> = ({ i, t }) => {
         </svg>
         <div style={{ position: "absolute", top: 20, display: "flex", flexDirection: "column", alignItems: "center" }}>
           <SimbolPenyerang ukuran={110} />
-          <span style={{ fontFamily: huruf.mono, fontSize: 28, color: warna.awas }}>IP yang sama</span>
+          <span style={{ fontFamily: huruf.mono, fontSize: 28, color: warna.awas, backgroundColor: warna.panel, padding: "2px 12px", position: "relative" }}>IP yang sama</span>
         </div>
         <div style={{ position: "absolute", bottom: 40, left: 120, textAlign: "center" }}>
           <SimbolSatuan lebar={180} />
