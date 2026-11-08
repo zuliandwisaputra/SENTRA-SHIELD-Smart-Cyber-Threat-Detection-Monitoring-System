@@ -1,8 +1,72 @@
 # Naskah narasi video demo SENTRA SHIELD
 
-Naskah ini untuk direkam dengan suara sendiri, lalu ditempel ke video Remotion di folder `video/`. Durasi total 5:00, 11 adegan, sama dengan storyboard.
+Bagian pertama dokumen ini mencatat **narasi final** yang sudah direkam dan dipasang di video (8 November 2026). Bagian sesudahnya adalah naskah awal yang dipakai sebagai panduan merekam.
 
-Semua angka di naskah berasal dari rekaman lab 8 November 2026 (`video/src/data/rekaman.json`). Bila lab direkam ulang, cocokkan lagi angkanya dengan `video/README.md` bagian "Angka di video".
+## Narasi final yang terpasang
+
+Pembicara: Zulian Dwi Saputra (tim Claudex404). Sumber: 11 berkas suara dari HP (AAC/M4A), diolah dengan `video/rekam/pasang-narasi.cjs`:
+
+- diubah ke WAV 48 kHz mono 24-bit;
+- dengung dikurangi: high-pass 80 Hz (dengung listrik 50 Hz), notch sempit di 100 dan 150 Hz, pengurang derau FFT ringan;
+- hening di awal dan akhir dipotong (ambang −45 dB, sisa 0,12 detik);
+- volume disamakan dengan loudnorm dua tahap ke −16 LUFS, puncak −1,5 dBFS (hasil: −16,3 sampai −16,8 LUFS).
+
+Kecepatan suara **tidak diubah** (0%). Durasi tiap adegan mengikuti panjang suara: jeda 0,4 detik, lalu narasi, lalu ekor singkat. Total video **3:45**. Adegan 5 diberi ekor 5 detik untuk menampilkan Penjaga Situs (tiga varian berdampingan) setelah narasinya selesai.
+
+| Adegan | Waktu di video | Durasi adegan (dtk) | Durasi suara (dtk) |
+| --- | --- | --- | --- |
+| 01-intro | 0:00.0–0:17.5 | 17,5 | 15,7 |
+| 02-masalah | 0:17.5–0:39.8 | 22,3 | 20,7 |
+| 03-arsitektur | 0:39.8–1:15.8 | 36,0 | 34,3 |
+| 04-deteksi | 1:15.8–1:38.3 | 22,5 | 20,8 |
+| 05-serangan-lanjut | 1:38.3–2:08.0 | 29,7 | 24,3 |
+| 06-respons | 2:08.0–2:28.5 | 20,6 | 18,7 |
+| 07-lapsit | 2:28.5–2:46.2 | 17,7 | 15,9 |
+| 08-ketahanan | 2:46.2–3:06.2 | 20,0 | 18,2 |
+| 09-hak-akses | 3:06.2–3:17.1 | 10,9 | 8,9 |
+| 10-angka | 3:17.1–3:31.1 | 13,9 | 11,7 |
+| 11-penutup | 3:31.1–3:45.1 | 14,0 | 11,4 |
+
+### Cara menyelaraskan gambar dengan suara
+
+Suara ditranskripsi dengan Whisper (model *medium*, bahasa Indonesia) untuk mendapat waktu tiap kata (`video/src/data/narasi-kata.json`). Waktu kata itu dipakai untuk:
+
+- **Teks layar.** Isinya ucapan narasi itu sendiri (sudah dikoreksi), muncul tepat saat diucapkan.
+- **Visual.** Pergantian bagian, sorotan, dan zoom jatuh pada kata yang membicarakannya. Contoh: kotak Agent/Core/Command muncul saat disebut; perubahan Tingkat Siaga Aman → Siaga di Beranda jatuh tepat pada "tingkat siaga naik"; angka 946 muncul saat "skor 946"; kartu kelayakan muncul satu per satu sesuai ucapan.
+- **Kecepatan footage.** Kecepatan diatur per potongan, dengan label "Dipercepat N×" di layar: SQL injection/webshell 3×, Modbus/judol 2×, usulan Analis 2×, navigasi HP Komandan 6×, Sensor Buta 5×, Uji Kesiapan 16×, pembuatan LAPSIT 1,5×.
+- **Tetap 1×.** Nmap, hydra, dan rentang dari klik Setujui sampai TERPUTUS tidak dipercepat, sehingga penghitung 2,46 detik berjalan dengan waktu asli.
+- **Gambar ditahan.** Di beberapa tempat dipakai frame asli dari rekaman atau tangkapan layar asli dengan label "dijeda"/"Tangkapan layar asli": Attack Story awal, kutipan [EV-n], rincian skor 946, dan dial Uji Kesiapan.
+
+### Kecocokan ucapan dengan layar
+
+Semua angka yang diucapkan cocok dengan rekaman: 13 aturan, skor 946, 2,46 detik, 29 detik, 11 dari 11. Klaim lain juga sesuai dengan yang tampil. Catatan kecil:
+
+- Adegan 2: diucapkan "ribuan peringatan", layar menampilkan angka asli **1.020 event** (sedikit di atas seribu).
+- Adegan 4: diucapkan "ratusan kejadian dirangkum jadi satu insiden", layar menampilkan **933 event → 1 insiden**. Ini sejalan.
+- Adegan 11: hanya peta jalan yang diucapkan. Panel Batasan tetap tampil di samping, tanpa narasi.
+
+### Koreksi transkripsi di teks layar
+
+Whisper salah dengar di beberapa kata. Teks layar memakai koreksi berikut (mohon dicek):
+
+| Adegan | Transkripsi mentah | Di teks layar |
+| --- | --- | --- |
+| 01 | "Julian Duisa Putra", "Respon Ancaman Cyber" | "Zulian Dwi Saputra", "Respons Ancaman Siber" |
+| 02 | "tim keamanan saya berkusus" | "tim keamanan siber khusus" |
+| 04 | "menebak ke atasan di Kodim-A", "detail incident" | "menebak kata sandi di Kodim A", "Detail Insiden" |
+| 05 | "Penyerangnya sama", "penyusup judi online", "Insidenya" | "Penyerang yang sama", "penyusupan judi online", "Insidennya" |
+| 06 | "Sekarang Respon", "menyutujui" | "Sekarang, respons.", "menyetujui" |
+| 10 | "satu script" | "satu skrip" |
+| 11 | "disatuan" | "di satuan" |
+
+Berkas suara tidak di-commit (`video/public/narasi/*.wav` ada di `.gitignore`). Untuk memasang ulang dari berkas HP:
+
+```bash
+cd video
+node rekam/pasang-narasi.cjs <folder berisi intro.m4a, masalah.m4a, ...>
+```
+
+## Naskah awal (panduan merekam)
 
 ## Cara merekam dan memasang narasi
 

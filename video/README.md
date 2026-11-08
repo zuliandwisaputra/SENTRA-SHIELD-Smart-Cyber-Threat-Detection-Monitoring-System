@@ -2,7 +2,7 @@
 
 Video demo untuk juri Kartika Cyber Hackathon 2026. Tujuannya: setelah menonton, juri paham cara kerja SENTRA dari serangan sampai blokir.
 
-Status: **pratinjau menunggu persetujuan**. 11 adegan sesuai storyboard sudah dibuat (5:00). Naskah narasi: [`docs/naskah-video.md`](../docs/naskah-video.md). Render final dilakukan setelah pratinjau disetujui; berkas MP4 final tidak di-commit.
+Status: **render final dengan narasi** (3:45). Narasi suara Zulian Dwi Saputra (tim Claudex404) sudah dipasang; durasi tiap adegan mengikuti panjang suara, dan visual serta teks layar mengikuti waktu tiap kata. Detail narasi, sinkronisasi, dan koreksi transkripsi: [`docs/naskah-video.md`](../docs/naskah-video.md). Berkas MP4 final tidak di-commit.
 
 ## Spesifikasi keluaran
 
@@ -10,9 +10,9 @@ Status: **pratinjau menunggu persetujuan**. 11 adegan sesuai storyboard sudah di
 | --- | --- |
 | Rasio, ukuran | 16:9, 1920 x 1080 |
 | Frame rate | 60 fps |
-| Durasi | 4 sampai 5 menit |
+| Durasi | 3:45, mengikuti panjang narasi (target awal 4–5 menit) |
 | Format | MP4 H.264, target di bawah 400 MB |
-| Audio | Tanpa musik berhak cipta. Hanya hening, atau efek suara buatan sendiri |
+| Audio | Narasi suara pembicara (−16 LUFS). Tanpa musik dan tanpa efek suara |
 
 ## Aturan isi
 
@@ -180,7 +180,7 @@ Waktu di footage mentah (menit:detik).
 
 ### Catatan untuk storyboard
 
-- Di HP (390 px), Antrean Persetujuan memecah IP menjadi `172.30.0.6` / `6`. Ini cacat tampilan Core. Sudah diusulkan sebagai tugas terpisah di branch utama. Bila diperbaiki, rekam ulang sebelum render final.
+- Di HP (390 px), Antrean Persetujuan sempat memecah IP menjadi `172.30.0.6` / `6`. Cacat ini sudah diperbaiki di Core (commit `6464cb1`, juga di-merge ke branch ini). Footage video tetap dari rekaman 8 November sebelum perbaikan, atas pilihan pemilik proyek, agar angka di narasi tetap cocok dengan footage.
 - Banner hydra asli memuat kalimat "Please do not use in military or secret service organizations...". Panel terminal di adegan 4 tidak menampilkan baris banner itu; baris lain tampil apa adanya, tanpa diubah.
 - Nmap mencetak jam UTC (`02:42 UTC`); dashboard dan terminal akses portal memakai WIB. Keduanya keluaran asli.
 - LAPSIT di footage dibuat oleh template (bukan LLM) dan dokumennya mengatakan begitu.
@@ -217,14 +217,23 @@ Gambar diam di titik pratinjau bawaan (atau detik tertentu):
 node rekam/pratinjau.cjs out/pratinjau
 ```
 
-Render final (setelah pratinjau disetujui), 1920 x 1080, 60 fps, H.264:
+Render final, 1920 x 1080, 60 fps, H.264 + AAC. Langkah kedua mengubah piksel rentang penuh (yuvj420p, keluaran Remotion dari frame JPEG) ke yuv420p standar agar warnanya sama di semua pemutar:
 
 ```bash
-npx remotion render SentraDemo out/sentra-shield-demo.mp4 --codec=h264 --crf=18
+npx remotion render SentraDemo out/render.mp4 --codec=h264 --crf=18 --audio-codec=aac
+ffmpeg -i out/render.mp4 -vf "scale=in_range=pc:out_range=tv,format=yuv420p" -c:v libx264 -preset slow -crf 17 -c:a copy -movflags +faststart out/SENTRA-SHIELD-Demo-1080p.mp4
 ```
 
 Bila Remotion tidak bisa mengunduh Chrome Headless Shell (jaringan dibatasi), tambahkan `--browser-executable=<path chrome-headless-shell>`; untuk `pratinjau.cjs` pakai variabel `REMOTION_CHROME`. Folder `out/` tidak di-commit.
 
 ## Narasi
 
-Slot narasi ada di tiap adegan. Taruh `public/narasi/<id adegan>.wav` (atau `.mp3`/`.m4a`), misalnya `public/narasi/04-deteksi.wav`; berkas yang ada otomatis diputar mulai detik pertama adegannya. Naskah, durasi, dan id tiap adegan: [`docs/naskah-video.md`](../docs/naskah-video.md). Tanpa berkas narasi, video hening (tidak ada musik).
+Rekaman suara dari HP (`.m4a`) dipasang dengan satu perintah:
+
+```bash
+node rekam/pasang-narasi.cjs <folder berisi intro.m4a, masalah.m4a, ...>
+```
+
+Skrip ini mencocokkan nama berkas dengan id adegan ("serangan lanjut" → `05-serangan-lanjut`). Setiap berkas diubah ke WAV 48 kHz mono, dengungnya dikurangi (high-pass 80 Hz, notch 100/150 Hz, denoise FFT), hening di awal/akhirnya dipotong, lalu volumenya disamakan ke −16 LUFS. Hasilnya ada di `public/narasi/<id>.wav` (tidak di-commit) dan durasinya di `src/data/narasi.json`. Durasi adegan dihitung otomatis dari durasi narasi (`src/adegan/daftar.ts`).
+
+Waktu tiap kata (`src/data/narasi-kata.json`, hasil Whisper) dipakai adegan untuk menempatkan visual dan teks layar. Bila narasi direkam ulang dengan kalimat berbeda, transkripsi ulang lalu sesuaikan indeks kata di tiap adegan.
