@@ -3,25 +3,26 @@ import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { Braket, Chip, Logo, SimbolPenyerang, SimbolSatuan, Stempel } from "../komponen/dasar";
 import { huruf, warna } from "../tema";
 import { Bingkai } from "./Bingkai";
-import { kata, teksNarasi } from "../data/narasi";
+import { kalimatMulai, pada } from "../data/narasi";
+import { Bunyi } from "../komponen/v2";
 
-const ID = "03-arsitektur";
-// Waktu muncul tiap bagian mengikuti narasi (indeks kata).
+const ID = "04-arsitektur";
+// Waktu muncul tiap bagian mengikuti frasa narasi.
 const T = {
-  kepala: kata(ID, 2),
-  agent: kata(ID, 4) - 0.2,
-  core: kata(ID, 18) - 0.2,
-  command: kata(ID, 29) - 0.2,
-  hp: kata(ID, 35) - 0.3,
-  kembali: kata(ID, 35) + 0.5,
-  lab: kata(ID, 36) - 0.4,
-  kodimA: kata(ID, 40) - 0.1,
-  kodimB: kata(ID, 42) - 0.1,
-  plc: kata(ID, 44) - 0.1,
-  penyerang: kata(ID, 47) - 0.1,
-  panahPenyerang: kata(ID, 49),
-  pusat: kata(ID, 51),
-  offline: kata(ID, 52) - 0.2,
+  kepala: kalimatMulai(ID, 0) + 0.6,
+  agent: pada(ID, "Agent di setiap satuan") - 0.2,
+  core: pada(ID, "Core di pusat") - 0.2,
+  command: pada(ID, "Command adalah layar") - 0.2,
+  hp: pada(ID, "termasuk di HP") - 0.3,
+  kembali: pada(ID, "termasuk di HP") + 0.5,
+  lab: pada(ID, "Untuk demo ini") - 0.4,
+  kodimA: pada(ID, "Kodim A") - 0.1,
+  kodimB: pada(ID, "Kodim B") - 0.1,
+  plc: pada(ID, "mesin industri PLC") - 0.1,
+  penyerang: pada(ID, "satu komputer penyerang") - 0.1,
+  panahPenyerang: pada(ID, "jaringan terpisah"),
+  pusat: pada(ID, "jaringan terpisah") + 0.6,
+  offline: pada(ID, "Semuanya berjalan tanpa internet") - 0.2,
 };
 
 const klem = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
@@ -65,7 +66,7 @@ const LabelPanah: React.FC<{ x: number; y: number; o: number; children: React.Re
   </div>
 );
 
-export const A03Arsitektur: React.FC<{ durasi: number }> = ({ durasi }) => {
+export const S04Arsitektur: React.FC<{ durasi: number }> = ({ durasi }) => {
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
   const d = f / fps;
@@ -77,22 +78,15 @@ export const A03Arsitektur: React.FC<{ durasi: number }> = ({ durasi }) => {
   const ujung = [warna.accent, warna.awas, warna.aman];
 
   return (
-    <Bingkai
-      nomor="03"
-      judul="Arsitektur"
-      durasi={durasi}
-      keterangan={teksNarasi(ID, [
-        [0, "SENTRA punya tiga bagian."],
-        [4, "Agent: program kecil di setiap server satuan,"],
-        [11, "membaca log, firewall, file, dan mesin industri."],
-        [18, "Core: otak di pusat, menjalankan 13 aturan deteksi"],
-        [26, "dan merangkum serangan."],
-        [29, "Command: dashboard untuk operator dan komandan."],
-        [36, "Di lab ini ada Kodim A, Kodim B, mesin PLC,"],
-        [46, "dan komputer penyerang di jaringan terpisah."],
-        [52, "Semuanya berjalan tanpa internet."],
-      ])}
-    >
+    <Bingkai id={ID} nomor="04" judul="Arsitektur & lab" durasi={durasi}>
+      <Bunyi jenis="whoosh" pada={T.agent - 0.1} keras={0.7} />
+      <Bunyi jenis="whoosh" pada={T.core - 0.1} keras={0.7} />
+      <Bunyi jenis="whoosh" pada={T.command - 0.1} keras={0.7} />
+      <Bunyi jenis="whoosh" pada={T.lab} />
+      <Bunyi jenis="ping" pada={T.lab + 0.4} />
+      <Bunyi jenis="bip" pada={T.penyerang + 0.1} keras={0.8} />
+      <Bunyi jenis="stempel" pada={T.offline + 0.05} />
+      <Bunyi jenis="stempel" pada={T.offline + 0.35} />
       <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
         <defs>
           {ujung.map((c) => (

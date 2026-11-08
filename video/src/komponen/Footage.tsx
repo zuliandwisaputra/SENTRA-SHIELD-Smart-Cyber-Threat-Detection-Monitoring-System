@@ -116,10 +116,12 @@ export const Footage: React.FC<{
             letterSpacing: "0.12em",
             color: warna.ink2,
             textTransform: "uppercase",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
           }}
         >
-          <span style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: gambar ? warna.accent : warna.awas }} />
-          <span>{label}</span>
+          <span style={{ flexShrink: 0, width: 10, height: 10, borderRadius: 5, backgroundColor: gambar ? warna.accent : warna.awas }} />
+          <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{label}</span>
           <span style={{ flex: 1 }} />
           {kecepatan > 1 && (
             <Chip warnaLatar={warna.accent} warnaTeks={warna.accentInk} style={{ fontSize: 18, padding: "3px 10px" }}>

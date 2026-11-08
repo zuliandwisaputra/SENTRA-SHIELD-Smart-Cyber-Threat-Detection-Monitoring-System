@@ -621,6 +621,10 @@ async function tunggu(page, fn, arg, batas, label) {
     "insiden",
     `select json_arrayagg(json_object('id', i.id, 'satuan', u.name, 'judul', i.title, 'src_ip', i.src_ip, 'skor', i.score, 'severity', i.severity, 'tahap_max', i.stage_max, 'kampanye', i.campaign_id, 'status', i.status, 'pertama', date_format(i.first_seen_at, '%Y-%m-%d %H:%i:%s.%f'), 'terakhir', date_format(i.last_seen_at, '%Y-%m-%d %H:%i:%s.%f'))) from incidents i join units u on u.id=i.unit_id`,
   );
+  // Rincian skor persis seperti yang dihitung Core (RiskScorer): bobot aturan, bonus tahap, pengali.
+  // Heartbeat terakhir sebelum agent ditandai BUTA (dicatat Core di audit log).
+  ambil("agentButa", `select json_arrayagg(json_object('id', id, 'waktu', date_format(created_at, '%Y-%m-%d %H:%i:%s.%f'), 'data', data)) from audit_logs where action='agent_buta'`);
+  ambil("rincianSkor", `select json_arrayagg(json_object('insiden', id, 'rincian', score_breakdown)) from incidents`);
   ambil(
     "deteksiPerAturan",
     `select json_arrayagg(json_object('aturan', x.code, 'nama', x.name, 'jumlah', x.n, 'insiden', x.inc, 'pertama', x.pertama)) from (select r.code, r.name, count(*) n, min(d.incident_id) inc, date_format(min(d.detected_at), '%Y-%m-%d %H:%i:%s.%f') pertama from detections d join detection_rules r on r.id=d.rule_id join events e on e.id=d.event_id where e.is_test=0 group by r.code, r.name order by r.code) x`,
@@ -651,6 +655,8 @@ async function tunggu(page, fn, arg, batas, label) {
     "penjagaSitus",
     `select json_arrayagg(json_object('varian', variant, 'ditandai', flagged, 'kemiripan', similarity, 'kata_judi', gambling_hits, 'waktu', date_format(checked_at, '%Y-%m-%d %H:%i:%s.%f'))) from site_checks where check_uuid=(select check_uuid from site_checks where flagged=1 order by id desc limit 1)`,
   );
+  // Rantai audit asli (hash dan hash sebelumnya) untuk animasi buku jaga berantai.
+  ambil("auditRantai", `select json_arrayagg(json_object('id', id, 'aksi', action, 'waktu', date_format(created_at, '%Y-%m-%d %H:%i:%s'), 'hash', hash, 'prev', prev_hash)) from (select * from audit_logs order by id) a`);
   ambil("auditJumlah", `select json_object('baris', count(*)) from audit_logs`);
   try {
     rekaman.db.auditVerifikasi = JSON.parse(

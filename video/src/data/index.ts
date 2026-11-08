@@ -48,7 +48,7 @@ type Rekaman = {
     setujuKeDieksekusiDiLayarAnalisMs: number;
     portal: { setujuKeGagalPertamaMs: number; setujuKeSuksesTerakhirMs: number; permintaanSukses: number };
     lapsitMs: number;
-    lapsit: { sha256: string; generator: string };
+    lapsit: { sha256: string; generator: string; dibuat?: string };
     sensorMatiKeButaMs: number;
     sensorHidupKeOnlineMs: number;
     ujiKesiapanDurasiMs: number;

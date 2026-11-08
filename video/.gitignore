@@ -12,3 +12,7 @@ public/rekaman/
 # Rekaman suara narasi (milik pembicara; dibuat ulang dengan rekam/pasang-narasi.cjs dari berkas HP).
 public/narasi/*.wav
 public/narasi/*.m4a
+
+# Video v2: narasi TTS dan efek suara dibuat ulang dengan rekam/tts/narasi.py dan rekam/sfx/buat-sfx.py.
+public/narasi-v2/
+public/sfx/*.wav

@@ -1,21 +1,22 @@
 import React from "react";
 import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { R, barisTerminal, ribuan } from "../data";
-import { kata, teksNarasi } from "../data/narasi";
+import { kalimatMulai, pada } from "../data/narasi";
+import { Bunyi } from "../komponen/v2";
 import { Chip, Panel, SimbolPenyerang, SimbolSatuan, useMuncul } from "../komponen/dasar";
 import { huruf, warna } from "../tema";
 import { Bingkai } from "./Bingkai";
 
 const MASALAH = [
-  { judul: "Satuan kecil tanpa tim SOC", ket: "Satuan setingkat Kodim jarang punya analis siber. Log tersebar dan tidak pernah dibaca." },
-  { judul: "Alert membanjiri", ket: "Alat biasa membanjiri operator dengan alert mentah tanpa konteks." },
+  { judul: "Satuan tanpa tim siber", ket: "Satuan setingkat Kodim jarang punya analis siber. Catatan tersebar dan tidak pernah dibaca." },
+  { judul: "Peringatan membanjiri", ket: "Alat biasa membanjiri operator dengan alert mentah tanpa konteks." },
   { judul: "Serangan terkoordinasi", ket: "Serangan ke beberapa satuan sekaligus tidak terlihat bila tiap satuan dipantau terpisah." },
   { judul: "Sensor dimatikan", ket: "Penyerang mematikan sensor lebih dulu. Pertahanan buta tanpa disadari." },
   { judul: "Situs disusupi judi online", ket: "Judi online ber-cloaking: hanya Google yang melihatnya, admin situs tidak." },
 ];
-const ID = "02-masalah";
-// Tiap masalah tampil saat mulai diucapkan (indeks kata di narasi).
-const MULAI = [0, 9, 18, 24, 29].map((i) => kata(ID, i) - 0.2);
+const ID = "03-masalah";
+// Tiap masalah tampil saat mulai diucapkan.
+const MULAI = [kalimatMulai(ID, 1), kalimatMulai(ID, 2), kalimatMulai(ID, 3), pada(ID, "bahkan mematikan sensor"), kalimatMulai(ID, 4)].map((t) => t - 0.2);
 
 // Angka asli dari rekaman: semua event dari 172.30.0.66 ke Kodim Latihan A.
 const EVENT_KE_A = R.db.eventPenyerangPerSumber.filter((x) => x.satuan === "KODIM-LAT-A").reduce((a, x) => a + x.jumlah, 0);
@@ -30,7 +31,7 @@ const Visual: React.FC<{ i: number; t: number }> = ({ i, t }) => {
       <div style={{ ...mid, flexDirection: "column", gap: 34 }}>
         <SimbolSatuan lebar={260} eselon="II" />
         <div style={{ display: "flex", gap: 20 }}>
-          <Chip warnaLatar={warna.inset}>Log web · SSH · firewall</Chip>
+          <Chip warnaLatar={warna.inset}>Catatan web · SSH · firewall</Chip>
           <Chip warnaLatar={warna.awas} warnaTeks={warna.accentInk}>Analis siber: 0</Chip>
         </div>
       </div>
@@ -41,7 +42,7 @@ const Visual: React.FC<{ i: number; t: number }> = ({ i, t }) => {
     return (
       <div style={{ ...mid, flexDirection: "column", gap: 10 }}>
         <div style={{ fontFamily: huruf.stensil, fontSize: 200, color: warna.waspada, lineHeight: 1 }}>{ribuan(n)}</div>
-        <div style={{ fontFamily: huruf.kondensasi, fontSize: 40, color: warna.ink2, textAlign: "center", maxWidth: 760 }}>
+        <div style={{ fontFamily: huruf.kondensasi, fontSize: 40, color: warna.ink2, textAlign: "center", maxWidth: 760, textWrap: "balance" }}>
           event dari satu penyerang ke satu satuan dalam kurang dari 5 menit
         </div>
         <div style={{ fontFamily: huruf.mono, fontSize: 22, color: warna.ink3, marginTop: 14 }}>angka asli dari rekaman lab di video ini</div>
@@ -107,7 +108,7 @@ const Visual: React.FC<{ i: number; t: number }> = ({ i, t }) => {
   );
 };
 
-export const A02Masalah: React.FC<{ durasi: number }> = ({ durasi }) => {
+export const S03Masalah: React.FC<{ durasi: number }> = ({ durasi }) => {
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
   const d = f / fps;
@@ -115,18 +116,10 @@ export const A02Masalah: React.FC<{ durasi: number }> = ({ durasi }) => {
   const tLokal = d - MULAI[aktif];
   const daftar = useMuncul(0.3, 0.5);
   return (
-    <Bingkai
-      nomor="02"
-      judul="Masalah"
-      durasi={durasi}
-      keterangan={teksNarasi(ID, [
-        [0, "Satuan setingkat Kodim jarang punya tim keamanan siber khusus."],
-        [9, "Alat keamanan biasa menghasilkan ribuan peringatan yang sulit dibaca."],
-        [18, "Penyerang sering menyerang beberapa satuan sekaligus,"],
-        [24, "bahkan mematikan sensor lebih dahulu."],
-        [29, "Sistem pemerintah juga sering disusupi judi online yang hanya terlihat di Google."],
-      ])}
-    >
+    <Bingkai id={ID} nomor="03" judul="Masalah" durasi={durasi}>
+      {MULAI.map((t, i) => (
+        <Bunyi key={i} jenis="bip" pada={t + 0.1} keras={0.8} />
+      ))}
       <div style={{ position: "absolute", left: 96, top: 150, width: 700, display: "flex", flexDirection: "column", gap: 16, opacity: daftar }}>
         {MASALAH.map((m, i) => {
           const on = i === aktif;

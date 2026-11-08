@@ -1,0 +1,166 @@
+{
+ "angka": {
+  "hydra": 128,
+  "firewallA": 805,
+  "nmapKeInsiden": "3,6",
+  "siagaAwal": "Aman",
+  "siagaHydra": "Siaga",
+  "jumlahAturan": 11,
+  "bobot": 425,
+  "tahap": 4,
+  "bonusTahap": 60,
+  "pengaliAset": "1,5",
+  "pengaliKampanye": "1,3",
+  "skor": 946,
+  "severity": "Kritis",
+  "mirip": 7,
+  "kataJudi": 8,
+  "putus": "3,19",
+  "lapsitMs": 633,
+  "buta": 23,
+  "butaSejakSinyal": 31,
+  "ujiN": 11,
+  "ujiOk": 11,
+  "ujiRata": "4,5",
+  "ujiInsidenPalsu": 0,
+  "audit": 21,
+  "agentOperator": 2,
+  "agentAnalis": 3,
+  "totalA": 933
+ },
+ "adegan": {
+  "01-pembuka": [
+   "Ini SENTRA SHIELD, pusat komando deteksi dan respons ancaman siber untuk satuan.",
+   "Dalam beberapa menit ke depan, kita lihat bagaimana satu serangan sungguhan dideteksi, dijelaskan, lalu dihentikan, sampai penyerang terputus."
+  ],
+  "02-analogi": [
+   "Cara paling mudah memahami SENTRA: bayangkan pos jaga di sebuah markas.",
+   "Di setiap gerbang ada penjaga yang mencatat siapa yang datang.",
+   "Di SENTRA, penjaga itu disebut agent, program kecil yang dipasang di komputer setiap satuan.",
+   "Semua laporan penjaga dikirim ke posko.",
+   "Posko SENTRA disebut Core.",
+   "Ia membaca laporan, mengenali pola serangan, dan menilai seberapa berbahaya.",
+   "Hasilnya tampil di papan siaga, yaitu Tingkat Siaga: Aman, Waspada, Siaga, atau Awas.",
+   "Kalau perlu tindakan, petugas mengusulkan, dan hanya komandan yang boleh memberi perintah.",
+   "Setiap kejadian ditulis di buku jaga yang tidak bisa dihapus diam-diam, yaitu audit log."
+  ],
+  "03-masalah": [
+   "Kenapa SENTRA dibutuhkan?",
+   "Satuan setingkat Kodim jarang punya tim keamanan siber sendiri, sehingga catatan komputer menumpuk tanpa pernah dibaca.",
+   "Alat keamanan biasa membanjiri petugas dengan ribuan peringatan mentah.",
+   "Penyerang bisa menyerang beberapa satuan sekaligus, bahkan mematikan sensor lebih dulu.",
+   "Dan situs resmi bisa disusupi iklan judi online yang hanya muncul di Google, sehingga pengelolanya tidak sadar."
+  ],
+  "04-arsitektur": [
+   "Secara teknis, SENTRA punya tiga bagian.",
+   "Agent di setiap satuan membaca catatan web, login SSH, firewall, perubahan file, dan perintah ke mesin industri, lalu mengirimnya ke pusat setiap detik lewat jalur terenkripsi.",
+   "Core di pusat menjalankan 13 aturan deteksi, merangkai serangan, dan memberi skor.",
+   "Command adalah layar untuk operator, analis, dan komandan, termasuk di HP.",
+   "Untuk demo ini kami membangun lab: dua satuan latihan, Kodim A dan Kodim B, sebuah mesin industri PLC, dan satu komputer penyerang di jaringan terpisah.",
+   "Semuanya berjalan tanpa internet, di satu laptop."
+  ],
+  "05-pindai": [
+   "Demo dimulai.",
+   "Semua tampilan aplikasi adalah rekaman asli dari lab.",
+   "Apa yang terjadi: penyerang memindai port Kodim A dengan nmap, lalu dengan hydra mencoba 128 kombinasi nama pengguna dan kata sandi.",
+   "Apa yang dilakukan SENTRA: 3,6 detik setelah pemindaian dimulai, insiden baru muncul di layar, tanpa perlu dimuat ulang.",
+   "Insiden adalah satu berkas kasus yang mengumpulkan semua jejak dari penyerang yang sama.",
+   "Begitu percobaan login menumpuk, Tingkat Siaga naik dari Aman ke Siaga.",
+   "Kenapa ini penting: petugas tidak perlu membaca ratusan baris catatan; layar memberi tahu sendiri saat ada bahaya."
+  ],
+  "06-insiden": [
+   "Apa yang dilakukan SENTRA berikutnya: 933 catatan mentah dari penyerang ini dirangkum menjadi satu insiden.",
+   "Di Detail Insiden, serangannya disusun sebagai Attack Story, tahap demi tahap, dari pengintaian sampai akses awal.",
+   "Tahapnya mengikuti urutan serangan pada umumnya: mengintai, masuk, bertahan, lalu merusak.",
+   "Setiap langkah diberi kode teknik dari MITRE ATT&CK.",
+   "Kenapa ini penting: analis langsung melihat cerita serangannya, bukan tumpukan peringatan."
+  ],
+  "07-kampanye": [
+   "Apa yang terjadi: dengan alamat IP yang sama, penyerang lalu memindai Kodim B.",
+   "Apa yang dilakukan SENTRA: dua serangan di dua satuan itu langsung dikaitkan menjadi satu kampanye lintas satuan, dan peta operasi menunjuk keduanya.",
+   "Kenapa ini penting: serangan terkoordinasi terlihat utuh dari pusat, tidak terpecah per satuan."
+  ],
+  "08-lebih-dalam": [
+   "Apa yang terjadi: penyerang menyelipkan perintah ke portal lewat SQL injection, menanam webshell, mengirim perintah tulis ke mesin PLC, lalu menyisipkan iklan judi online yang hanya tampil untuk Google.",
+   "Apa yang dilakukan SENTRA: setiap langkah tertangkap dan masuk ke cerita yang sama.",
+   "Webshell ketahuan karena agent mengawasi perubahan file di server, dan perintah ke PLC tertangkap oleh sensor Modbus.",
+   "Attack Story naik sampai tahap Dampak.",
+   "Kenapa ini penting: yang diserang bukan hanya situs web, tetapi juga mesin fisik, dan SENTRA mengawasi keduanya."
+  ],
+  "09-skor": [
+   "Seberapa berbahaya insiden ini?",
+   "SENTRA menghitung skor dengan rumus terbuka.",
+   "Bobot 11 aturan yang terpicu dijumlahkan: 425.",
+   "Ditambah 60 karena serangan mencapai 4 tahap.",
+   "Lalu dikali 1,5 karena mengenai mesin industri, dan dikali 1,3 karena bagian dari kampanye.",
+   "Hasilnya 946, Kritis.",
+   "Setiap angkanya bisa ditelusuri."
+  ],
+  "10-penjaga-situs": [
+   "Bagaimana dengan judi online tadi?",
+   "Penjaga Situs membuka halaman yang sama tiga kali: sebagai pengunjung biasa, sebagai Googlebot, dan sebagai pengunjung yang datang dari Google.",
+   "Versi biasa tetap normal, tetapi dua versi lainnya hanya 7% mirip dan berisi 8 kata judi.",
+   "SENTRA menandainya sebagai cloaking judi online.",
+   "Inilah sebabnya pengelola situs sering terlambat sadar: dari browser mereka, semuanya tampak normal."
+  ],
+  "11-respons": [
+   "Saatnya bertindak.",
+   "Apa yang terjadi: analis mengusulkan blokir IP penyerang selama satu jam.",
+   "Usulan masuk ke HP Komandan.",
+   "Selama belum disetujui, penyerang masih bisa membuka portal.",
+   "Apa yang dilakukan SENTRA: Komandan menyetujui.",
+   "Perintah dikirim ke agent, dan agent memblokir penyerang di firewall nftables.",
+   "3,19 detik setelah tombol Setujui ditekan, koneksi penyerang terputus.",
+   "Perintah ke agent hanya boleh dari daftar tetap, yaitu blokir, buka blokir, dan uji, sehingga tidak bisa disalahgunakan.",
+   "Kenapa ini penting: yang mengusulkan tidak bisa menyetujui sendiri.",
+   "Keputusan tetap di tangan komandan, sesuai rantai komando."
+  ],
+  "12-lapsit": [
+   "Setelah itu, analis membuat Laporan Situasi, atau LAPSIT, dengan satu klik.",
+   "Laporan selesai dalam kurang dari satu detik.",
+   "Laporan ini disusun dari data insiden, bukan dikarang, dan setiap temuan mengutip nomor bukti aslinya.",
+   "PDF-nya disegel dengan sidik jari SHA-256, sehingga perubahan sekecil apa pun akan ketahuan."
+  ],
+  "13-sensor-buta": [
+   "Apa yang terjadi kalau penyerang mematikan sensor?",
+   "Setiap agent mengirim sinyal hidup, atau heartbeat, secara berkala.",
+   "Begitu sinyal dari Kodim B hilang lebih dari 30 detik, SENTRA menandai agent itu buta dan membuka insiden Sensor Buta.",
+   "Di rekaman ini, tanda buta muncul 31 detik setelah sinyal terakhir.",
+   "Ini penting, karena penyerang yang cerdas biasanya membutakan penjaga lebih dulu."
+  ],
+  "14-uji-kesiapan": [
+   "Bagaimana kita tahu SENTRA benar-benar bekerja?",
+   "Lewat Uji Kesiapan, SENTRA menjalankan 11 serangan tiruan yang aman ke komputernya sendiri.",
+   "Serangan tiruan ini diberi tanda khusus, sehingga dihitung sebagai uji, bukan insiden.",
+   "Hasilnya, 11 dari 11 terdeteksi, rata-rata 4,5 detik, dan tidak satu pun menjadi insiden palsu."
+  ],
+  "15-buku-jaga": [
+   "Terakhir, buku jaganya.",
+   "Setiap catatan audit menyimpan sidik jari catatan sebelumnya, sehingga membentuk rantai.",
+   "Kalau satu catatan diubah atau dihapus langsung di database, rantainya putus dan langsung ketahuan.",
+   "Satu klik Verifikasi Rantai: 21 catatan diperiksa, rantai utuh."
+  ],
+  "16-hak-akses": [
+   "Hak akses mengikuti peran dan satuan.",
+   "Operator Kodim A hanya melihat satuannya sendiri, 2 agent.",
+   "Analis di pusat melihat semuanya, 3 agent.",
+   "Dengan begitu, setiap orang hanya melihat dan melakukan apa yang menjadi tugasnya."
+  ],
+  "17-angka": [
+   "Semua angka di video ini diukur dari rekaman lab yang sama.",
+   "Dan SENTRA siap dipasang: satu klik untuk menyalakan, berjalan tanpa internet, cukup di mini-PC, dan agent dipasang dengan satu skrip."
+  ],
+  "18-rekap": [
+   "Sekali lagi, alurnya.",
+   "Penyerang memindai dan menebak kata sandi; SENTRA membuka insiden dalam hitungan detik.",
+   "Serangan melebar ke satuan lain dan ke mesin industri; semuanya terangkai dalam satu cerita dengan skor yang terbuka.",
+   "Analis mengusulkan, Komandan menyetujui dari HP, dan 3,19 detik kemudian penyerang terputus.",
+   "Semuanya tercatat di buku jaga yang tidak bisa diubah."
+  ],
+  "19-penutup": [
+   "Langkah berikutnya: uji coba di satuan nyata dan menambah protokol mesin industri lain.",
+   "SENTRA SHIELD: nyata, terukur, siap pakai.",
+   "Terima kasih."
+  ]
+ }
+}

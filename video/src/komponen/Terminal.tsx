@@ -71,10 +71,12 @@ export const Terminal: React.FC<{
           letterSpacing: "0.12em",
           color: warna.ink2,
           textTransform: "uppercase",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
         }}
       >
-        <span style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: warna.awas }} />
-        {judul}
+        <span style={{ flexShrink: 0, width: 10, height: 10, borderRadius: 5, backgroundColor: warna.awas }} />
+        <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{judul}</span>
       </div>
       <div style={{ padding: "14px 20px", fontFamily: huruf.mono, fontSize: ukuranHuruf, lineHeight: `${lh}px`, whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}>
         {tampil.map((b, i) => (

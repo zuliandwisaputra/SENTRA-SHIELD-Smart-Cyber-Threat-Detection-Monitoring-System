@@ -29,7 +29,7 @@ node rekam/rekam-akses.cjs
 echo "== $(date +%T) Pasca-proses"
 if [ -f public/rekaman/lapsit.pdf ] && command -v pdftoppm >/dev/null; then
   pdftoppm -png -r 120 -f 1 -l 2 public/rekaman/lapsit.pdf public/rekaman/stills/lapsit-pdf
-  pdftoppm -png -r 220 -f 1 -l 1 public/rekaman/lapsit.pdf public/rekaman/stills/lapsit-hd
+  pdftoppm -png -r 220 -f 1 -l 2 public/rekaman/lapsit.pdf public/rekaman/stills/lapsit-hd
 fi
 # WebM (VP8) dari Playwright diubah ke MP4 H.264 berkeyframe rapat agar seek di Remotion akurat.
 for f in public/rekaman/*.webm; do

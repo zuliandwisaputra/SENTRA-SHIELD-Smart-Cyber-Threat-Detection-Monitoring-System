@@ -5,10 +5,11 @@ import { Footage, fokusMuat } from "../komponen/Footage";
 import { Braket } from "../komponen/dasar";
 import { huruf, warna } from "../tema";
 import { Bingkai } from "./Bingkai";
-import { kata, teksNarasi } from "../data/narasi";
+import { kalimatMulai, pada } from "../data/narasi";
+import { Bunyi } from "../komponen/v2";
 
-const ID = "09-hak-akses";
-const B_BANDING = kata(ID, 5) - 0.5; // "operator Kodim A ..."
+const ID = "16-hak-akses";
+const B_BANDING = kalimatMulai(ID, 1) - 0.4; // "Operator Kodim A ..."
 
 // Sesuai tabel akun di README dan AccessMatrix Core.
 const PERAN = [
@@ -23,7 +24,7 @@ const Peran = () => {
   const { fps } = useVideoConfig();
   const d = f / fps;
   return (
-    <div style={{ position: "absolute", left: 96, right: 96, top: 150, display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 26 }}>
+    <div style={{ position: "absolute", left: 96, right: 96, top: 156, display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 26 }}>
       {PERAN.map((p, i) => {
         const o = interpolate(d, [0.15 + i * 0.25, 0.45 + i * 0.25], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
         return (
@@ -45,10 +46,10 @@ const Peran = () => {
 
 const Banding = () => {
   const lebar = 852;
-  const P = { atas: 150, lebar, tinggi: 700 };
+  const P = { atas: 156, lebar, tinggi: 740 };
   const rasio = lebar / (P.tinggi - 44);
   // Kartu agent disorot saat peran itu disebut di narasi.
-  const tSorot = { operator: kata(ID, 5) - B_BANDING, analis: kata(ID, 13) - B_BANDING };
+  const tSorot = { operator: pada(ID, "Operator Kodim A") - B_BANDING, analis: pada(ID, "Analis di pusat") - B_BANDING };
   const v = (nama: "operator" | "analis") => {
     const info = AKSES.video[nama];
     const p = AKSES.penanda.find((x) => x.video === nama && x.id === "beranda")!;
@@ -60,15 +61,17 @@ const Banding = () => {
   const op = v("operator");
   const an = v("analis");
   const panel = (x: ReturnType<typeof v>, kiri: number, label: string, c: string) => (
+    // Tangkapan layar asli Beranda tiap akun (diambil di detik penanda yang sama dengan footage).
     <Footage
-      src={x.src}
-      epochMulaiVideo={x.ep}
-      mulai={x.mulai}
+      src={x.src.replace(/^rekaman\/akses-(\w+)\.mp4$/, "rekaman/stills/akses-$1.png")}
+      gambar
+      epochMulaiVideo={x.ep + (x.mulai + 0.3) * 1000}
+      mulai={0}
       kiri={kiri}
       {...P}
-      label={label}
-      fokus={[{ pada: x.mulai, kotak: x.kartu }]}
-      sorot={[{ dari: x.mulai + x.tSorot, sampai: x.mulai + 12, kotak: { x: 536, y: 657, w: 209, h: 255 }, label: x.agent, warna: c }]}
+      label={label.replace("Rekaman asli", "Tangkapan layar asli")}
+      fokus={[{ pada: 0, kotak: x.kartu }]}
+      sorot={[{ dari: x.tSorot, sampai: 60, kotak: { x: 536, y: 657, w: 209, h: 255 }, label: x.agent, warna: c }]}
     />
   );
   return (
@@ -79,22 +82,17 @@ const Banding = () => {
   );
 };
 
-export const A09HakAkses: React.FC<{ durasi: number }> = ({ durasi }) => {
+export const S16HakAkses: React.FC<{ durasi: number }> = ({ durasi }) => {
   const { fps } = useVideoConfig();
   const a = B_BANDING;
   return (
-    <Bingkai
-      nomor="09"
-      judul="Hak akses"
-      durasi={durasi}
-      dataLatihan
-      dtgTeks={dtg(AKSES.video.operator.mulai)}
-      keterangan={teksNarasi(ID, [
-        [0, "Setiap peran punya hak berbeda."],
-        [5, "Operator Kodim A hanya melihat satuannya sendiri,"],
-        [12, "sedangkan analis di pusat melihat semua satuan."],
-      ])}
-    >
+    <Bingkai id={ID} nomor="16" judul="Hak akses" durasi={durasi} dataLatihan dtgTeks={dtg(AKSES.video.operator.mulai)}>
+      {[0, 1, 2, 3].map((i) => (
+        <Bunyi key={i} jenis="klik" pada={0.15 + i * 0.25} keras={0.6} />
+      ))}
+      <Bunyi jenis="whoosh" pada={a - 0.1} keras={0.6} />
+      <Bunyi jenis="bip" pada={pada(ID, "Operator Kodim A")} keras={0.7} />
+      <Bunyi jenis="bip" pada={pada(ID, "Analis di pusat")} keras={0.7} />
       <Sequence durationInFrames={Math.round(a * fps)} layout="none">
         <Peran />
       </Sequence>

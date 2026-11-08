@@ -1,0 +1,1333 @@
+{
+ "01-pembuka": {
+  "durasi": 14.39,
+  "lufs": -16.0,
+  "puncak": -1.5,
+  "kalimat": [
+   {
+    "teks": "Ini SENTRA SHIELD, pusat komando deteksi dan respons ancaman siber untuk satuan.",
+    "mulai": 0.0,
+    "selesai": 5.11,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 1.0,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 117.3,
+    "transkrip": "Ini Sentra Shield, pusat komando deteksi dan respons ancaman siber untuk satuan."
+   },
+   {
+    "teks": "Dalam beberapa menit ke depan, kita lihat bagaimana satu serangan sungguhan dideteksi, dijelaskan, lalu dihentikan, sampai penyerang terputus.",
+    "mulai": 5.43,
+    "selesai": 14.39,
+    "lulus": true,
+    "percobaan": 2,
+    "nilai": {
+     "cocok": 1.0,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 117.3,
+    "transkrip": "Dalam beberapa menit ke depan, kita lihat bagaimana satu serangan sungguhan dideteksi, dijelaskan, lalu dihentikan, sampai penyerang terputus."
+   }
+  ],
+  "kata": [
+   {
+    "k": "Ini",
+    "m": 0.0,
+    "s": 0.58,
+    "kalimat": 0
+   },
+   {
+    "k": "SENTRA",
+    "m": 0.58,
+    "s": 1.0,
+    "kalimat": 0
+   },
+   {
+    "k": "SHIELD,",
+    "m": 1.0,
+    "s": 1.28,
+    "kalimat": 0
+   },
+   {
+    "k": "pusat",
+    "m": 1.72,
+    "s": 1.94,
+    "kalimat": 0
+   },
+   {
+    "k": "komando",
+    "m": 1.94,
+    "s": 2.32,
+    "kalimat": 0
+   },
+   {
+    "k": "deteksi",
+    "m": 2.32,
+    "s": 2.8,
+    "kalimat": 0
+   },
+   {
+    "k": "dan",
+    "m": 2.8,
+    "s": 3.0,
+    "kalimat": 0
+   },
+   {
+    "k": "respons",
+    "m": 3.0,
+    "s": 3.42,
+    "kalimat": 0
+   },
+   {
+    "k": "ancaman",
+    "m": 3.42,
+    "s": 3.86,
+    "kalimat": 0
+   },
+   {
+    "k": "siber",
+    "m": 3.86,
+    "s": 4.18,
+    "kalimat": 0
+   },
+   {
+    "k": "untuk",
+    "m": 4.18,
+    "s": 4.46,
+    "kalimat": 0
+   },
+   {
+    "k": "satuan.",
+    "m": 4.46,
+    "s": 4.82,
+    "kalimat": 0
+   },
+   {
+    "k": "Dalam",
+    "m": 5.43,
+    "s": 6.11,
+    "kalimat": 1
+   },
+   {
+    "k": "beberapa",
+    "m": 6.11,
+    "s": 6.51,
+    "kalimat": 1
+   },
+   {
+    "k": "menit",
+    "m": 6.51,
+    "s": 6.73,
+    "kalimat": 1
+   },
+   {
+    "k": "ke",
+    "m": 6.73,
+    "s": 6.87,
+    "kalimat": 1
+   },
+   {
+    "k": "depan,",
+    "m": 6.87,
+    "s": 7.45,
+    "kalimat": 1
+   },
+   {
+    "k": "kita",
+    "m": 7.67,
+    "s": 7.79,
+    "kalimat": 1
+   },
+   {
+    "k": "lihat",
+    "m": 7.79,
+    "s": 8.09,
+    "kalimat": 1
+   },
+   {
+    "k": "bagaimana",
+    "m": 8.09,
+    "s": 8.57,
+    "kalimat": 1
+   },
+   {
+    "k": "satu",
+    "m": 8.57,
+    "s": 8.87,
+    "kalimat": 1
+   },
+   {
+    "k": "serangan",
+    "m": 8.87,
+    "s": 9.21,
+    "kalimat": 1
+   },
+   {
+    "k": "sungguhan",
+    "m": 9.21,
+    "s": 9.71,
+    "kalimat": 1
+   },
+   {
+    "k": "dideteksi,",
+    "m": 9.71,
+    "s": 10.49,
+    "kalimat": 1
+   },
+   {
+    "k": "dijelaskan,",
+    "m": 10.81,
+    "s": 11.63,
+    "kalimat": 1
+   },
+   {
+    "k": "lalu",
+    "m": 11.79,
+    "s": 11.97,
+    "kalimat": 1
+   },
+   {
+    "k": "dihentikan,",
+    "m": 11.97,
+    "s": 12.79,
+    "kalimat": 1
+   },
+   {
+    "k": "sampai",
+    "m": 13.07,
+    "s": 13.35,
+    "kalimat": 1
+   },
+   {
+    "k": "penyerang",
+    "m": 13.35,
+    "s": 13.71,
+    "kalimat": 1
+   },
+   {
+    "k": "terputus.",
+    "m": 13.71,
+    "s": 14.27,
+    "kalimat": 1
+   }
+  ]
+ },
+ "02-analogi": {
+  "durasi": 43.27,
+  "lufs": -16.0,
+  "puncak": -1.5,
+  "kalimat": [
+   {
+    "teks": "Cara paling mudah memahami SENTRA: bayangkan pos jaga di sebuah markas.",
+    "mulai": 0.0,
+    "selesai": 4.48,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 0.992,
+     "ekor": 1.0,
+     "rasio_panjang": 1.017
+    },
+    "f0": 115.9,
+    "transkrip": "Cara paling mudah memahami Sentra, bayangkan post jaga di sebuah markas."
+   },
+   {
+    "teks": "Di setiap gerbang ada penjaga yang mencatat siapa yang datang.",
+    "mulai": 4.8,
+    "selesai": 8.26,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 1.0,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 120.0,
+    "transkrip": "Di setiap gerbang ada penjaga yang mencatat siapa yang datang."
+   },
+   {
+    "teks": "Di SENTRA, penjaga itu disebut agent, program kecil yang dipasang di komputer setiap satuan.",
+    "mulai": 8.58,
+    "selesai": 14.18,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 0.967,
+     "ekor": 1.0,
+     "rasio_panjang": 0.987
+    },
+    "f0": 121.4,
+    "transkrip": "Di Sentra, penjaga itu disebut Ejen, program kecil yang dipasang di komputer setiap satuan."
+   },
+   {
+    "teks": "Semua laporan penjaga dikirim ke posko.",
+    "mulai": 14.5,
+    "selesai": 17.05,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 1.0,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 128.6,
+    "transkrip": "Semua laporan penjaga dikirim ke Posko."
+   },
+   {
+    "teks": "Posko SENTRA disebut Core.",
+    "mulai": 17.37,
+    "selesai": 19.29,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 0.955,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 127.1,
+    "transkrip": "Posco Sentra disebut CORE."
+   },
+   {
+    "teks": "Ia membaca laporan, mengenali pola serangan, dan menilai seberapa berbahaya.",
+    "mulai": 19.61,
+    "selesai": 24.41,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 1.0,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 110.0,
+    "transkrip": "Ia membaca laporan, mengenali pola serangan, dan menilai seberapa berbahaya."
+   },
+   {
+    "teks": "Hasilnya tampil di papan siaga, yaitu Tingkat Siaga: Aman, Waspada, Siaga, atau Awas.",
+    "mulai": 24.73,
+    "selesai": 31.61,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 1.0,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 113.9,
+    "transkrip": "Hasilnya tampil di papan siaga, yaitu tingkat siaga, aman, waspada, siaga, atau awas."
+   },
+   {
+    "teks": "Kalau perlu tindakan, petugas mengusulkan, dan hanya komandan yang boleh memberi perintah.",
+    "mulai": 31.93,
+    "selesai": 37.35,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 1.0,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 124.2,
+    "transkrip": "Kalau perlu tindakan, petugas mengusulkan, dan hanya komandan yang boleh memberi perintah."
+   },
+   {
+    "teks": "Setiap kejadian ditulis di buku jaga yang tidak bisa dihapus diam-diam, yaitu audit log.",
+    "mulai": 37.67,
+    "selesai": 43.27,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 1.0,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 107.5,
+    "transkrip": "Setiap kejadian ditulis di buku jaga yang tidak bisa dihapus diam -diam, yaitu audit log."
+   }
+  ],
+  "kata": [
+   {
+    "k": "Cara",
+    "m": 0.0,
+    "s": 0.58,
+    "kalimat": 0
+   },
+   {
+    "k": "paling",
+    "m": 0.58,
+    "s": 0.86,
+    "kalimat": 0
+   },
+   {
+    "k": "mudah",
+    "m": 0.86,
+    "s": 1.22,
+    "kalimat": 0
+   },
+   {
+    "k": "memahami",
+    "m": 1.22,
+    "s": 1.62,
+    "kalimat": 0
+   },
+   {
+    "k": "SENTRA:",
+    "m": 1.62,
+    "s": 2.3,
+    "kalimat": 0
+   },
+   {
+    "k": "bayangkan",
+    "m": 2.54,
+    "s": 2.86,
+    "kalimat": 0
+   },
+   {
+    "k": "pos",
+    "m": 2.86,
+    "s": 3.1,
+    "kalimat": 0
+   },
+   {
+    "k": "jaga",
+    "m": 3.1,
+    "s": 3.44,
+    "kalimat": 0
+   },
+   {
+    "k": "di",
+    "m": 3.44,
+    "s": 3.56,
+    "kalimat": 0
+   },
+   {
+    "k": "sebuah",
+    "m": 3.56,
+    "s": 3.84,
+    "kalimat": 0
+   },
+   {
+    "k": "markas.",
+    "m": 3.84,
+    "s": 4.32,
+    "kalimat": 0
+   },
+   {
+    "k": "Di",
+    "m": 4.8,
+    "s": 5.32,
+    "kalimat": 1
+   },
+   {
+    "k": "setiap",
+    "m": 5.32,
+    "s": 5.62,
+    "kalimat": 1
+   },
+   {
+    "k": "gerbang",
+    "m": 5.62,
+    "s": 5.96,
+    "kalimat": 1
+   },
+   {
+    "k": "ada",
+    "m": 5.96,
+    "s": 6.18,
+    "kalimat": 1
+   },
+   {
+    "k": "penjaga",
+    "m": 6.18,
+    "s": 6.64,
+    "kalimat": 1
+   },
+   {
+    "k": "yang",
+    "m": 6.64,
+    "s": 6.8,
+    "kalimat": 1
+   },
+   {
+    "k": "mencatat",
+    "m": 6.8,
+    "s": 7.28,
+    "kalimat": 1
+   },
+   {
+    "k": "siapa",
+    "m": 7.28,
+    "s": 7.62,
+    "kalimat": 1
+   },
+   {
+    "k": "yang",
+    "m": 7.62,
+    "s": 7.84,
+    "kalimat": 1
+   },
+   {
+    "k": "datang.",
+    "m": 7.84,
+    "s": 8.18,
+    "kalimat": 1
+   },
+   {
+    "k": "Di",
+    "m": 8.58,
+    "s": 9.06,
+    "kalimat": 2
+   },
+   {
+    "k": "SENTRA,",
+    "m": 9.06,
+    "s": 9.6,
+    "kalimat": 2
+   },
+   {
+    "k": "penjaga",
+    "m": 9.8,
+    "s": 10.1,
+    "kalimat": 2
+   },
+   {
+    "k": "itu",
+    "m": 10.1,
+    "s": 10.34,
+    "kalimat": 2
+   },
+   {
+    "k": "disebut",
+    "m": 10.34,
+    "s": 10.64,
+    "kalimat": 2
+   },
+   {
+    "k": "agent,",
+    "m": 10.64,
+    "s": 11.08,
+    "kalimat": 2
+   },
+   {
+    "k": "program",
+    "m": 11.64,
+    "s": 11.82,
+    "kalimat": 2
+   },
+   {
+    "k": "kecil",
+    "m": 11.82,
+    "s": 12.18,
+    "kalimat": 2
+   },
+   {
+    "k": "yang",
+    "m": 12.18,
+    "s": 12.36,
+    "kalimat": 2
+   },
+   {
+    "k": "dipasang",
+    "m": 12.36,
+    "s": 12.76,
+    "kalimat": 2
+   },
+   {
+    "k": "di",
+    "m": 12.76,
+    "s": 12.92,
+    "kalimat": 2
+   },
+   {
+    "k": "komputer",
+    "m": 12.92,
+    "s": 13.3,
+    "kalimat": 2
+   },
+   {
+    "k": "setiap",
+    "m": 13.3,
+    "s": 13.68,
+    "kalimat": 2
+   },
+   {
+    "k": "satuan.",
+    "m": 13.68,
+    "s": 14.0,
+    "kalimat": 2
+   },
+   {
+    "k": "Semua",
+    "m": 14.5,
+    "s": 15.18,
+    "kalimat": 3
+   },
+   {
+    "k": "laporan",
+    "m": 15.18,
+    "s": 15.58,
+    "kalimat": 3
+   },
+   {
+    "k": "penjaga",
+    "m": 15.58,
+    "s": 16.0,
+    "kalimat": 3
+   },
+   {
+    "k": "dikirim",
+    "m": 16.0,
+    "s": 16.36,
+    "kalimat": 3
+   },
+   {
+    "k": "ke",
+    "m": 16.36,
+    "s": 16.54,
+    "kalimat": 3
+   },
+   {
+    "k": "posko.",
+    "m": 16.54,
+    "s": 16.9,
+    "kalimat": 3
+   },
+   {
+    "k": "Posko",
+    "m": 17.37,
+    "s": 18.15,
+    "kalimat": 4
+   },
+   {
+    "k": "SENTRA",
+    "m": 18.15,
+    "s": 18.49,
+    "kalimat": 4
+   },
+   {
+    "k": "disebut",
+    "m": 18.49,
+    "s": 18.87,
+    "kalimat": 4
+   },
+   {
+    "k": "Core.",
+    "m": 18.87,
+    "s": 19.11,
+    "kalimat": 4
+   },
+   {
+    "k": "Ia",
+    "m": 19.61,
+    "s": 20.09,
+    "kalimat": 5
+   },
+   {
+    "k": "membaca",
+    "m": 20.09,
+    "s": 20.45,
+    "kalimat": 5
+   },
+   {
+    "k": "laporan,",
+    "m": 20.45,
+    "s": 21.21,
+    "kalimat": 5
+   },
+   {
+    "k": "mengenali",
+    "m": 21.35,
+    "s": 21.65,
+    "kalimat": 5
+   },
+   {
+    "k": "pola",
+    "m": 21.65,
+    "s": 22.01,
+    "kalimat": 5
+   },
+   {
+    "k": "serangan,",
+    "m": 22.01,
+    "s": 22.47,
+    "kalimat": 5
+   },
+   {
+    "k": "dan",
+    "m": 22.79,
+    "s": 22.91,
+    "kalimat": 5
+   },
+   {
+    "k": "menilai",
+    "m": 22.91,
+    "s": 23.33,
+    "kalimat": 5
+   },
+   {
+    "k": "seberapa",
+    "m": 23.33,
+    "s": 23.73,
+    "kalimat": 5
+   },
+   {
+    "k": "berbahaya.",
+    "m": 23.73,
+    "s": 24.29,
+    "kalimat": 5
+   },
+   {
+    "k": "Hasilnya",
+    "m": 24.73,
+    "s": 25.53,
+    "kalimat": 6
+   },
+   {
+    "k": "tampil",
+    "m": 25.53,
+    "s": 25.89,
+    "kalimat": 6
+   },
+   {
+    "k": "di",
+    "m": 25.89,
+    "s": 26.05,
+    "kalimat": 6
+   },
+   {
+    "k": "papan",
+    "m": 26.05,
+    "s": 26.25,
+    "kalimat": 6
+   },
+   {
+    "k": "siaga,",
+    "m": 26.25,
+    "s": 26.81,
+    "kalimat": 6
+   },
+   {
+    "k": "yaitu",
+    "m": 27.09,
+    "s": 27.41,
+    "kalimat": 6
+   },
+   {
+    "k": "Tingkat",
+    "m": 27.41,
+    "s": 27.69,
+    "kalimat": 6
+   },
+   {
+    "k": "Siaga:",
+    "m": 27.69,
+    "s": 28.23,
+    "kalimat": 6
+   },
+   {
+    "k": "Aman,",
+    "m": 28.53,
+    "s": 28.89,
+    "kalimat": 6
+   },
+   {
+    "k": "Waspada,",
+    "m": 29.17,
+    "s": 29.73,
+    "kalimat": 6
+   },
+   {
+    "k": "Siaga,",
+    "m": 30.01,
+    "s": 30.57,
+    "kalimat": 6
+   },
+   {
+    "k": "atau",
+    "m": 30.91,
+    "s": 31.09,
+    "kalimat": 6
+   },
+   {
+    "k": "Awas.",
+    "m": 31.09,
+    "s": 31.51,
+    "kalimat": 6
+   },
+   {
+    "k": "Kalau",
+    "m": 31.93,
+    "s": 32.55,
+    "kalimat": 7
+   },
+   {
+    "k": "perlu",
+    "m": 32.55,
+    "s": 32.83,
+    "kalimat": 7
+   },
+   {
+    "k": "tindakan,",
+    "m": 32.83,
+    "s": 33.47,
+    "kalimat": 7
+   },
+   {
+    "k": "petugas",
+    "m": 33.79,
+    "s": 34.17,
+    "kalimat": 7
+   },
+   {
+    "k": "mengusulkan,",
+    "m": 34.17,
+    "s": 35.01,
+    "kalimat": 7
+   },
+   {
+    "k": "dan",
+    "m": 35.29,
+    "s": 35.41,
+    "kalimat": 7
+   },
+   {
+    "k": "hanya",
+    "m": 35.41,
+    "s": 35.61,
+    "kalimat": 7
+   },
+   {
+    "k": "komandan",
+    "m": 35.61,
+    "s": 36.05,
+    "kalimat": 7
+   },
+   {
+    "k": "yang",
+    "m": 36.05,
+    "s": 36.27,
+    "kalimat": 7
+   },
+   {
+    "k": "boleh",
+    "m": 36.27,
+    "s": 36.43,
+    "kalimat": 7
+   },
+   {
+    "k": "memberi",
+    "m": 36.43,
+    "s": 36.83,
+    "kalimat": 7
+   },
+   {
+    "k": "perintah.",
+    "m": 36.83,
+    "s": 37.29,
+    "kalimat": 7
+   },
+   {
+    "k": "Setiap",
+    "m": 37.67,
+    "s": 38.55,
+    "kalimat": 8
+   },
+   {
+    "k": "kejadian",
+    "m": 38.55,
+    "s": 38.97,
+    "kalimat": 8
+   },
+   {
+    "k": "ditulis",
+    "m": 38.97,
+    "s": 39.33,
+    "kalimat": 8
+   },
+   {
+    "k": "di",
+    "m": 39.33,
+    "s": 39.49,
+    "kalimat": 8
+   },
+   {
+    "k": "buku",
+    "m": 39.49,
+    "s": 39.71,
+    "kalimat": 8
+   },
+   {
+    "k": "jaga",
+    "m": 39.71,
+    "s": 40.01,
+    "kalimat": 8
+   },
+   {
+    "k": "yang",
+    "m": 40.01,
+    "s": 40.15,
+    "kalimat": 8
+   },
+   {
+    "k": "tidak",
+    "m": 40.15,
+    "s": 40.39,
+    "kalimat": 8
+   },
+   {
+    "k": "bisa",
+    "m": 40.39,
+    "s": 40.61,
+    "kalimat": 8
+   },
+   {
+    "k": "dihapus",
+    "m": 40.61,
+    "s": 41.09,
+    "kalimat": 8
+   },
+   {
+    "k": "diam-diam,",
+    "m": 41.09,
+    "s": 41.79,
+    "kalimat": 8
+   },
+   {
+    "k": "yaitu",
+    "m": 42.03,
+    "s": 42.45,
+    "kalimat": 8
+   },
+   {
+    "k": "audit",
+    "m": 42.45,
+    "s": 42.77,
+    "kalimat": 8
+   },
+   {
+    "k": "log.",
+    "m": 42.77,
+    "s": 43.05,
+    "kalimat": 8
+   }
+  ]
+ },
+ "03-masalah": {
+  "durasi": 25.21,
+  "lufs": -15.9,
+  "puncak": -2.1,
+  "kalimat": [
+   {
+    "teks": "Kenapa SENTRA dibutuhkan?",
+    "mulai": 0.0,
+    "selesai": 1.76,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 1.0,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 124.6,
+    "transkrip": "Kenapa sentra dibutuhkan?"
+   },
+   {
+    "teks": "Satuan setingkat Kodim jarang punya tim keamanan siber sendiri, sehingga catatan komputer menumpuk tanpa pernah dibaca.",
+    "mulai": 2.08,
+    "selesai": 8.64,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 1.0,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 122.8,
+    "transkrip": "Satuan setingkat Kodim jarang punya tim keamanan siber sendiri, sehingga catatan komputer menumpuk tanpa pernah dibaca."
+   },
+   {
+    "teks": "Alat keamanan biasa membanjiri petugas dengan ribuan peringatan mentah.",
+    "mulai": 8.96,
+    "selesai": 12.96,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 1.0,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 120.0,
+    "transkrip": "Alat keamanan biasa membanjiri petugas dengan ribuan peringatan mentah."
+   },
+   {
+    "teks": "Penyerang bisa menyerang beberapa satuan sekaligus, bahkan mematikan sensor lebih dulu.",
+    "mulai": 13.28,
+    "selesai": 18.38,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 1.0,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 117.9,
+    "transkrip": "Penyerang bisa menyerang beberapa satuan sekaligus, bahkan mematikan sensor lebih dulu."
+   },
+   {
+    "teks": "Dan situs resmi bisa disusupi iklan judi online yang hanya muncul di Google, sehingga pengelolanya tidak sadar.",
+    "mulai": 18.7,
+    "selesai": 25.21,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 0.995,
+     "ekor": 0.929,
+     "rasio_panjang": 1.011
+    },
+    "f0": 127.1,
+    "transkrip": "dan situs resmi bisa disusupi iklan judi online yang hanya muncul di Google, sehingga pengelolannya tidak sadar."
+   }
+  ],
+  "kata": [
+   {
+    "k": "Kenapa",
+    "m": 0.0,
+    "s": 0.72,
+    "kalimat": 0
+   },
+   {
+    "k": "SENTRA",
+    "m": 0.72,
+    "s": 1.06,
+    "kalimat": 0
+   },
+   {
+    "k": "dibutuhkan?",
+    "m": 1.06,
+    "s": 1.6,
+    "kalimat": 0
+   },
+   {
+    "k": "Satuan",
+    "m": 2.08,
+    "s": 2.72,
+    "kalimat": 1
+   },
+   {
+    "k": "setingkat",
+    "m": 2.72,
+    "s": 3.2,
+    "kalimat": 1
+   },
+   {
+    "k": "Kodim",
+    "m": 3.2,
+    "s": 3.5,
+    "kalimat": 1
+   },
+   {
+    "k": "jarang",
+    "m": 3.5,
+    "s": 3.84,
+    "kalimat": 1
+   },
+   {
+    "k": "punya",
+    "m": 3.84,
+    "s": 4.04,
+    "kalimat": 1
+   },
+   {
+    "k": "tim",
+    "m": 4.04,
+    "s": 4.24,
+    "kalimat": 1
+   },
+   {
+    "k": "keamanan",
+    "m": 4.24,
+    "s": 4.76,
+    "kalimat": 1
+   },
+   {
+    "k": "siber",
+    "m": 4.76,
+    "s": 5.02,
+    "kalimat": 1
+   },
+   {
+    "k": "sendiri,",
+    "m": 5.02,
+    "s": 5.46,
+    "kalimat": 1
+   },
+   {
+    "k": "sehingga",
+    "m": 5.9,
+    "s": 6.1,
+    "kalimat": 1
+   },
+   {
+    "k": "catatan",
+    "m": 6.1,
+    "s": 6.5,
+    "kalimat": 1
+   },
+   {
+    "k": "komputer",
+    "m": 6.5,
+    "s": 6.98,
+    "kalimat": 1
+   },
+   {
+    "k": "menumpuk",
+    "m": 6.98,
+    "s": 7.44,
+    "kalimat": 1
+   },
+   {
+    "k": "tanpa",
+    "m": 7.44,
+    "s": 7.82,
+    "kalimat": 1
+   },
+   {
+    "k": "pernah",
+    "m": 7.82,
+    "s": 8.04,
+    "kalimat": 1
+   },
+   {
+    "k": "dibaca.",
+    "m": 8.04,
+    "s": 8.48,
+    "kalimat": 1
+   },
+   {
+    "k": "Alat",
+    "m": 8.96,
+    "s": 9.62,
+    "kalimat": 2
+   },
+   {
+    "k": "keamanan",
+    "m": 9.62,
+    "s": 10.1,
+    "kalimat": 2
+   },
+   {
+    "k": "biasa",
+    "m": 10.1,
+    "s": 10.4,
+    "kalimat": 2
+   },
+   {
+    "k": "membanjiri",
+    "m": 10.4,
+    "s": 10.94,
+    "kalimat": 2
+   },
+   {
+    "k": "petugas",
+    "m": 10.94,
+    "s": 11.4,
+    "kalimat": 2
+   },
+   {
+    "k": "dengan",
+    "m": 11.4,
+    "s": 11.66,
+    "kalimat": 2
+   },
+   {
+    "k": "ribuan",
+    "m": 11.66,
+    "s": 12.04,
+    "kalimat": 2
+   },
+   {
+    "k": "peringatan",
+    "m": 12.04,
+    "s": 12.48,
+    "kalimat": 2
+   },
+   {
+    "k": "mentah.",
+    "m": 12.48,
+    "s": 12.88,
+    "kalimat": 2
+   },
+   {
+    "k": "Penyerang",
+    "m": 13.28,
+    "s": 14.06,
+    "kalimat": 3
+   },
+   {
+    "k": "bisa",
+    "m": 14.06,
+    "s": 14.36,
+    "kalimat": 3
+   },
+   {
+    "k": "menyerang",
+    "m": 14.36,
+    "s": 14.7,
+    "kalimat": 3
+   },
+   {
+    "k": "beberapa",
+    "m": 14.7,
+    "s": 15.16,
+    "kalimat": 3
+   },
+   {
+    "k": "satuan",
+    "m": 15.16,
+    "s": 15.48,
+    "kalimat": 3
+   },
+   {
+    "k": "sekaligus,",
+    "m": 15.48,
+    "s": 16.3,
+    "kalimat": 3
+   },
+   {
+    "k": "bahkan",
+    "m": 16.48,
+    "s": 16.72,
+    "kalimat": 3
+   },
+   {
+    "k": "mematikan",
+    "m": 16.72,
+    "s": 17.28,
+    "kalimat": 3
+   },
+   {
+    "k": "sensor",
+    "m": 17.28,
+    "s": 17.66,
+    "kalimat": 3
+   },
+   {
+    "k": "lebih",
+    "m": 17.66,
+    "s": 17.96,
+    "kalimat": 3
+   },
+   {
+    "k": "dulu.",
+    "m": 17.96,
+    "s": 18.16,
+    "kalimat": 3
+   },
+   {
+    "k": "Dan",
+    "m": 18.7,
+    "s": 19.26,
+    "kalimat": 4
+   },
+   {
+    "k": "situs",
+    "m": 19.26,
+    "s": 19.56,
+    "kalimat": 4
+   },
+   {
+    "k": "resmi",
+    "m": 19.56,
+    "s": 19.86,
+    "kalimat": 4
+   },
+   {
+    "k": "bisa",
+    "m": 19.86,
+    "s": 20.1,
+    "kalimat": 4
+   },
+   {
+    "k": "disusupi",
+    "m": 20.1,
+    "s": 20.62,
+    "kalimat": 4
+   },
+   {
+    "k": "iklan",
+    "m": 20.62,
+    "s": 20.92,
+    "kalimat": 4
+   },
+   {
+    "k": "judi",
+    "m": 20.92,
+    "s": 21.26,
+    "kalimat": 4
+   },
+   {
+    "k": "online",
+    "m": 21.26,
+    "s": 21.64,
+    "kalimat": 4
+   },
+   {
+    "k": "yang",
+    "m": 21.64,
+    "s": 22.02,
+    "kalimat": 4
+   },
+   {
+    "k": "hanya",
+    "m": 22.02,
+    "s": 22.24,
+    "kalimat": 4
+   },
+   {
+    "k": "muncul",
+    "m": 22.24,
+    "s": 22.58,
+    "kalimat": 4
+   },
+   {
+    "k": "di",
+    "m": 22.58,
+    "s": 22.76,
+    "kalimat": 4
+   },
+   {
+    "k": "Google,",
+    "m": 22.76,
+    "s": 23.24,
+    "kalimat": 4
+   },
+   {
+    "k": "sehingga",
+    "m": 23.5,
+    "s": 23.76,
+    "kalimat": 4
+   },
+   {
+    "k": "pengelolanya",
+    "m": 23.76,
+    "s": 24.34,
+    "kalimat": 4
+   },
+   {
+    "k": "tidak",
+    "m": 24.34,
+    "s": 24.64,
+    "kalimat": 4
+   },
+   {
+    "k": "sadar.",
+    "m": 24.64,
+    "s": 25.08,
+    "kalimat": 4
+   }
+  ]
+ }
+}

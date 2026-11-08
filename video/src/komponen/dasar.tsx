@@ -160,7 +160,7 @@ export const Kepala: React.FC<{ nomor: string; judul: string; dtgTeks?: string; 
   const m = useMuncul(0.05, 0.4);
   return (
     <div style={{ position: "absolute", left: 96, right: 96, top: 40, height: 64, opacity: m, translate: `${(1 - m) * -30}px 0px` }}>
-      <div style={{ display: "flex", alignItems: "baseline", gap: 18 }}>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 18, whiteSpace: "nowrap" }}>
         <span style={{ fontFamily: huruf.mono, fontSize: 30, color: warna.accent }}>{nomor} //</span>
         <span style={{ fontFamily: huruf.stensil, fontSize: 46, letterSpacing: "0.08em", color: warna.ink, textTransform: "uppercase" }}>{judul}</span>
         <span style={{ flex: 1 }} />
