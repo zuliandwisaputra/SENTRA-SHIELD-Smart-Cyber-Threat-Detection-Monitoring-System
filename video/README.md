@@ -2,7 +2,7 @@
 
 Video demo untuk juri Kartika Cyber Hackathon 2026. Tujuannya: setelah menonton, juri paham cara kerja SENTRA dari serangan sampai blokir.
 
-Status: **render final dengan narasi** (3:45). Narasi suara Zulian Dwi Saputra (tim Claudex404) sudah dipasang; durasi tiap adegan mengikuti panjang suara, dan visual serta teks layar mengikuti waktu tiap kata. Detail narasi, sinkronisasi, dan koreksi transkripsi: [`docs/naskah-video.md`](../docs/naskah-video.md). Berkas MP4 final tidak di-commit.
+Status: **versi 2** (render final 1080p 60 fps). Naskah dan storyboard: [`docs/naskah-video-v2.md`](../docs/naskah-video-v2.md). Versi 1 (3:45, narasi suara pembicara) ada di riwayat git dan [`docs/naskah-video.md`](../docs/naskah-video.md). Berkas MP4 final tidak di-commit.
 
 ## Spesifikasi keluaran
 
@@ -10,39 +10,45 @@ Status: **render final dengan narasi** (3:45). Narasi suara Zulian Dwi Saputra (
 | --- | --- |
 | Rasio, ukuran | 16:9, 1920 x 1080 |
 | Frame rate | 60 fps |
-| Durasi | 3:45, mengikuti panjang narasi (target awal 4–5 menit) |
-| Format | MP4 H.264, target di bawah 400 MB |
-| Audio | Narasi suara pembicara (−16 LUFS). Tanpa musik dan tanpa efek suara |
+| Durasi | mengikuti panjang narasi; target 8–9 menit, maksimal 10 menit |
+| Format | MP4 H.264 + AAC |
+| Audio | Narasi suara sintetis (TTS, VoxCPM2) −16 LUFS; efek suara dan musik ambient prosedural buatan sendiri, selalu diredam (ducking) di bawah narasi |
 
 ## Aturan isi
 
 1. Semua bagian yang menampilkan aplikasi adalah **rekaman asli** dari lab (lihat bagian Footage). Tidak ada tiruan UI.
-2. Animasi Remotion hanya untuk intro, penjelasan masalah, diagram arsitektur, angka, dan penutup.
+2. Animasi Remotion hanya untuk penjelasan (intro, analogi, masalah, arsitektur, persamaan skor, rantai audit, rekap, angka, penutup). Kartu penjelasan memakai data asli dari rekaman.
 3. Semua angka di video berasal dari pengukuran saat perekaman, disimpan di `src/data/rekaman.json`.
 4. Gaya Olive Drab / Ops Darat (`../docs/design-system.md`): font stensil dan kondensasi yang sama, disimpan lokal di `public/fonts/` (OFL).
-5. Tanpa logo atau lambang resmi TNI AD/PUSSIBERAD. Label DATA LATIHAN dari aplikasi tetap terlihat di footage.
+5. Tanpa logo atau lambang resmi TNI AD/PUSSIBERAD. Label DATA LATIHAN dari aplikasi tetap terlihat di footage, dan bagian yang dipercepat diberi label "Dipercepat N×".
+6. Narasi memakai suara sintetis (TTS) dan video mencantumkan "Narasi: suara sintetis (TTS)" di penutup. Tanpa musik berhak cipta.
 
 ## Struktur
 
 ```
 video/
   src/
-    Root.tsx            komposisi SentraDemo (1920x1080, 60 fps, 5:00)
-    Video.tsx           urutan 11 adegan + slot narasi per adegan
-    adegan/             A01Intro ... A11Penutup, daftar.ts (urutan dan durasi), Bingkai.tsx
-    komponen/           Footage (kamera, sorotan, tanda klik, bingkai HP), Terminal (keluaran asli), dasar (panel, keterangan, stempel, logo)
-    tema.ts, fonts.ts   token warna/huruf dan font lokal
-    data/rekaman.json   transkrip terminal, penanda waktu, sampel layar, angka hasil ukur
-    data/akses.json     penanda footage hak akses (Operator vs Analis)
-    data/identitas.ts   nama tim, link repo (isi NAMA_TIM sebelum render final)
+    Root.tsx            komposisi SentraDemo (1920x1080, 60 fps, durasi dari narasi)
+    Video.tsx           urutan 19 adegan, narasi TTS per adegan, whoosh antar-adegan, ambient + ducking
+    adegan/             S01Pembuka ... S19Penutup, daftar.ts (urutan dan durasi), Bingkai.tsx
+    komponen/           Footage (kamera, sorotan, klik, bingkai HP), Terminal (keluaran asli),
+                        Rangkaian (potongan footage + titik jangkar + tahan gambar),
+                        v2 (subtitle satu baris, pola tiga bagian, kartu APA ITU?, layar terbagi, efek suara)
+    data/rekaman.json   transkrip terminal, penanda waktu, sampel layar, angka hasil ukur dan basis data
+    data/naskah.json    kalimat narasi per adegan (ejaan asli + angka dari rekaman)
+    data/narasi-v2.json durasi narasi, waktu tiap kalimat dan kata (untuk subtitle dan sinkron gambar)
+    data/narasi.ts      pada(id, "frasa"): detik saat frasa diucapkan; subtitle; faktor ducking
   public/
     fonts/              Saira Stencil One, Saira Condensed, Fira Code (+ lisensi OFL)
-    narasi/             taruh rekaman suara per adegan di sini (lihat docs/naskah-video.md)
     rekaman/            footage hasil rekam (tidak di-commit)
+    narasi-v2/          narasi TTS per adegan (tidak di-commit; dibuat ulang)
+    sfx/                efek suara prosedural (tidak di-commit; dibuat ulang)
   rekam/
-    rekam.sh            reset lab dari nol, rekam, footage hak akses, konversi MP4
-    rekam.cjs           skenario perekaman Playwright + serangan sungguhan + pengukuran
+    rekam.sh            reset lab dari nol, rekam, footage hak akses, konversi MP4, PDF LAPSIT ke PNG
+    rekam.cjs           skenario perekaman Playwright + serangan sungguhan + pengukuran + kueri basis data
     rekam-akses.cjs     footage Operator Kodim A vs Analis Kodam pada lab yang sama
+    tts/                susun-naskah.py, kamus.py, narasi.py, suara-a.flac (lihat tts/README.md)
+    sfx/buat-sfx.py     efek suara dan ambient prosedural
     pratinjau.cjs       render gambar diam di detik tertentu
   .agents/skills/       Remotion Agent Skills resmi (dipasang dengan npx remotion skills add)
 ```
@@ -95,95 +101,35 @@ Rekaman ulang menghasilkan angka baru. Video harus selalu memakai `src/data/reka
 
 ### Rekaman yang dipakai
 
-- Direkam 8 November 2026, 09:41–09:50 WIB, dari lab yang di-reset ke nol. Skrip: `rekam/rekam.cjs` versi commit `fd7286c`. (Field `git` di JSON berisi `5750477` karena commit dibuat 20 detik setelah perekaman dimulai; isi skripnya sama.)
-- Panjang footage: Analis 8:42 (1920 x 1080, 25 fps, 55 MB), Komandan 8:43 (390 x 844, 14 MB). Video final memotong bagian yang perlu saja.
-- Sinkronisasi: detik ke-0 video = `video.*.mulai`. Akurasi sekitar ±0,5 detik: kartu Insiden berubah di frame 22,36 detik, sampel layar mencatatnya di 22,8 detik (sampel tiap 0,4 detik). Untuk momen penting, cocokkan ke frame.
-- `galat` berisi 1 catatan: perekam menunggu Tingkat Siaga berubah setelah nmap, padahal insiden pemindaian berkeparahan Rendah memang tidak menaikkan Tingkat Siaga (tetap Aman, yang berubah kartu Insiden terbuka). Ini kesalahan perekam, bukan aplikasi. Perekam sudah diperbaiki untuk rekaman berikutnya; angkanya diambil dari frame video.
+- Direkam ulang 8 November 2026, 19:16–19:24 WIB, dari lab yang di-reset ke nol, setelah perbaikan tampilan IP di HP (commit `6464cb1`). Skrip: `rekam/rekam.cjs` di commit `6a7a0db`.
+- Panjang footage: Analis 7:35 (1920 x 1080, 25 fps), Komandan 7:36 (390 x 844).
+- `rincianSkor`, `agentButa`, dan `auditRantai` diambil dari basis data lab yang sama segera setelah perekaman (lab belum di-reset), dengan kueri yang kini juga ada di `rekam.cjs`.
+- Jeda nmap → insiden tampil diukur dari frame video (selisih piksel kartu Insiden Terbuka): 3,58 detik. Sampel layar tiap 0,4 detik mencatat 3,62 detik.
 
-### Angka hasil ukur dan perbandingan dengan README utama
+### Angka hasil ukur
 
-| Hal | Rekaman ini | README utama | Sumber |
-| --- | --- | --- | --- |
-| Serangan ke Kodim A | 1.020 event dari 172.30.0.66 (termasuk percobaan akses portal saat respons) → 1 insiden, 11 aturan, 4 tahap, skor **946 Kritis** | ±970 event → 1 insiden, 11 aturan, 4 tahap, skor 946 | `db.insiden`, `db.deteksiPerAturan`, kueri event |
-| nmap mulai → insiden tampil di Beranda tanpa muat ulang | **2,5 detik** | event tampil ±2 detik | frame video + `penanda` |
-| nmap ke Kodim B → peta menampilkan 2 satuan sasaran (Kampanye #1) | **1,8 detik** | – | `ukur.nmapBKeDuaSatuanDiBerandaMs` |
-| Komandan klik Setujui → penyerang terputus | **≤ 2,5 detik**: permintaan sukses terakhir 1,9 detik, permintaan gagal pertama 2,5 detik setelah klik | 2,7–4,0 detik | `ukur.portal` (jam di terminal penyerang) |
-| Komandan klik Setujui → status Dieksekusi di layar Analis tanpa muat ulang | **2,9 detik** | – | `ukur.setujuKeDieksekusiDiLayarAnalisMs` |
-| LAPSIT terbit (template; Ollama tidak tersedia di lab rekaman) | **0,7 detik**, PDF ber-hash SHA-256 | Template ±2 detik | `ukur.lapsitMs`, `ukur.lapsit` |
-| Agent Kodim B dimatikan → BUTA di Beranda | **29,2 detik**; insiden Sensor Buta (Tinggi, skor 96) dibuat 28,4 detik setelah dimatikan | ±40 detik | `ukur.sensorMatiKeButaMs`, `db.insiden` |
-| Agent dihidupkan → kembali 3/3 online | **3,7 detik** | – | `ukur.sensorHidupKeOnlineMs` |
-| Uji Kesiapan Kodim A | **11/11** (100%), rata-rata waktu deteksi **4,5 detik** (4.532 ms), selesai dalam 69 detik, **0** insiden dari event uji | 11/11, rata-rata 4,2–4,7 detik, tanpa insiden palsu | `db.ujiKesiapan`, `db.ujiKesiapanHasil`, `db.insidenDariEventUji` |
-| Penjaga Situs | Varian Googlebot dan Referer Google **ditandai** (kemiripan 6,8%, 8 kata judi); browser biasa 100% sama | – | `db.penjagaSitus` |
-| Audit log | **Rantai utuh**, 21 baris diperiksa saat rekaman (22 baris setelah rekaman selesai) | – | `ukur.auditTeks`, `db.auditVerifikasi` |
+| Hal | Rekaman ini | Sumber |
+| --- | --- | --- |
+| Serangan ke Kodim A | 1.021 event dari 172.30.0.66 → 1 insiden, 11 aturan, 4 tahap, skor **946 Kritis** = (425 + 60) × 1,5 × 1,3 | `db.insiden`, `db.rincianSkor`, `db.eventPenyerangPerSumber` |
+| Sampai brute force selesai | 805 event firewall + 128 percobaan login SSH = **933** catatan → 1 insiden | `db.eventPenyerangPerSumber` |
+| nmap mulai → insiden tampil di Beranda tanpa muat ulang | **3,6 detik** | frame video + terminal `nmap-kodim-a` |
+| nmap ke Kodim B → peta menampilkan 2 satuan sasaran (Kampanye #1) | **2,3 detik** | `ukur.nmapBKeDuaSatuanDiBerandaMs` |
+| Komandan klik Setujui → penyerang terputus | **≤ 3,19 detik**: permintaan sukses terakhir 2,67 detik, gagal pertama 3,19 detik setelah klik | `ukur.portal` (jam di terminal penyerang) |
+| Setujui → status Dieksekusi di layar Analis tanpa muat ulang | **3,6 detik** | `ukur.setujuKeDieksekusiDiLayarAnalisMs` |
+| LAPSIT (template; Ollama tidak tersedia di lab rekaman) | **0,63 detik**, PDF ber-hash SHA-256 | `ukur.lapsitMs` |
+| Sensor Buta | **31 detik tanpa heartbeat** (heartbeat terakhir 19:21:19, BUTA 19:21:50); tampil di Beranda 23 detik setelah agent dimatikan | `db.agentButa`, `ukur.sensorMatiKeButaMs` |
+| Agent dihidupkan → kembali 3/3 online | **3,6 detik** | `ukur.sensorHidupKeOnlineMs` |
+| Uji Kesiapan Kodim A | **11/11**, rata-rata **4,5 detik**, selesai dalam 70 detik, **0** insiden dari event uji | `db.ujiKesiapan*`, `db.insidenDariEventUji` |
+| Penjaga Situs | Googlebot dan Referer Google **ditandai** (kemiripan 7%, 8 kata judi); browser biasa 100% | `db.penjagaSitus` |
+| Audit log | **Rantai utuh**, 21 baris diperiksa saat rekaman | `ukur.auditTeks`, `db.auditRantai` |
+| Hak akses | Operator Kodim A 2/2 agent, Analis Kodam 3/3 agent | `src/data/akses.json` |
 
-Perbedaan dengan README utama dan sebabnya:
+Catatan:
 
-- **Waktu putus lebih pendek (≤ 2,5 vs 2,7–4,0 detik).** Metodenya berbeda. Pengukuran lama mencatat waktu setelah `curl` gagal, termasuk batas tunggu 2 detik. Rekaman ini memakai jam mulai permintaan gagal pertama yang dicetak terminal penyerang. Blokir aktif di antara 1,9 dan 2,5 detik setelah klik Setujui.
-- **Sensor Buta lebih cepat (29 vs ±40 detik).** Batasnya tetap heartbeat hilang lebih dari 30 detik. Heartbeat terakhir terkirim sebelum agent dimatikan, jadi alarm muncul kurang dari 30 detik setelah perintah stop.
-- **LAPSIT template lebih cepat (0,7 vs ±2 detik).** Lab rekaman tanpa Ollama, sehingga langsung memakai template. LAPSIT menyebut hal itu di dokumennya.
-- **Jumlah event** sedikit lebih besar karena ikut menghitung percobaan akses portal penyerang selama respons.
-
-### Peta footage
-
-Waktu di footage mentah (menit:detik).
-
-| Video Analis | Video HP | Sumber | Kejadian |
-| --- | --- | --- | --- |
-| 0:07.7 |  | Analis | Beranda Komando sebelum serangan |
-| 0:13.4 | 0:13.4 | Komandan (HP) | Beranda Komando di HP |
-| 0:19.9 |  | Terminal penyerang | nmap ke Kodim A |
-| 1:23.7 |  | Terminal penyerang | hydra brute force SSH ke Kodim A |
-| 1:37.2 |  | Analis | Arus event live saat brute force |
-| 1:54.3 |  | Analis | Beranda saat brute force berjalan |
-| 2:58.1 |  | Terminal penyerang | nmap ke Kodim B |
-| 3:03.0 |  | Analis | Peta operasi: dua satuan sasaran dari IP yang sama |
-| 3:11.8 |  | Analis | Buka kampanye |
-| 3:15.3 |  | Analis | Kampanye lintas satuan |
-| 3:26.5 |  | Analis | Buka insiden Kodim A |
-| 3:29.8 |  | Analis | Detail Insiden: tahap Pengintaian dan Akses Awal |
-| 3:33.2 |  | Terminal penyerang | sqlmap ke portal Kodim A |
-| 3:42.1 |  | Terminal penyerang | Unggah webshell ke portal Kodim A |
-| 3:49.7 |  | Terminal penyerang | Perintah tulis Modbus ke PLC |
-| 3:54.6 |  | Terminal penyerang | Injeksi judi online ber-cloaking ke portal Kodim A |
-| 4:01.1 |  | Analis | Attack Story lengkap, skor Kritis |
-| 4:05.9 |  | Analis | Rincian skor dengan rumus terbuka |
-| 4:11.8 |  | Analis | Event bukti mentah |
-| 4:16.9 |  | Terminal Core | Core: Penjaga Situs memeriksa portal |
-| 4:21.8 |  | Analis | Penjaga Situs: versi Googlebot berisi judi |
-| 4:26.5 |  | Analis | Perbandingan varian browser vs Googlebot |
-| 4:33.4 |  | Terminal penyerang | Penyerang terus membuka portal Kodim A |
-| 4:39.2 |  | Analis | Panel Tindakan respons |
-| 4:44.0 |  | Analis | Analis mengusulkan blokir IP |
-| 4:45.1 |  | Analis | Usulan blokir terkirim ke Antrean Persetujuan |
-| 4:50.2 | 4:50.1 | Komandan (HP) | Menu Antrean Persetujuan |
-| 4:53.7 | 4:53.6 | Komandan (HP) | Antrean Persetujuan di HP Komandan |
-| 4:57.7 | 4:57.7 | Komandan (HP) | Komandan menyetujui dari HP |
-| 4:58.6 | 4:58.6 | Komandan (HP) | Perintah dikirim ke agent |
-| 5:06.6 |  | Analis | Status tindakan Dieksekusi tanpa muat ulang |
-| 5:13.0 | 5:13.0 | Komandan (HP) | Menu Beranda |
-| 5:21.1 |  | Analis | Beranda: blokir aktif |
-| 5:29.1 |  | Analis | Riwayat tindakan: pengusul, pemutus, hasil agent |
-| 5:37.7 |  | Analis | Panel LAPSIT |
-| 5:38.3 |  | Analis | Analis membuat LAPSIT |
-| 5:42.8 |  | Analis | LAPSIT terbit dengan sitasi bukti |
-| 5:47.9 |  | Analis | Unduh PDF LAPSIT |
-| 5:58.1 |  | Terminal lab | Agent Kodim B dimatikan |
-| 6:27.3 |  | Analis | Agent Kodim B BUTA |
-| 6:36.4 |  | Analis | Insiden Sensor Buta di daftar |
-| 6:39.8 |  | Terminal lab | Agent Kodim B dihidupkan kembali |
-| 6:52.5 |  | Analis | Jalankan Uji Kesiapan |
-| 8:07.1 |  | Analis | Matriks Uji Kesiapan terisi |
-| 8:11.9 |  | Analis | Matriks skenario |
-| 8:23.5 |  | Analis | Verifikasi Rantai audit |
-| 8:25.9 |  | Analis | Rantai audit utuh |
-| 8:36.3 |  | Analis | Beranda akhir |
-
-### Catatan untuk storyboard
-
-- Di HP (390 px), Antrean Persetujuan sempat memecah IP menjadi `172.30.0.6` / `6`. Cacat ini sudah diperbaiki di Core (commit `6464cb1`, juga di-merge ke branch ini). Footage video tetap dari rekaman 8 November sebelum perbaikan, atas pilihan pemilik proyek, agar angka di narasi tetap cocok dengan footage.
-- Banner hydra asli memuat kalimat "Please do not use in military or secret service organizations...". Panel terminal di adegan 4 tidak menampilkan baris banner itu; baris lain tampil apa adanya, tanpa diubah.
-- Nmap mencetak jam UTC (`02:42 UTC`); dashboard dan terminal akses portal memakai WIB. Keduanya keluaran asli.
+- Banner hydra asli memuat kalimat "Please do not use in military or secret service organizations...". Panel terminal tidak menampilkan baris banner itu; baris lain tampil apa adanya.
+- Nmap mencetak jam UTC; dashboard dan terminal akses portal memakai WIB. Keduanya keluaran asli.
 - LAPSIT di footage dibuat oleh template (bukan LLM) dan dokumennya mengatakan begitu.
+- Posisi setiap kejadian di footage ada di `penanda[]` (`t - video.*.mulai`).
 
 ## Lisensi Remotion
 
@@ -211,29 +157,48 @@ npm run dev           # buka Remotion Studio untuk pratinjau
 npm run lint          # eslint + tsc
 ```
 
-Gambar diam di titik pratinjau bawaan (atau detik tertentu):
+Urutan membuat video v2 dari nol (Linux/WSL dengan Docker, Node.js, Playwright, ffmpeg, poppler-utils, Python 3):
 
 ```bash
-node rekam/pratinjau.cjs out/pratinjau
+SENTRA_DC="docker compose -f ../lab/docker-compose.yml" ./rekam/rekam.sh
 ```
 
-Render final, 1920 x 1080, 60 fps, H.264 + AAC. Langkah kedua mengubah piksel rentang penuh (yuvj420p, keluaran Remotion dari frame JPEG) ke yuv420p standar agar warnanya sama di semua pemutar:
+```bash
+python3 rekam/tts/susun-naskah.py
+```
 
 ```bash
-npx remotion render SentraDemo out/render.mp4 --codec=h264 --crf=18 --audio-codec=aac
-ffmpeg -i out/render.mp4 -vf "scale=in_range=pc:out_range=tv,format=yuv420p" -c:v libx264 -preset slow -crf 17 -c:a copy -movflags +faststart out/SENTRA-SHIELD-Demo-1080p.mp4
+venv-tts/bin/python rekam/tts/narasi.py
+```
+
+```bash
+venv-tts/bin/python rekam/sfx/buat-sfx.py
+```
+
+Langkah 2 menyusun narasi dengan angka dari rekaman. Langkah 3 membuat narasi TTS dan memeriksa setiap kalimat dengan Whisper; kalimat yang sudah lulus disimpan dan tidak dibuat ulang (lihat `rekam/tts/README.md`). Langkah 4 membuat efek suara dan ambient.
+
+Gambar diam untuk pemeriksaan (skala 0,5):
+
+```bash
+node rekam/pratinjau.cjs out/pratinjau --skala 0.5 120 245.5 nama=300
+```
+
+Render final, 1920 x 1080, 60 fps, H.264 + AAC. Langkah kedua mengubah piksel rentang penuh (yuvj420p) ke yuv420p standar dan menyamakan keras suara keseluruhan ke −16 LUFS:
+
+```bash
+npx remotion render SentraDemo out/render.mp4 --codec=h264 --crf=18 --audio-codec=aac --audio-bitrate=256k
+```
+
+```bash
+ffmpeg -i out/render.mp4 -vf "scale=in_range=pc:out_range=tv,format=yuv420p" -c:v libx264 -preset slow -crf 17 -af loudnorm=I=-16:TP=-1.5:LRA=11 -c:a aac -b:a 256k -movflags +faststart out/SENTRA-SHIELD-Demo-v2-1080p.mp4
 ```
 
 Bila Remotion tidak bisa mengunduh Chrome Headless Shell (jaringan dibatasi), tambahkan `--browser-executable=<path chrome-headless-shell>`; untuk `pratinjau.cjs` pakai variabel `REMOTION_CHROME`. Folder `out/` tidak di-commit.
 
-## Narasi
+## Narasi, efek suara, dan subtitle (v2)
 
-Rekaman suara dari HP (`.m4a`) dipasang dengan satu perintah:
-
-```bash
-node rekam/pasang-narasi.cjs <folder berisi intro.m4a, masalah.m4a, ...>
-```
-
-Skrip ini mencocokkan nama berkas dengan id adegan ("serangan lanjut" → `05-serangan-lanjut`). Setiap berkas diubah ke WAV 48 kHz mono, dengungnya dikurangi (high-pass 80 Hz, notch 100/150 Hz, denoise FFT), hening di awal/akhirnya dipotong, lalu volumenya disamakan ke −16 LUFS. Hasilnya ada di `public/narasi/<id>.wav` (tidak di-commit) dan durasinya di `src/data/narasi.json`. Durasi adegan dihitung otomatis dari durasi narasi (`src/adegan/daftar.ts`).
-
-Waktu tiap kata (`src/data/narasi-kata.json`, hasil Whisper) dipakai adegan untuk menempatkan visual dan teks layar. Bila narasi direkam ulang dengan kalimat berbeda, transkripsi ulang lalu sesuaikan indeks kata di tiap adegan.
+- **Narasi:** satu suara pria sintetis (VoxCPM2, voice design lalu kloning dari `rekam/tts/suara-a.flac`). Setiap kalimat diperiksa: transkrip Whisper harus cocok dengan naskah dan nada dasar harus di rentang suara A; yang gagal dibuat ulang dengan seed lain. Per adegan: high-pass 60 Hz, potong hening, loudnorm −16 LUFS.
+- **Sinkron:** waktu tiap kata dari Whisper diselaraskan ke kata naskah. Adegan memakai `pada(ID, "frasa")` untuk menempatkan gambar, sorotan, kartu, dan efek suara tepat saat frasa itu diucapkan. Footage diatur dengan titik jangkar (kejadian X tampil saat kata Y), kecepatan dihitung otomatis dan diberi label "Dipercepat N×".
+- **Subtitle:** penuh, satu baris per potongan (maksimal ±50 karakter), dipotong di tanda baca bila memungkinkan.
+- **Efek suara:** klik, teleprinter, bip, stempel, whoosh, ping radar, putus, sukses, detak, retak, dan ambient. Semuanya disintesis oleh `rekam/sfx/buat-sfx.py`. Saat narasi berbicara, efek suara turun ±8 dB dan ambient ±12 dB, dengan transisi halus 0,15 detik.
+- `rekam/pasang-narasi.cjs` adalah alat versi 1 (narasi suara pembicara dari HP) dan tidak dipakai di v2.

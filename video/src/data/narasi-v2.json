@@ -1329,5 +1329,620 @@
     "kalimat": 4
    }
   ]
+ },
+ "04-arsitektur": {
+  "durasi": 37.55,
+  "lufs": -16.0,
+  "puncak": -1.5,
+  "kalimat": [
+   {
+    "teks": "Secara teknis, SENTRA punya tiga bagian.",
+    "mulai": 0.0,
+    "selesai": 3.02,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 1.0,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 114.6,
+    "transkrip": "Secara teknis, sentra punya 3 bagian."
+   },
+   {
+    "teks": "Agent di setiap satuan membaca catatan web, login SSH, firewall, perubahan file, dan perintah ke mesin industri, lalu mengirimnya ke pusat setiap detik lewat jalur terenkripsi.",
+    "mulai": 3.34,
+    "selesai": 13.76,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 0.969,
+     "ekor": 0.929,
+     "rasio_panjang": 1.021
+    },
+    "f0": 118.6,
+    "transkrip": "MiPiGagen di setiap satuan membaca catatan web, login SSH Fairwall, perubahan file, dan perintah ke mesin industri, lalu mengirimnya ke pusat setiap detik lewat jalur trenkripsi."
+   },
+   {
+    "teks": "Core di pusat menjalankan 13 aturan deteksi, merangkai serangan, dan memberi skor.",
+    "mulai": 14.08,
+    "selesai": 19.17,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 1.0,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 119.3,
+    "transkrip": "Core di pusat menjalankan 13 aturan deteksi, merangkai serangan, dan memberi skor."
+   },
+   {
+    "teks": "Command adalah layar untuk operator, analis, dan komandan, termasuk di HP.",
+    "mulai": 19.49,
+    "selesai": 24.13,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 0.933,
+     "ekor": 0.857,
+     "rasio_panjang": 1.0
+    },
+    "f0": 122.8,
+    "transkrip": "Komen adalah layar untuk operator, analis dan komandan, termasuk di hape."
+   },
+   {
+    "teks": "Untuk demo ini kami membangun lab: dua satuan latihan, Kodim A dan Kodim B, sebuah mesin industri PLC, dan satu komputer penyerang di jaringan terpisah.",
+    "mulai": 24.45,
+    "selesai": 33.87,
+    "lulus": true,
+    "percobaan": 3,
+    "nilai": {
+     "cocok": 1.0,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 121.0,
+    "transkrip": "Untuk demo ini kami membangun lab dua satuan latihan, kodim A dan kodim B, sebuah mesin industri PLC, dan satu komputer penyerang di jaringan terpisah."
+   },
+   {
+    "teks": "Semuanya berjalan tanpa internet, di satu laptop.",
+    "mulai": 34.19,
+    "selesai": 37.55,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 1.0,
+     "ekor": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 119.3,
+    "transkrip": "Semuanya berjalan tanpa internet di satu laptop."
+   }
+  ],
+  "kata": [
+   {
+    "k": "Secara",
+    "m": 0.0,
+    "s": 0.9,
+    "kalimat": 0
+   },
+   {
+    "k": "teknis,",
+    "m": 0.9,
+    "s": 1.56,
+    "kalimat": 0
+   },
+   {
+    "k": "SENTRA",
+    "m": 1.74,
+    "s": 2.0,
+    "kalimat": 0
+   },
+   {
+    "k": "punya",
+    "m": 2.0,
+    "s": 2.2,
+    "kalimat": 0
+   },
+   {
+    "k": "tiga",
+    "m": 2.2,
+    "s": 2.46,
+    "kalimat": 0
+   },
+   {
+    "k": "bagian.",
+    "m": 2.46,
+    "s": 2.84,
+    "kalimat": 0
+   },
+   {
+    "k": "Agent",
+    "m": 3.34,
+    "s": 4.28,
+    "kalimat": 1
+   },
+   {
+    "k": "di",
+    "m": 4.28,
+    "s": 4.5,
+    "kalimat": 1
+   },
+   {
+    "k": "setiap",
+    "m": 4.5,
+    "s": 4.76,
+    "kalimat": 1
+   },
+   {
+    "k": "satuan",
+    "m": 4.76,
+    "s": 5.04,
+    "kalimat": 1
+   },
+   {
+    "k": "membaca",
+    "m": 5.04,
+    "s": 5.44,
+    "kalimat": 1
+   },
+   {
+    "k": "catatan",
+    "m": 5.44,
+    "s": 5.82,
+    "kalimat": 1
+   },
+   {
+    "k": "web,",
+    "m": 5.82,
+    "s": 6.1,
+    "kalimat": 1
+   },
+   {
+    "k": "login",
+    "m": 6.36,
+    "s": 6.66,
+    "kalimat": 1
+   },
+   {
+    "k": "SSH,",
+    "m": 6.66,
+    "s": 7.42,
+    "kalimat": 1
+   },
+   {
+    "k": "firewall,",
+    "m": 7.42,
+    "s": 7.94,
+    "kalimat": 1
+   },
+   {
+    "k": "perubahan",
+    "m": 8.16,
+    "s": 8.46,
+    "kalimat": 1
+   },
+   {
+    "k": "file,",
+    "m": 8.46,
+    "s": 8.78,
+    "kalimat": 1
+   },
+   {
+    "k": "dan",
+    "m": 9.1,
+    "s": 9.26,
+    "kalimat": 1
+   },
+   {
+    "k": "perintah",
+    "m": 9.26,
+    "s": 9.62,
+    "kalimat": 1
+   },
+   {
+    "k": "ke",
+    "m": 9.62,
+    "s": 9.76,
+    "kalimat": 1
+   },
+   {
+    "k": "mesin",
+    "m": 9.76,
+    "s": 10.08,
+    "kalimat": 1
+   },
+   {
+    "k": "industri,",
+    "m": 10.08,
+    "s": 10.54,
+    "kalimat": 1
+   },
+   {
+    "k": "lalu",
+    "m": 10.8,
+    "s": 10.98,
+    "kalimat": 1
+   },
+   {
+    "k": "mengirimnya",
+    "m": 10.98,
+    "s": 11.5,
+    "kalimat": 1
+   },
+   {
+    "k": "ke",
+    "m": 11.5,
+    "s": 11.58,
+    "kalimat": 1
+   },
+   {
+    "k": "pusat",
+    "m": 11.58,
+    "s": 11.88,
+    "kalimat": 1
+   },
+   {
+    "k": "setiap",
+    "m": 11.88,
+    "s": 12.2,
+    "kalimat": 1
+   },
+   {
+    "k": "detik",
+    "m": 12.2,
+    "s": 12.46,
+    "kalimat": 1
+   },
+   {
+    "k": "lewat",
+    "m": 12.46,
+    "s": 12.7,
+    "kalimat": 1
+   },
+   {
+    "k": "jalur",
+    "m": 12.7,
+    "s": 13.06,
+    "kalimat": 1
+   },
+   {
+    "k": "terenkripsi.",
+    "m": 13.06,
+    "s": 13.66,
+    "kalimat": 1
+   },
+   {
+    "k": "Core",
+    "m": 14.08,
+    "s": 14.5,
+    "kalimat": 2
+   },
+   {
+    "k": "di",
+    "m": 14.5,
+    "s": 14.66,
+    "kalimat": 2
+   },
+   {
+    "k": "pusat",
+    "m": 14.66,
+    "s": 14.9,
+    "kalimat": 2
+   },
+   {
+    "k": "menjalankan",
+    "m": 14.9,
+    "s": 15.5,
+    "kalimat": 2
+   },
+   {
+    "k": "13",
+    "m": 15.5,
+    "s": 15.86,
+    "kalimat": 2
+   },
+   {
+    "k": "aturan",
+    "m": 15.86,
+    "s": 16.2,
+    "kalimat": 2
+   },
+   {
+    "k": "deteksi,",
+    "m": 16.2,
+    "s": 16.84,
+    "kalimat": 2
+   },
+   {
+    "k": "merangkai",
+    "m": 17.16,
+    "s": 17.48,
+    "kalimat": 2
+   },
+   {
+    "k": "serangan,",
+    "m": 17.48,
+    "s": 17.94,
+    "kalimat": 2
+   },
+   {
+    "k": "dan",
+    "m": 18.24,
+    "s": 18.36,
+    "kalimat": 2
+   },
+   {
+    "k": "memberi",
+    "m": 18.36,
+    "s": 18.7,
+    "kalimat": 2
+   },
+   {
+    "k": "skor.",
+    "m": 18.7,
+    "s": 18.94,
+    "kalimat": 2
+   },
+   {
+    "k": "Command",
+    "m": 19.49,
+    "s": 20.09,
+    "kalimat": 3
+   },
+   {
+    "k": "adalah",
+    "m": 20.09,
+    "s": 20.43,
+    "kalimat": 3
+   },
+   {
+    "k": "layar",
+    "m": 20.43,
+    "s": 20.77,
+    "kalimat": 3
+   },
+   {
+    "k": "untuk",
+    "m": 20.77,
+    "s": 20.99,
+    "kalimat": 3
+   },
+   {
+    "k": "operator,",
+    "m": 20.99,
+    "s": 21.51,
+    "kalimat": 3
+   },
+   {
+    "k": "analis,",
+    "m": 21.95,
+    "s": 22.25,
+    "kalimat": 3
+   },
+   {
+    "k": "dan",
+    "m": 22.25,
+    "s": 22.47,
+    "kalimat": 3
+   },
+   {
+    "k": "komandan,",
+    "m": 22.47,
+    "s": 23.01,
+    "kalimat": 3
+   },
+   {
+    "k": "termasuk",
+    "m": 23.35,
+    "s": 23.71,
+    "kalimat": 3
+   },
+   {
+    "k": "di",
+    "m": 23.71,
+    "s": 23.87,
+    "kalimat": 3
+   },
+   {
+    "k": "HP.",
+    "m": 23.87,
+    "s": 24.11,
+    "kalimat": 3
+   },
+   {
+    "k": "Untuk",
+    "m": 24.45,
+    "s": 25.19,
+    "kalimat": 4
+   },
+   {
+    "k": "demo",
+    "m": 25.19,
+    "s": 25.39,
+    "kalimat": 4
+   },
+   {
+    "k": "ini",
+    "m": 25.39,
+    "s": 25.63,
+    "kalimat": 4
+   },
+   {
+    "k": "kami",
+    "m": 25.63,
+    "s": 25.87,
+    "kalimat": 4
+   },
+   {
+    "k": "membangun",
+    "m": 25.87,
+    "s": 26.35,
+    "kalimat": 4
+   },
+   {
+    "k": "lab:",
+    "m": 26.35,
+    "s": 26.65,
+    "kalimat": 4
+   },
+   {
+    "k": "dua",
+    "m": 26.65,
+    "s": 26.95,
+    "kalimat": 4
+   },
+   {
+    "k": "satuan",
+    "m": 26.95,
+    "s": 27.27,
+    "kalimat": 4
+   },
+   {
+    "k": "latihan,",
+    "m": 27.27,
+    "s": 28.03,
+    "kalimat": 4
+   },
+   {
+    "k": "Kodim",
+    "m": 28.19,
+    "s": 28.49,
+    "kalimat": 4
+   },
+   {
+    "k": "A",
+    "m": 28.49,
+    "s": 28.69,
+    "kalimat": 4
+   },
+   {
+    "k": "dan",
+    "m": 28.69,
+    "s": 28.85,
+    "kalimat": 4
+   },
+   {
+    "k": "Kodim",
+    "m": 28.85,
+    "s": 29.25,
+    "kalimat": 4
+   },
+   {
+    "k": "B,",
+    "m": 29.25,
+    "s": 29.51,
+    "kalimat": 4
+   },
+   {
+    "k": "sebuah",
+    "m": 29.73,
+    "s": 29.93,
+    "kalimat": 4
+   },
+   {
+    "k": "mesin",
+    "m": 29.93,
+    "s": 30.27,
+    "kalimat": 4
+   },
+   {
+    "k": "industri",
+    "m": 30.27,
+    "s": 30.67,
+    "kalimat": 4
+   },
+   {
+    "k": "PLC,",
+    "m": 30.67,
+    "s": 31.39,
+    "kalimat": 4
+   },
+   {
+    "k": "dan",
+    "m": 31.59,
+    "s": 31.69,
+    "kalimat": 4
+   },
+   {
+    "k": "satu",
+    "m": 31.69,
+    "s": 31.93,
+    "kalimat": 4
+   },
+   {
+    "k": "komputer",
+    "m": 31.93,
+    "s": 32.35,
+    "kalimat": 4
+   },
+   {
+    "k": "penyerang",
+    "m": 32.35,
+    "s": 32.73,
+    "kalimat": 4
+   },
+   {
+    "k": "di",
+    "m": 32.73,
+    "s": 32.91,
+    "kalimat": 4
+   },
+   {
+    "k": "jaringan",
+    "m": 32.91,
+    "s": 33.33,
+    "kalimat": 4
+   },
+   {
+    "k": "terpisah.",
+    "m": 33.33,
+    "s": 33.79,
+    "kalimat": 4
+   },
+   {
+    "k": "Semuanya",
+    "m": 34.19,
+    "s": 35.07,
+    "kalimat": 5
+   },
+   {
+    "k": "berjalan",
+    "m": 35.07,
+    "s": 35.55,
+    "kalimat": 5
+   },
+   {
+    "k": "tanpa",
+    "m": 35.55,
+    "s": 35.93,
+    "kalimat": 5
+   },
+   {
+    "k": "internet,",
+    "m": 35.93,
+    "s": 36.37,
+    "kalimat": 5
+   },
+   {
+    "k": "di",
+    "m": 36.37,
+    "s": 36.79,
+    "kalimat": 5
+   },
+   {
+    "k": "satu",
+    "m": 36.79,
+    "s": 37.05,
+    "kalimat": 5
+   },
+   {
+    "k": "laptop.",
+    "m": 37.05,
+    "s": 37.39,
+    "kalimat": 5
+   }
+  ]
  }
 }

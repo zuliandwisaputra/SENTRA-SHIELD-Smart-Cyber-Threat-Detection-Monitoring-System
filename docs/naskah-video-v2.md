@@ -1,6 +1,6 @@
 # Naskah dan storyboard video demo SENTRA SHIELD, versi 2
 
-Status: **draf, menunggu persetujuan**. Belum ada narasi lengkap, SFX, atau render.
+Status: **disetujui** (suara A, naskah apa adanya). Lab direkam ulang dari nol pada 8 November 2026 pukul 19:16 WIB setelah perbaikan tampilan IP di HP, jadi semua angka di bawah ini berasal dari rekaman ulang itu. Teks narasi final (dengan angka) dihasilkan oleh `video/rekam/tts/susun-naskah.py` ke `video/src/data/naskah.json`.
 
 Target durasi **8:30–9:00** (maksimal 10:00). Durasi akhir tiap adegan mengikuti panjang suara TTS.
 
@@ -14,7 +14,7 @@ Target durasi **8:30–9:00** (maksimal 10:00). Durasi akhir tiap adegan mengiku
 
 Aturan yang tetap berlaku:
 
-- Semua tampilan aplikasi adalah rekaman asli 8 November 2026 (lab dari nol).
+- Semua tampilan aplikasi adalah rekaman asli 8 November 2026 pukul 19:16 WIB (lab dari nol).
 - Semua angka berasal dari rekaman itu (`video/src/data/rekaman.json`).
 - Label DATA LATIHAN selalu terlihat.
 - Bagian yang dipercepat diberi label "Dipercepat N×".
@@ -136,11 +136,11 @@ Durasi per adegan adalah perkiraan. Teks narasi ditulis dengan ejaan asli dan se
 **SFX:** whoosh, ping radar pada topologi, stempel.
 
 **Narasi:**
-> Secara teknis, SENTRA punya tiga bagian. Agent di setiap satuan membaca catatan web, login SSH, firewall, perubahan file, dan perintah ke mesin industri, lalu mengirimnya ke pusat setiap detik lewat jalur terenkripsi. Core di pusat menjalankan tiga belas aturan deteksi, merangkai serangan, dan memberi skor. Command adalah layar untuk operator, analis, dan komandan, termasuk di HP. Untuk demo ini kami membangun lab: dua satuan latihan, Kodim A dan Kodim B, sebuah mesin industri PLC, dan satu komputer penyerang di jaringan terpisah. Semuanya berjalan tanpa internet, di satu laptop.
+> Secara teknis, SENTRA punya tiga bagian. Agent di setiap satuan membaca catatan web, login SSH, firewall, perubahan file, dan perintah ke mesin industri, lalu mengirimnya ke pusat setiap detik lewat jalur terenkripsi. Core di pusat menjalankan 13 aturan deteksi, merangkai serangan, dan memberi skor. Command adalah layar untuk operator, analis, dan komandan, termasuk di HP. Untuk demo ini kami membangun lab: dua satuan latihan, Kodim A dan Kodim B, sebuah mesin industri PLC, dan satu komputer penyerang di jaringan terpisah. Semuanya berjalan tanpa internet, di satu laptop.
 
 ### 05. Demo 1: pemindaian dan tebak kata sandi (≈ 2:03–2:45)
 
-**Visual:** layar terbagi. Kiri PENYERANG: terminal nmap lalu hydra (asli, 1×). Kanan PERTAHANAN: Beranda Analis (asli, 1×). Insiden muncul di menit 09:42; Tingkat Siaga naik Aman → Siaga. Pola tiga bagian aktif.
+**Visual:** layar terbagi. Kiri PENYERANG: terminal nmap lalu hydra (asli, 1×). Kanan PERTAHANAN: Beranda Analis (asli, 1×). Momen insiden muncul diputar ulang 1× dengan penghitung asli (3,6 detik setelah nmap dimulai); Tingkat Siaga naik Aman → Siaga. Pola tiga bagian aktif.
 
 **Kartu APA ITU?:**
 - *Pemindaian port:* mengetuk semua "pintu" sebuah komputer untuk mencari yang terbuka.
@@ -149,7 +149,7 @@ Durasi per adegan adalah perkiraan. Teks narasi ditulis dengan ejaan asli dan se
 **SFX:** teleprinter untuk baris terminal, bip saat insiden muncul dan saat Tingkat Siaga naik.
 
 **Narasi:**
-> Demo dimulai. Semua tampilan aplikasi adalah rekaman asli dari lab. Apa yang terjadi: penyerang memindai port Kodim A dengan nmap, lalu dengan hydra mencoba seratus dua puluh delapan kombinasi nama pengguna dan kata sandi. Apa yang dilakukan SENTRA: dua setengah detik setelah pemindaian dimulai, insiden baru muncul di layar, tanpa perlu dimuat ulang. Insiden adalah satu berkas kasus yang mengumpulkan semua jejak dari penyerang yang sama. Begitu percobaan login menumpuk, Tingkat Siaga naik dari Aman ke Siaga. Kenapa ini penting: petugas tidak perlu membaca ratusan baris catatan; layar memberi tahu sendiri saat ada bahaya.
+> Demo dimulai. Semua tampilan aplikasi adalah rekaman asli dari lab. Apa yang terjadi: penyerang memindai port Kodim A dengan nmap, lalu dengan hydra mencoba 128 kombinasi nama pengguna dan kata sandi. Apa yang dilakukan SENTRA: 3,6 detik setelah pemindaian dimulai, insiden baru muncul di layar, tanpa perlu dimuat ulang. Insiden adalah satu berkas kasus yang mengumpulkan semua jejak dari penyerang yang sama. Begitu percobaan login menumpuk, Tingkat Siaga naik dari Aman ke Siaga. Kenapa ini penting: petugas tidak perlu membaca ratusan baris catatan; layar memberi tahu sendiri saat ada bahaya.
 
 ### 06. Demo 2: satu insiden, satu cerita (≈ 2:45–3:15)
 
@@ -160,11 +160,11 @@ Durasi per adegan adalah perkiraan. Teks narasi ditulis dengan ejaan asli dan se
 **SFX:** teleprinter saat angka menghitung, klik pada sorotan.
 
 **Narasi:**
-> Apa yang dilakukan SENTRA berikutnya: sembilan ratus tiga puluh tiga catatan mentah dari penyerang ini dirangkum menjadi satu insiden. Di Detail Insiden, serangannya disusun sebagai Attack Story, tahap demi tahap, dari pengintaian sampai akses awal. Tahapnya mengikuti urutan serangan pada umumnya: mengintai, masuk, bertahan, lalu merusak. Setiap langkah diberi kode teknik dari MITRE ATT&CK. Kenapa ini penting: analis langsung melihat cerita serangannya, bukan tumpukan peringatan.
+> Apa yang dilakukan SENTRA berikutnya: 933 catatan mentah dari penyerang ini dirangkum menjadi satu insiden. Di Detail Insiden, serangannya disusun sebagai Attack Story, tahap demi tahap, dari pengintaian sampai akses awal. Tahapnya mengikuti urutan serangan pada umumnya: mengintai, masuk, bertahan, lalu merusak. Setiap langkah diberi kode teknik dari MITRE ATT&CK. Kenapa ini penting: analis langsung melihat cerita serangannya, bukan tumpukan peringatan.
 
 ### 07. Demo 3: kampanye lintas satuan (≈ 3:15–3:39)
 
-**Visual:** animasi peta sederhana (penyerang → Kodim A 09:42 → Kodim B 09:44, garis menyatu menjadi "Kampanye #1"). Lalu footage asli peta operasi (2 satuan sasaran) dan halaman Kampanye.
+**Visual:** animasi peta sederhana (penyerang → Kodim A 19:16:50 → Kodim B 19:18:29, garis menyatu menjadi "Kampanye #1"). Lalu footage asli peta operasi (2 satuan sasaran) dan halaman Kampanye.
 
 **SFX:** ping radar di peta, bip saat garis kedua muncul.
 
@@ -196,12 +196,12 @@ Durasi per adegan adalah perkiraan. Teks narasi ditulis dengan ejaan asli dan se
 - **× 1,3** (kampanye);
 - **= 946 KRITIS**.
 
-Lalu footage asli Rincian skor dengan rumus yang sama.
+Lalu bukti aslinya: panel Perhitungan di aplikasi (TOTAL 946, rumus `(425 + 60) x 1.5 x 1.3 = 946`) dan baris yang sama di PDF LAPSIT halaman 2.
 
 **SFX:** klik tiap chip, stempel KRITIS.
 
 **Narasi:**
-> Seberapa berbahaya insiden ini? SENTRA menghitung skor dengan rumus terbuka. Bobot sebelas aturan yang terpicu dijumlahkan: empat ratus dua puluh lima. Ditambah enam puluh karena serangan mencapai empat tahap. Lalu dikali satu koma lima karena mengenai mesin industri, dan dikali satu koma tiga karena bagian dari kampanye. Hasilnya sembilan ratus empat puluh enam, Kritis. Setiap angkanya bisa ditelusuri.
+> Seberapa berbahaya insiden ini? SENTRA menghitung skor dengan rumus terbuka. Bobot 11 aturan yang terpicu dijumlahkan: 425. Ditambah 60 karena serangan mencapai 4 tahap. Lalu dikali 1,5 karena mengenai mesin industri, dan dikali 1,3 karena bagian dari kampanye. Hasilnya 946, Kritis. Setiap angkanya bisa ditelusuri.
 
 ### 10. Demo 6: Penjaga Situs, tiga versi halaman (≈ 4:42–5:08)
 
@@ -216,7 +216,7 @@ Lalu footage asli tiga varian di Penjaga Situs.
 **SFX:** whoosh antar kartu, bip pada versi yang ditandai.
 
 **Narasi:**
-> Bagaimana dengan judi online tadi? Penjaga Situs membuka halaman yang sama tiga kali: sebagai pengunjung biasa, sebagai Googlebot, dan sebagai pengunjung yang datang dari Google. Versi biasa tetap normal, tetapi dua versi lainnya hanya tujuh persen mirip dan berisi delapan kata judi. SENTRA menandainya sebagai cloaking judi online. Inilah sebabnya pengelola situs sering terlambat sadar: dari browser mereka, semuanya tampak normal.
+> Bagaimana dengan judi online tadi? Penjaga Situs membuka halaman yang sama tiga kali: sebagai pengunjung biasa, sebagai Googlebot, dan sebagai pengunjung yang datang dari Google. Versi biasa tetap normal, tetapi dua versi lainnya hanya 7% mirip dan berisi 8 kata judi. SENTRA menandainya sebagai cloaking judi online. Inilah sebabnya pengelola situs sering terlambat sadar: dari browser mereka, semuanya tampak normal.
 
 ### 11. Demo 7: respons berjenjang (≈ 5:08–5:49)
 
@@ -225,14 +225,14 @@ Lalu footage asli tiga varian di Penjaga Situs.
 - kiri PENYERANG: terminal yang membuka portal tiap 0,5 detik, baris hijau "tersambung";
 - kanan PERTAHANAN: Analis mengusulkan (desktop), lalu HP Komandan;
 - klik Setujui → penghitung detik asli → **TERPUTUS** (gambar ditahan 2 detik, zoom ke baris merah);
-- tiga kartu: Analis 09:46:38 → Komandan 09:46:52 → Agent 09:46:54.
+- tiga kartu: Analis 19:20:13 → Komandan 19:20:27 → Agent 19:20:30.
 
 **Kartu APA ITU?:** *nftables:* firewall bawaan Linux tempat agent memasang aturan blokir.
 
 **SFX:** klik saat Usulkan dan Setujui, bip saat usulan masuk HP, bunyi "putus" tepat di TERPUTUS.
 
 **Narasi:**
-> Saatnya bertindak. Apa yang terjadi: analis mengusulkan blokir IP penyerang selama satu jam. Usulan masuk ke HP Komandan. Selama belum disetujui, penyerang masih bisa membuka portal. Apa yang dilakukan SENTRA: Komandan menyetujui. Perintah dikirim ke agent, dan agent memblokir penyerang di firewall nftables. Dua koma empat enam detik setelah tombol Setujui ditekan, koneksi penyerang terputus. Perintah ke agent hanya boleh dari daftar tetap, yaitu blokir, buka blokir, dan uji, sehingga tidak bisa disalahgunakan. Kenapa ini penting: yang mengusulkan tidak bisa menyetujui sendiri. Keputusan tetap di tangan komandan, sesuai rantai komando.
+> Saatnya bertindak. Apa yang terjadi: analis mengusulkan blokir IP penyerang selama satu jam. Usulan masuk ke HP Komandan. Selama belum disetujui, penyerang masih bisa membuka portal. Apa yang dilakukan SENTRA: Komandan menyetujui. Perintah dikirim ke agent, dan agent memblokir penyerang di firewall nftables. 3,19 detik setelah tombol Setujui ditekan, koneksi penyerang terputus. Perintah ke agent hanya boleh dari daftar tetap, yaitu blokir, buka blokir, dan uji, sehingga tidak bisa disalahgunakan. Kenapa ini penting: yang mengusulkan tidak bisa menyetujui sendiri. Keputusan tetap di tangan komandan, sesuai rantai komando.
 
 ### 12. Demo 8: LAPSIT (≈ 5:49–6:10)
 
@@ -247,23 +247,23 @@ Lalu footage asli tiga varian di Penjaga Situs.
 
 ### 13. Demo 9: Sensor Buta (≈ 6:10–6:34)
 
-**Visual:** penghitung heartbeat asli 0 → 29,2 detik (footage dipercepat 5× dengan label), kartu agent "1 agent BUTA", insiden Sensor Buta.
+**Visual:** penghitung dimulai dari heartbeat terakhir yang dicatat Core (19:21:19 WIB); sensor dimatikan 19:21:27, BUTA 19:21:50, jadi 31 detik tanpa sinyal (footage dipercepat dengan label), kartu agent "1 agent BUTA", insiden Sensor Buta.
 
 **Kartu APA ITU?:** *Heartbeat:* sinyal "saya masih hidup" yang dikirim agent secara rutin.
 
 **SFX:** detak pelan yang berhenti, bip peringatan saat BUTA.
 
 **Narasi:**
-> Apa yang terjadi kalau penyerang mematikan sensor? Setiap agent mengirim sinyal hidup, atau heartbeat, secara berkala. Begitu sinyal dari Kodim B hilang lebih dari tiga puluh detik, SENTRA menandai agent itu buta dan membuka insiden Sensor Buta. Di rekaman ini, waktunya dua puluh sembilan detik. Ini penting, karena penyerang yang cerdas biasanya membutakan penjaga lebih dulu.
+> Apa yang terjadi kalau penyerang mematikan sensor? Setiap agent mengirim sinyal hidup, atau heartbeat, secara berkala. Begitu sinyal dari Kodim B hilang lebih dari 30 detik, SENTRA menandai agent itu buta dan membuka insiden Sensor Buta. Di rekaman ini, tanda buta muncul 31 detik setelah sinyal terakhir. Ini penting, karena penyerang yang cerdas biasanya membutakan penjaga lebih dulu.
 
 ### 14. Demo 10: Uji Kesiapan (≈ 6:34–6:55)
 
-**Visual:** klik Jalankan, matriks terisi (dipercepat 16× dengan label), lalu ditahan pada dial 11/11 dan rata-rata 4,5 detik (momen kunci).
+**Visual:** klik Jalankan, matriks terisi (dipercepat dengan label), lalu ditahan pada dial 11/11 dan rata-rata 4,5 detik (momen kunci).
 
 **SFX:** klik, bunyi sukses saat 11/11.
 
 **Narasi:**
-> Bagaimana kita tahu SENTRA benar-benar bekerja? Lewat Uji Kesiapan, SENTRA menjalankan sebelas serangan tiruan yang aman ke komputernya sendiri. Serangan tiruan ini diberi tanda khusus, sehingga dihitung sebagai uji, bukan insiden. Hasilnya, sebelas dari sebelas terdeteksi, rata-rata empat koma lima detik, dan tidak satu pun menjadi insiden palsu.
+> Bagaimana kita tahu SENTRA benar-benar bekerja? Lewat Uji Kesiapan, SENTRA menjalankan 11 serangan tiruan yang aman ke komputernya sendiri. Serangan tiruan ini diberi tanda khusus, sehingga dihitung sebagai uji, bukan insiden. Hasilnya, 11 dari 11 terdeteksi, rata-rata 4,5 detik, dan tidak satu pun menjadi insiden palsu.
 
 ### 15. Demo 11: buku jaga berantai (≈ 6:55–7:19)
 
@@ -272,14 +272,14 @@ Lalu footage asli tiga varian di Penjaga Situs.
 **SFX:** klik antar blok, bunyi retak saat rantai putus (animasi), bunyi sukses saat "Rantai utuh".
 
 **Narasi:**
-> Terakhir, buku jaganya. Setiap catatan audit menyimpan sidik jari catatan sebelumnya, sehingga membentuk rantai. Kalau satu catatan diubah atau dihapus langsung di database, rantainya putus dan langsung ketahuan. Satu klik Verifikasi Rantai: dua puluh satu catatan diperiksa, rantai utuh.
+> Terakhir, buku jaganya. Setiap catatan audit menyimpan sidik jari catatan sebelumnya, sehingga membentuk rantai. Kalau satu catatan diubah atau dihapus langsung di database, rantainya putus dan langsung ketahuan. Satu klik Verifikasi Rantai: 21 catatan diperiksa, rantai utuh.
 
 ### 16. Hak akses (≈ 7:19–7:31)
 
 **Visual:** empat kartu peran, lalu Beranda Operator Kodim A (2/2 agent) vs Analis Kodam (3/3), asli.
 
 **Narasi:**
-> Hak akses mengikuti peran dan satuan. Operator Kodim A hanya melihat satuannya sendiri, dua agent. Analis di pusat melihat semuanya, tiga agent. Dengan begitu, setiap orang hanya melihat dan melakukan apa yang menjadi tugasnya.
+> Hak akses mengikuti peran dan satuan. Operator Kodim A hanya melihat satuannya sendiri, 2 agent. Analis di pusat melihat semuanya, 3 agent. Dengan begitu, setiap orang hanya melihat dan melakukan apa yang menjadi tugasnya.
 
 ### 17. Angka dan kelayakan (≈ 7:31–7:47)
 
@@ -292,21 +292,21 @@ Lalu footage asli tiga varian di Penjaga Situs.
 
 **Visual:** garis waktu dengan jam asli:
 
-- 09:42:13 pemindaian;
-- 09:42:16 insiden tampil;
-- 09:43:17 tebak kata sandi;
-- 09:44:51 Kodim B / kampanye;
-- 09:45:27–09:45:48 SQL injection, webshell, PLC, judi;
-- skor 946;
-- 09:46:38 usul;
-- 09:46:52 setuju;
-- +2,46 detik terputus;
+- 19:16:50 pemindaian;
+- 19:16:53 insiden tampil (+3,6 detik);
+- 19:16:57 tebak kata sandi;
+- 19:18:29 Kodim B / kampanye;
+- 19:19:04–19:19:24 SQL injection, webshell, PLC, judi;
+- 19:19:47 skor 946;
+- 19:20:13 usul;
+- 19:20:27 setuju;
+- 19:20:30 terputus (+3,19 detik);
 - LAPSIT, Sensor Buta, Uji Kesiapan, rantai utuh.
 
 **SFX:** ping radar, whoosh.
 
 **Narasi:**
-> Sekali lagi, alurnya. Penyerang memindai dan menebak kata sandi; SENTRA membuka insiden dalam hitungan detik. Serangan melebar ke satuan lain dan ke mesin industri; semuanya terangkai dalam satu cerita dengan skor yang terbuka. Analis mengusulkan, Komandan menyetujui dari HP, dan dua koma empat enam detik kemudian penyerang terputus. Semuanya tercatat di buku jaga yang tidak bisa diubah.
+> Sekali lagi, alurnya. Penyerang memindai dan menebak kata sandi; SENTRA membuka insiden dalam hitungan detik. Serangan melebar ke satuan lain dan ke mesin industri; semuanya terangkai dalam satu cerita dengan skor yang terbuka. Analis mengusulkan, Komandan menyetujui dari HP, dan 3,19 detik kemudian penyerang terputus. Semuanya tercatat di buku jaga yang tidak bisa diubah.
 
 ### 19. Penutup (≈ 8:17–8:30)
 
@@ -316,6 +316,17 @@ Lalu footage asli tiga varian di Penjaga Situs.
 
 **Narasi:**
 > Langkah berikutnya: uji coba di satuan nyata dan menambah protokol mesin industri lain. SENTRA SHIELD: nyata, terukur, siap pakai. Terima kasih.
+
+## Catatan produksi
+
+Hal-hal yang disesuaikan saat membuat video final, tanpa mengubah isi yang disetujui:
+
+- **Angka mengikuti rekaman ulang.** Contoh: insiden tampil 3,6 detik setelah nmap dimulai (diukur dari frame video), dan penyerang terputus 3,19 detik setelah Setujui (diukur dari jam di terminal penyerang). Angka lain tetap sama: 128 percobaan, 933 catatan, skor 946, 7% / 8 kata judi, 11/11, rata-rata 4,5 detik, dan 21 catatan.
+- **Sensor Buta.** Heartbeat dikirim tiap 10 detik, dan ambang BUTA adalah 30 detik sejak heartbeat *terakhir*. Di rekaman ulang, tanda BUTA tampil 23 detik setelah sensor dimatikan karena heartbeat terakhir sudah terkirim sekitar 9 detik sebelum sensor dimatikan. Supaya tidak membingungkan, kalimatnya menjadi "tanda buta muncul 31 detik setelah sinyal terakhir" (heartbeat terakhir 19:21:19, BUTA 19:21:50, dari audit log Core).
+- **Subtitle memakai angka** ("3,19 detik"), sedangkan TTS mengucapkannya sebagai kata ("tiga koma satu sembilan detik") lewat kamus pelafalan.
+- **Skor 946.** Tangkapan layar rincian skor di Detail Insiden diambil saat skor masih 858 (sebelum Penjaga Situs menambah deteksi judi). Karena itu bukti 946 diambil dari panel Perhitungan yang terlihat di halaman LAPSIT dan dari PDF LAPSIT.
+- **Hak akses** memakai tangkapan layar asli Beranda kedua akun. Footage-nya sudah berpindah ke halaman Insiden saat kalimat itu diucapkan.
+- **Bagian "kalau catatan diubah"** di adegan 15 adalah ilustrasi dan diberi label ILUSTRASI. Hash yang tampil adalah hash asli catatan audit 18–21 dari lab.
 
 ## Catatan durasi
 

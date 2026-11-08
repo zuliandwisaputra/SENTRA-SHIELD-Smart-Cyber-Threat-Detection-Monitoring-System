@@ -101,7 +101,7 @@ export const S09Skor: React.FC<{ durasi: number }> = ({ durasi }) => {
         <Op t="=" o={o(tTotal - 0.15)} />
         <Operand nilai={String(RIN.total)} ket="skor insiden" o={o(tTotal - 0.15)} c={warna.awas} besar />
       </div>
-      <div style={{ position: "absolute", left: 1500, top: 470, opacity: o(tKritis, 0.25), scale: `${1.35 - 0.35 * o(tKritis, 0.25)}`, rotate: "-6deg" }}>
+      <div style={{ position: "absolute", left: 1575, top: 440, opacity: o(tKritis, 0.25), scale: `${1.35 - 0.35 * o(tKritis, 0.25)}`, rotate: "-6deg" }}>
         <Stempel warnaGaris={warna.awas} ukuran={46} style={{ backgroundColor: `${warna.canvas}E6` }}>
           {SEVERITY}
         </Stempel>
@@ -132,7 +132,7 @@ export const S09Skor: React.FC<{ durasi: number }> = ({ durasi }) => {
             sumber={PDF}
             label="PDF LAPSIT asli · halaman 2 · bagian Penilaian"
             fokus={[{ pada: 0, kotak: fokusMuat({ x: 120, y: 1268, w: 1560, h: 104 }, PDFP.lebar / (PDFP.tinggi - 44), 4, PDF) }]}
-            sorot={[{ dari: 0, sampai: 99, kotak: { x: 150, y: 1322, w: 1080, h: 52 }, warna: warna.awas, redup: false }]}
+            sorot={[{ dari: 0, sampai: 99, kotak: { x: 150, y: 1322, w: 905, h: 52 }, warna: warna.awas, redup: false }]}
           />
         </div>
       )}

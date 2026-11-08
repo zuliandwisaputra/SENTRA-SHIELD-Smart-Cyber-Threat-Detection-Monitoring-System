@@ -136,7 +136,7 @@ export const S10PenjagaSitus: React.FC<{ durasi: number }> = ({ durasi }) => {
           fokus={[
             { pada: 0, kotak: fokusMuat({ x: 760, y: 170, w: 1015, h: 630 }, RFL, 0) },
             { pada: 1.6, kotak: fokusMuat({ x: 760, y: 170, w: 1015, h: 630 }, RFL, 0) },
-            { pada: 2.6, kotak: fokusMuat({ x: 766, y: 405, w: 1000, h: 450 }, RFL, 0) },
+            { pada: 2.6, kotak: fokusMuat({ x: 755, y: 445, w: 1027, h: 392 }, RFL, 0) },
           ]}
           sorot={[
             { dari: 0.3, sampai: 2.3, kotak: { x: 1560, y: 180, w: 196, h: 56 }, label: "Ditandai: cloaking judi", warna: warna.awas, labelBawah: true, labelKanan: true },

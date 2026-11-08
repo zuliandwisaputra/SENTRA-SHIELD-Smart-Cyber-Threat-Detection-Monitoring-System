@@ -124,7 +124,7 @@ export const S06Insiden: React.FC<{ durasi: number }> = ({ durasi }) => {
         {bagian === 2 && (
           <div style={{ padding: "22px 26px", display: "flex", flexDirection: "column", gap: 14 }}>
             {TEKNIK.map((x, i) => {
-              const m = o(tMitre + 0.6 + i * 0.3, 0.3);
+              const m = o(tMitre - 0.45 + i * 0.3, 0.3);
               return (
                 <div key={x.kode} style={{ position: "relative", padding: "12px 18px", backgroundColor: warna.raised, border: `1px solid ${warna.lineStrong}`, opacity: m, translate: `${(1 - m) * 24}px 0px`, whiteSpace: "nowrap" }}>
                   <Braket ukuran={12} tebal={2} />

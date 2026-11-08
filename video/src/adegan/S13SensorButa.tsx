@@ -1,7 +1,7 @@
 // Demo 9: Sensor Buta. Agent Kodim B dimatikan; penghitung dimulai dari heartbeat terakhir yang dicatat Core.
 import React from "react";
 import { Sequence, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
-import { R, desimal, detikDi, detikPenanda, dtg, jamWib, penanda, terminal } from "../data";
+import { R, detikDi, detikPenanda, dtg, jamWib, penanda, terminal } from "../data";
 import { kalimatMulai, pada } from "../data/narasi";
 import { Footage, fokusMuat, useJam } from "../komponen/Footage";
 import { Rangkaian, dariJangkar, detikVideoUntuk } from "../komponen/Rangkaian";
@@ -49,7 +49,8 @@ const Isi: React.FC<{ mulai: number; k: number }> = ({ mulai, k }) => {
         <div style={{ padding: "18px 28px", whiteSpace: "nowrap" }}>
           <div style={{ fontFamily: huruf.kondensasi, fontWeight: 700, fontSize: 22, letterSpacing: "0.12em", color: warna.ink3, textTransform: "uppercase" }}>Tanpa sinyal sejak heartbeat terakhir</div>
           <div style={{ display: "flex", alignItems: "baseline", gap: 16, marginTop: 4 }}>
-            <span style={{ fontFamily: huruf.stensil, fontSize: 120, lineHeight: 1, color: c }}>{epoch < T_HB ? "0,0" : desimal(dt, 1)}</span>
+            <span style={{ fontFamily: huruf.stensil, fontSize: 120, lineHeight: 1, color: c }}>{/* Heartbeat terakhir dicatat Core dengan presisi detik, jadi penghitung memakai detik bulat. */}
+              {epoch < T_HB ? "0" : Math.floor(dt)}</span>
             <span style={{ fontFamily: huruf.stensil, fontSize: 38, color: c }}>DETIK</span>
           </div>
           <div style={{ marginTop: 8, height: 14, backgroundColor: warna.inset, position: "relative" }}>
