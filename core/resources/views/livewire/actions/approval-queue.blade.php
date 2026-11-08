@@ -27,8 +27,9 @@
                             <p class="flex items-baseline gap-2"><span class="nomor-bagian">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }} //</span>
                                 <span class="font-stensil text-[15px] uppercase tracking-[0.1em] text-accent">Usulan {{ $first->type->label() }}{{ $first->campaign_id ? ' serentak · Kampanye #'.$first->campaign_id : '' }}</span></p>
                             <p class="mt-2 flex items-center gap-2.5">
-                                <svg viewBox="0 0 24 24" class="size-7 shrink-0" aria-hidden="true"><path d="M12 1L23 12L12 23L1 12Z" stroke-width="2" class="fill-awas/15 stroke-awas" /><path d="M8 8l8 8M16 8l-8 8" stroke-width="2" class="stroke-awas" /></svg>
-                                <span class="break-all font-mono text-[28px] font-semibold leading-tight text-ink sm:text-[34px]">{{ $first->params['ip'] ?? '—' }}</span>
+                                <svg viewBox="0 0 24 24" class="size-6 shrink-0 sm:size-7" aria-hidden="true"><path d="M12 1L23 12L12 23L1 12Z" stroke-width="2" class="fill-awas/15 stroke-awas" /><path d="M8 8l8 8M16 8l-8 8" stroke-width="2" class="stroke-awas" /></svg>
+                                {{-- IPv4 muat satu baris di HP 390 px; alamat panjang (IPv6) baru dibungkus bila memang tidak muat. --}}
+                                <span class="font-mono text-[24px] font-semibold leading-tight text-ink [overflow-wrap:anywhere] sm:text-[34px]">{{ $first->params['ip'] ?? '—' }}</span>
                             </p>
                         </div>
                         @if ($inc)
