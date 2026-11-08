@@ -10,7 +10,7 @@ Status: **versi 2** (render final 1080p 60 fps). Naskah dan storyboard: [`docs/n
 | --- | --- |
 | Rasio, ukuran | 16:9, 1920 x 1080 |
 | Frame rate | 60 fps |
-| Durasi | mengikuti panjang narasi; target 8–9 menit, maksimal 10 menit |
+| Durasi | 8:59,6 (mengikuti panjang narasi; target 8–9 menit, maksimal 10 menit) |
 | Format | MP4 H.264 + AAC |
 | Audio | Narasi suara sintetis (TTS, VoxCPM2) −16 LUFS; efek suara dan musik ambient prosedural buatan sendiri, selalu diredam (ducking) di bawah narasi |
 
@@ -183,14 +183,28 @@ Gambar diam untuk pemeriksaan (skala 0,5):
 node rekam/pratinjau.cjs out/pratinjau --skala 0.5 120 245.5 nama=300
 ```
 
-Render final, 1920 x 1080, 60 fps, H.264 + AAC. Langkah kedua mengubah piksel rentang penuh (yuvj420p) ke yuv420p standar dan menyamakan keras suara keseluruhan ke −16 LUFS:
+Render final, 1920 x 1080, 60 fps, H.264 + AAC (±30 menit di CPU 4 inti):
 
 ```bash
-npx remotion render SentraDemo out/render.mp4 --codec=h264 --crf=18 --audio-codec=aac --audio-bitrate=256k
+npx remotion render SentraDemo out/render-v2.mp4 --codec=h264 --crf=18 --audio-codec=aac --audio-bitrate=256k --concurrency=4
 ```
 
+Langkah kedua mengubah piksel rentang penuh (yuvj420p) ke yuv420p standar dan menyamakan keras suara keseluruhan ke −16 LUFS. Pertama ukur campurannya (narasi mono yang dijadikan stereo membuatnya ±3 dB lebih keras):
+
 ```bash
-ffmpeg -i out/render.mp4 -vf "scale=in_range=pc:out_range=tv,format=yuv420p" -c:v libx264 -preset slow -crf 17 -af loudnorm=I=-16:TP=-1.5:LRA=11 -c:a aac -b:a 256k -movflags +faststart out/SENTRA-SHIELD-Demo-v2-1080p.mp4
+ffmpeg -i out/render-v2.mp4 -vn -af loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json -f null -
+```
+
+Lalu masukkan angka `input_i`, `input_tp`, `input_lra`, `input_thresh`, `target_offset` dari langkah tadi (mode linear, sehingga dinamikanya tidak berubah):
+
+```bash
+ffmpeg -i out/render-v2.mp4 -vf "scale=in_range=pc:out_range=tv,format=yuv420p" -c:v libx264 -preset medium -crf 17 -color_primaries bt709 -color_trc bt709 -colorspace bt709 -af "loudnorm=I=-16:TP=-1.5:LRA=11:measured_I=<input_i>:measured_TP=<input_tp>:measured_LRA=<input_lra>:measured_thresh=<input_thresh>:offset=<target_offset>:linear=true" -ar 48000 -c:a aac -b:a 256k -movflags +faststart out/SENTRA-SHIELD-Demo-v2-1080p.mp4
+```
+
+Pemeriksaan akhir (durasi, LUFS, frame tiap 5 detik, sinkron narasi vs subtitle lewat Whisper):
+
+```bash
+venv-tts/bin/python rekam/qa.py out/SENTRA-SHIELD-Demo-v2-1080p.mp4 out/qa
 ```
 
 Bila Remotion tidak bisa mengunduh Chrome Headless Shell (jaringan dibatasi), tambahkan `--browser-executable=<path chrome-headless-shell>`; untuk `pratinjau.cjs` pakai variabel `REMOTION_CHROME`. Folder `out/` tidak di-commit.
