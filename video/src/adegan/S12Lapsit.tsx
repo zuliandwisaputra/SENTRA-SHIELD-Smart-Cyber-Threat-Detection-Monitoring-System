@@ -125,7 +125,7 @@ export const S12Lapsit: React.FC<{ durasi: number }> = ({ durasi }) => {
 
       {/* Waktu pembuatan diukur Core (bukan perkiraan). */}
       {ukur > 0 && (
-        <div style={{ position: "absolute", right: 120, top: 300, opacity: ukur, padding: "16px 24px", backgroundColor: `${warna.canvas}F2`, border: `2px solid ${warna.aman}`, whiteSpace: "nowrap" }}>
+        <div style={{ position: "absolute", right: 120, top: 640, opacity: ukur, padding: "16px 24px", backgroundColor: `${warna.canvas}F2`, border: `2px solid ${warna.aman}`, whiteSpace: "nowrap" }}>
           <div style={{ fontFamily: huruf.kondensasi, fontWeight: 700, fontSize: 22, letterSpacing: "0.12em", color: warna.ink3, textTransform: "uppercase" }}>Waktu pembuatan LAPSIT</div>
           <div style={{ fontFamily: huruf.stensil, fontSize: 64, lineHeight: 1.05, color: warna.aman }}>
             {desimal(R.ukur.lapsitMs / 1000, 2)} <span style={{ fontSize: 30 }}>DTK</span>
