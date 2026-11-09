@@ -4,10 +4,14 @@ Pusat komando deteksi dan respons ancaman siber berbasis web untuk satuan TNI AD
 
 Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive Shield).
 
+[![Video demo SENTRA SHIELD (8:59): serangan sungguhan di lab terputus 3,19 detik setelah Komandan menyetujui blokir dari HP](site/img/video-demo.jpg)](https://youtu.be/FEUp9jdq1GE)
+
+**▶ [Tonton video demo di YouTube (8:59)](https://youtu.be/FEUp9jdq1GE)**: serangan sungguhan di lab latihan, dari deteksi sampai penyerang terputus. Narasi memakai suara sintetis (TTS).
+
 | | |
 |---|---|
 | **Link karya** | Landing page: `https://zuliandwisaputra17-stack.github.io/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System/` (diterbitkan dari folder [`site/`](site/)) |
-| **Video presentasi** | menyusul (disematkan di landing page) |
+| **Video presentasi** | [youtu.be/FEUp9jdq1GE](https://youtu.be/FEUp9jdq1GE) (juga disematkan di landing page) |
 | **Slide** | menyusul |
 
 > **Nyata** — setiap deteksi berasal dari telemetri asli, dan blokir benar-benar memutus penyerang dari mesin terpisah. Tidak ada data atau angka karangan di dashboard.
