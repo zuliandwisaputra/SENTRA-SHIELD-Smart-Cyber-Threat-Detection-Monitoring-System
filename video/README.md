@@ -213,6 +213,13 @@ Thumbnail YouTube (1280 x 720, PNG < 2 MB; tangkapan layar asli Beranda dan HP K
 npx remotion still src/index.ts Thumbnail out/thumbnail-youtube.png
 ```
 
+Thumbnail karya untuk pameran hackathon (wajib 1200 x 630, JPG/PNG/WebP, maks 500 KB). PNG-nya ±620 KB, jadi diubah ke JPG kualitas 95 (±220 KB):
+
+```bash
+npx remotion still src/index.ts ThumbnailKarya out/thumbnail-karya.png
+python3 -c "from PIL import Image; Image.open('out/thumbnail-karya.png').convert('RGB').save('out/thumbnail-karya.jpg', quality=95, optimize=True, progressive=True, subsampling=0)"
+```
+
 Bila Remotion tidak bisa mengunduh Chrome Headless Shell (jaringan dibatasi), tambahkan `--browser-executable=<path chrome-headless-shell>`; untuk `pratinjau.cjs` pakai variabel `REMOTION_CHROME`. Folder `out/` tidak di-commit.
 
 ## Narasi, efek suara, dan subtitle (v2)
