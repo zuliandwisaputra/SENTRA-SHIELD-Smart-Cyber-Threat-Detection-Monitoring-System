@@ -1,0 +1,4 @@
+Sumber: https://github.com/DietrichGebert/ponytail (MIT, teks lisensi di .claude/skills/ponytail/LICENSE)
+Commit: 96608e078b2d5ea607c5c3b8b5a54d1c1fba6846
+Dipasang: 9 Nov 2026, folder skills/ponytail-gain dari repo upstream (tanpa hooks/band plugin).
+Dipakai sebagai alat bantu saat pengembangan; tidak ikut berjalan di aplikasi.

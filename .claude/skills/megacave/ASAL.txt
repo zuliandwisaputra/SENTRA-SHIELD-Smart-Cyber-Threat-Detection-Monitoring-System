@@ -1,0 +1,4 @@
+Sumber: https://github.com/JuliusBrussee/caveman (Apache-2.0, teks lisensi dan NOTICE di .claude/skills/caveman/)
+Commit: 3dc497a7f858c774d6e15b25e8c6120ef3a0eda8
+Dipasang: 9 Nov 2026, folder plugins/caveman/skills/megacave dari repo upstream (tanpa hooks plugin).
+Dipakai sebagai alat bantu saat pengembangan; tidak ikut berjalan di aplikasi.

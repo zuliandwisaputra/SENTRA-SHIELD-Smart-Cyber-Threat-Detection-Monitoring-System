@@ -1,0 +1,4 @@
+Sumber: https://github.com/vercel-labs/skills (MIT)
+Commit: d3701c11b1101251af14c9d148f026e1a47ebe17
+Dipasang: 9 Nov 2026, folder skills/find-skills dari repo upstream.
+Dipakai sebagai alat bantu saat pengembangan; tidak ikut berjalan di aplikasi.
