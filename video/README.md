@@ -2,7 +2,7 @@
 
 Video demo untuk juri Kartika Cyber Hackathon 2026. Tujuannya: setelah menonton, juri paham cara kerja SENTRA dari serangan sampai blokir.
 
-Status: **versi 2** (render final 1080p 60 fps). Naskah dan storyboard: [`docs/naskah-video-v2.md`](../docs/naskah-video-v2.md). Versi 1 (3:45, narasi suara pembicara) ada di riwayat git dan [`docs/naskah-video.md`](../docs/naskah-video.md). Berkas MP4 final tidak di-commit.
+Status: **versi 2, revisi rulebook** (render final 1080p 60 fps). Revisi 9 November 2026 menambahkan identitas tim yang diucapkan, penjelasan teknologi, serta dampak dan potensi implementasi, sesuai empat komponen wajib di rulebook (pengenalan tim dan latar belakang, arsitektur dan teknologi, demo langsung, kesimpulan). Naskah dan storyboard: [`docs/naskah-video-v2.md`](../docs/naskah-video-v2.md). Versi 1 (3:45, narasi suara pembicara) ada di riwayat git dan [`docs/naskah-video.md`](../docs/naskah-video.md). Berkas MP4 final tidak di-commit.
 
 ## Spesifikasi keluaran
 
@@ -10,7 +10,7 @@ Status: **versi 2** (render final 1080p 60 fps). Naskah dan storyboard: [`docs/n
 | --- | --- |
 | Rasio, ukuran | 16:9, 1920 x 1080 |
 | Frame rate | 60 fps |
-| Durasi | 8:59,6 (mengikuti panjang narasi; target 8–9 menit, maksimal 10 menit) |
+| Durasi | 9:42 (mengikuti panjang narasi; maksimal 10 menit menurut rulebook) |
 | Format | MP4 H.264 + AAC |
 | Audio | Narasi suara sintetis (TTS, VoxCPM2) −16 LUFS; efek suara dan musik ambient prosedural buatan sendiri, selalu diredam (ducking) di bawah narasi |
 
@@ -186,25 +186,25 @@ node rekam/pratinjau.cjs out/pratinjau --skala 0.5 120 245.5 nama=300
 Render final, 1920 x 1080, 60 fps, H.264 + AAC (±30 menit di CPU 4 inti):
 
 ```bash
-npx remotion render SentraDemo out/render-v2.mp4 --codec=h264 --crf=18 --audio-codec=aac --audio-bitrate=256k --concurrency=4
+npx remotion render SentraDemo out/render-v3.mp4 --codec=h264 --crf=18 --audio-codec=aac --audio-bitrate=256k --concurrency=4
 ```
 
 Langkah kedua mengubah piksel rentang penuh (yuvj420p) ke yuv420p standar dan menyamakan keras suara keseluruhan ke −16 LUFS. Pertama ukur campurannya (narasi mono yang dijadikan stereo membuatnya ±3 dB lebih keras):
 
 ```bash
-ffmpeg -i out/render-v2.mp4 -vn -af loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json -f null -
+ffmpeg -i out/render-v3.mp4 -vn -af loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json -f null -
 ```
 
 Lalu masukkan angka `input_i`, `input_tp`, `input_lra`, `input_thresh`, `target_offset` dari langkah tadi (mode linear, sehingga dinamikanya tidak berubah):
 
 ```bash
-ffmpeg -i out/render-v2.mp4 -vf "scale=in_range=pc:out_range=tv,format=yuv420p" -c:v libx264 -preset medium -crf 17 -color_primaries bt709 -color_trc bt709 -colorspace bt709 -af "loudnorm=I=-16:TP=-1.5:LRA=11:measured_I=<input_i>:measured_TP=<input_tp>:measured_LRA=<input_lra>:measured_thresh=<input_thresh>:offset=<target_offset>:linear=true" -ar 48000 -c:a aac -b:a 256k -movflags +faststart out/SENTRA-SHIELD-Demo-v2-1080p.mp4
+ffmpeg -i out/render-v3.mp4 -vf "scale=in_range=pc:out_range=tv,format=yuv420p" -c:v libx264 -preset medium -crf 17 -color_primaries bt709 -color_trc bt709 -colorspace bt709 -af "loudnorm=I=-16:TP=-1.5:LRA=11:measured_I=<input_i>:measured_TP=<input_tp>:measured_LRA=<input_lra>:measured_thresh=<input_thresh>:offset=<target_offset>:linear=true" -ar 48000 -c:a aac -b:a 256k -movflags +faststart out/SENTRA-SHIELD-Demo-v3-1080p.mp4
 ```
 
 Pemeriksaan akhir (durasi, LUFS, frame tiap 5 detik, sinkron narasi vs subtitle lewat Whisper):
 
 ```bash
-venv-tts/bin/python rekam/qa.py out/SENTRA-SHIELD-Demo-v2-1080p.mp4 out/qa
+venv-tts/bin/python rekam/qa.py out/SENTRA-SHIELD-Demo-v3-1080p.mp4 out/qa
 ```
 
 Thumbnail YouTube (1280 x 720, PNG < 2 MB; tangkapan layar asli Beranda dan HP Komandan, angka 3,19 dtk dari `rekaman.json`):
