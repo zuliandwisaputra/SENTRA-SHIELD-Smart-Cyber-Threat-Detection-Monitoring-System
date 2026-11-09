@@ -207,6 +207,12 @@ Pemeriksaan akhir (durasi, LUFS, frame tiap 5 detik, sinkron narasi vs subtitle 
 venv-tts/bin/python rekam/qa.py out/SENTRA-SHIELD-Demo-v2-1080p.mp4 out/qa
 ```
 
+Thumbnail YouTube (1280 x 720, PNG < 2 MB; tangkapan layar asli Beranda dan HP Komandan, angka 3,19 dtk dari `rekaman.json`):
+
+```bash
+npx remotion still src/index.ts Thumbnail out/thumbnail-youtube.png
+```
+
 Bila Remotion tidak bisa mengunduh Chrome Headless Shell (jaringan dibatasi), tambahkan `--browser-executable=<path chrome-headless-shell>`; untuk `pratinjau.cjs` pakai variabel `REMOTION_CHROME`. Folder `out/` tidak di-commit.
 
 ## Narasi, efek suara, dan subtitle (v2)
