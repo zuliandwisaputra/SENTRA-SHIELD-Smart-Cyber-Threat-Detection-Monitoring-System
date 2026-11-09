@@ -1,0 +1,4 @@
+Sumber: https://github.com/cloudai-x/threejs-skills (MIT, teks lisensi di .claude/skills/threejs-fundamentals/LICENSE)
+Commit: 0e181866f095b5f06d005133876e926515390d95
+Dipasang: 9 Nov 2026, folder skills/threejs-interaction dari repo upstream.
+Dipakai sebagai alat bantu saat pengembangan; tidak ikut berjalan di aplikasi.
