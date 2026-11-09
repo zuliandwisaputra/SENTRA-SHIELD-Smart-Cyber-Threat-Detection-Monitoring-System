@@ -25,8 +25,8 @@ const PETA = [
 // Dampak bagi pertahanan siber; angka pendukung diukur dari rekaman lab yang sama dengan demo.
 const DAMPAK = [
   { judul: "Terpantau dari pusat", isi: "Kodim tanpa tim siber tetap terpantau dari Kodam.", angka: `insiden tampil ${desimal(R.ukur.nmapKeInsidenDiBerandaMs / 1000, 1)} dtk setelah serangan dimulai`, frasa: "Kodim tanpa tim siber" },
-  { judul: "Serangan terlihat utuh", isi: "Serangan ke beberapa satuan terangkai jadi satu kampanye.", angka: `${(R.ukur as unknown as { kampanye: { unit_count: number } }).kampanye.unit_count} satuan · 1 kampanye · skor ×1,3`, frasa: "serangan terkoordinasi" },
-  { judul: "Keputusan di tangan komandan", isi: "Bukti di audit log berantai dan LAPSIT bersegel.", angka: `penyerang terputus ${desimal(R.ukur.portal.setujuKeGagalPertamaMs / 1000, 2)} dtk setelah disetujui`, frasa: "Setiap tindakan" },
+  { judul: "Serangan terlihat utuh", isi: "Serangan ke beberapa satuan terangkai jadi satu kampanye.", angka: `${(R.ukur as unknown as { kampanye: { unit_count: number } }).kampanye.unit_count} satuan · 1 kampanye · skor ×1,3`, frasa: "Serangan terkoordinasi" },
+  { judul: "Keputusan di tangan komandan", isi: "Bukti di audit log berantai dan LAPSIT bersegel.", angka: `penyerang terputus ${desimal(R.ukur.portal.setujuKeGagalPertamaMs / 1000, 2)} dtk setelah disetujui`, frasa: "setiap tindakan" },
 ];
 // Potensi implementasi: kebutuhan pasang yang disebut di narasi.
 const PASANG = [

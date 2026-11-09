@@ -146,7 +146,7 @@ Durasi per adegan adalah perkiraan. Teks narasi ditulis dengan ejaan asli dan se
 **SFX:** whoosh, ping radar pada topologi, stempel.
 
 **Narasi:**
-> Secara teknis, SENTRA punya tiga bagian. Agent di setiap satuan membaca catatan web, login SSH, firewall, perubahan file, dan perintah ke mesin industri, lalu mengirimnya ke pusat setiap detik lewat jalur terenkripsi. Core di pusat menjalankan 13 aturan deteksi, merangkai serangan, dan memberi skor. Command adalah layar untuk operator, analis, dan komandan, termasuk di HP. Teknologinya: Core dibangun dengan Laravel dan MySQL, tampilannya memakai Livewire, dan layar diperbarui lewat WebSocket Reverb setiap ada perubahan. Agent ditulis dengan Python tanpa pustaka tambahan, dan memblokir penyerang lewat nftables di firewall. Laporan situasi bisa disusun model AI lokal lewat Ollama, dan seluruh sistem dijalankan dengan Docker Compose dalam satu perintah. Untuk demo ini kami membangun lab: dua satuan latihan, Kodim A dan Kodim B, sebuah mesin industri PLC, dan satu komputer penyerang di jaringan terpisah. Semuanya berjalan tanpa internet, di satu laptop.
+> Secara teknis, SENTRA punya tiga bagian. Agent di setiap satuan membaca catatan web, login SSH, firewall, perubahan file, dan perintah ke mesin industri, lalu mengirimnya ke pusat setiap detik lewat jalur terenkripsi. Core di pusat menjalankan 13 aturan deteksi, merangkai serangan, dan memberi skor. Command adalah layar untuk operator, analis, dan komandan, termasuk di HP. Teknologinya: Laravel dan MySQL di Core, Livewire dan WebSocket Reverb untuk tampilan. Agent ditulis dengan Python, dan blokir dipasang lewat nftables di firewall. Semuanya dikemas dalam Docker Compose, termasuk AI lokal Ollama untuk menyusun laporan. Untuk demo ini kami membangun lab: dua satuan latihan, Kodim A dan Kodim B, sebuah mesin industri PLC, dan satu komputer penyerang di jaringan terpisah. Semuanya berjalan tanpa internet, di satu laptop.
 
 ### 05. Demo 1: pemindaian dan tebak kata sandi (≈ 2:03–2:45)
 
@@ -325,7 +325,7 @@ Lalu footage asli tiga varian di Penjaga Situs.
 **SFX:** tiga stempel, ping radar akhir.
 
 **Narasi:**
-> Dampak nyatanya bagi pertahanan siber: Kodim tanpa tim siber tetap terpantau dari pusat, dan serangan terkoordinasi terlihat utuh. Setiap tindakan tetap di tangan komandan, dengan bukti yang tercatat dan bisa diperiksa. Potensi implementasinya luas karena pemasangannya ringan: satu mini-PC di pusat dan satu agent di tiap satuan. Langkah berikutnya: uji coba di satuan nyata dan menambah protokol mesin industri lain. SENTRA SHIELD: nyata, terukur, siap pakai. Terima kasih.
+> Dampak nyatanya bagi pertahanan siber: Kodim tanpa tim siber tetap terpantau dari pusat. Serangan terkoordinasi terlihat utuh, dan setiap tindakan tetap di tangan komandan. Potensi implementasinya luas: cukup satu mini-PC di pusat dan satu agent di tiap satuan. Langkah berikutnya: uji coba di satuan nyata dan menambah protokol mesin industri lain. SENTRA SHIELD: nyata, terukur, siap pakai. Terima kasih.
 
 ## Catatan produksi
 
