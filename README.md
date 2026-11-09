@@ -4,14 +4,14 @@ Pusat komando deteksi dan respons ancaman siber berbasis web untuk satuan TNI AD
 
 Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive Shield).
 
-[![Video demo SENTRA SHIELD (8:59): serangan sungguhan di lab terputus 3,19 detik setelah Komandan menyetujui blokir dari HP](site/img/video-demo.jpg)](https://youtu.be/FEUp9jdq1GE)
+[![Video demo SENTRA SHIELD (9:42): serangan sungguhan di lab terputus 3,19 detik setelah Komandan menyetujui blokir dari HP](site/img/video-demo.jpg)](https://youtu.be/ekRmZRPW1-4)
 
-**▶ [Tonton video demo di YouTube (8:59)](https://youtu.be/FEUp9jdq1GE)**: serangan sungguhan di lab latihan, dari deteksi sampai penyerang terputus. Narasi memakai suara sintetis (TTS).
+**▶ [Tonton video demo di YouTube (9:42)](https://youtu.be/ekRmZRPW1-4)**: serangan sungguhan di lab latihan, dari deteksi sampai penyerang terputus. Narasi memakai suara sintetis (TTS).
 
 | | |
 |---|---|
-| **Link karya** | Landing page: `https://zuliandwisaputra17-stack.github.io/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System/` (diterbitkan dari folder [`site/`](site/)) |
-| **Video presentasi** | [youtu.be/FEUp9jdq1GE](https://youtu.be/FEUp9jdq1GE) (juga disematkan di landing page) |
+| **Link karya** | Landing page: `https://zuliandwisaputra.github.io/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System/` (diterbitkan dari folder [`site/`](site/)) |
+| **Video presentasi** | [youtu.be/ekRmZRPW1-4](https://youtu.be/ekRmZRPW1-4) (juga disematkan di landing page) |
 | **Slide** | menyusul |
 
 > **Nyata** — setiap deteksi berasal dari telemetri asli, dan blokir benar-benar memutus penyerang dari mesin terpisah. Tidak ada data atau angka karangan di dashboard.
@@ -74,7 +74,7 @@ Semua angka di atas diukur dari lab latihan pada 6–7 November 2026 (lab pengem
 **Linux/macOS:** butuh Docker dengan Compose v2, RAM kosong ±3 GB, dan port `8443` bebas.
 
 ```bash
-git clone -b claude/pensive-galileo-eow7qv https://github.com/zuliandwisaputra17-stack/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System.git
+git clone -b claude/pensive-galileo-eow7qv https://github.com/zuliandwisaputra/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System.git
 ```
 
 ```bash

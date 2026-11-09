@@ -214,7 +214,7 @@ docker run hello-world
 5. Ambil kode:
 
    ```powershell
-   git clone -b claude/pensive-galileo-eow7qv https://github.com/zuliandwisaputra17-stack/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System.git sentra-shield
+   git clone -b claude/pensive-galileo-eow7qv https://github.com/zuliandwisaputra/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System.git sentra-shield
    ```
 
    Kalau muncul jendela login GitHub, login dengan akun GitHub-mu.
@@ -241,7 +241,7 @@ Kalau kode sudah ada di folder OneDrive (misalnya `C:\Users\NamaKamu\OneDrive\Do
    ```
 
    ```powershell
-   git clone -b claude/pensive-galileo-eow7qv https://github.com/zuliandwisaputra17-stack/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System.git sentra-shield
+   git clone -b claude/pensive-galileo-eow7qv https://github.com/zuliandwisaputra/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System.git sentra-shield
    ```
 
 3. Mulai sekarang pakai skrip di `C:\Users\NamaKamu\sentra-shield\lab\windows`. Jalankan `mulai-lab.bat` dari folder baru itu.
