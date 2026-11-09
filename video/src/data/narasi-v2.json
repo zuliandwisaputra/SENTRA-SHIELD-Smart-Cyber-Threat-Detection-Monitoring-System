@@ -1,6 +1,6 @@
 {
  "01-pembuka": {
-  "durasi": 14.39,
+  "durasi": 22.65,
   "lufs": -16.0,
   "puncak": -1.5,
   "kalimat": [
@@ -19,9 +19,25 @@
     "transkrip": "Ini Sentra Shield, pusat komando deteksi dan respons ancaman siber untuk satuan."
    },
    {
-    "teks": "Dalam beberapa menit ke depan, kita lihat bagaimana satu serangan sungguhan dideteksi, dijelaskan, lalu dihentikan, sampai penyerang terputus.",
+    "teks": "Karya ini dibuat oleh Tim Claudex404, Zulian Dwi Saputra, untuk Kartika Cyber Hackathon 2026, kategori Penangkalan.",
     "mulai": 5.43,
-    "selesai": 14.39,
+    "selesai": 13.37,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 0.967,
+     "kepala": 1.0,
+     "ekor": 0.786,
+     "akhir": 0.8,
+     "rasio_panjang": 0.967
+    },
+    "f0": 122.8,
+    "transkrip": "Karya ini dibuat oleh tim CloudX 404, Zulian Dwi Saputra, untuk Kartika Cyber Hecaton 2026, kategori penangkap."
+   },
+   {
+    "teks": "Dalam beberapa menit ke depan, kita lihat bagaimana satu serangan sungguhan dideteksi, dijelaskan, lalu dihentikan, sampai penyerang terputus.",
+    "mulai": 13.69,
+    "selesai": 22.65,
     "lulus": true,
     "percobaan": 2,
     "nilai": {
@@ -107,112 +123,208 @@
     "kalimat": 0
    },
    {
-    "k": "Dalam",
+    "k": "Karya",
     "m": 5.43,
     "s": 6.11,
     "kalimat": 1
    },
    {
-    "k": "beberapa",
+    "k": "ini",
     "m": 6.11,
-    "s": 6.51,
+    "s": 6.31,
     "kalimat": 1
    },
    {
-    "k": "menit",
-    "m": 6.51,
-    "s": 6.73,
+    "k": "dibuat",
+    "m": 6.31,
+    "s": 6.67,
     "kalimat": 1
    },
    {
-    "k": "ke",
-    "m": 6.73,
-    "s": 6.87,
+    "k": "oleh",
+    "m": 6.67,
+    "s": 6.83,
     "kalimat": 1
    },
    {
-    "k": "depan,",
-    "m": 6.87,
-    "s": 7.45,
+    "k": "Tim",
+    "m": 6.83,
+    "s": 7.07,
     "kalimat": 1
    },
    {
-    "k": "kita",
-    "m": 7.67,
-    "s": 7.79,
+    "k": "Claudex404,",
+    "m": 7.07,
+    "s": 8.59,
     "kalimat": 1
    },
    {
-    "k": "lihat",
-    "m": 7.79,
-    "s": 8.09,
+    "k": "Zulian",
+    "m": 8.77,
+    "s": 9.01,
     "kalimat": 1
    },
    {
-    "k": "bagaimana",
-    "m": 8.09,
-    "s": 8.57,
+    "k": "Dwi",
+    "m": 9.01,
+    "s": 9.25,
     "kalimat": 1
    },
    {
-    "k": "satu",
-    "m": 8.57,
-    "s": 8.87,
+    "k": "Saputra,",
+    "m": 9.25,
+    "s": 9.85,
     "kalimat": 1
    },
    {
-    "k": "serangan",
-    "m": 8.87,
-    "s": 9.21,
+    "k": "untuk",
+    "m": 10.11,
+    "s": 10.25,
     "kalimat": 1
    },
    {
-    "k": "sungguhan",
-    "m": 9.21,
-    "s": 9.71,
+    "k": "Kartika",
+    "m": 10.25,
+    "s": 10.71,
     "kalimat": 1
    },
    {
-    "k": "dideteksi,",
-    "m": 9.71,
-    "s": 10.49,
+    "k": "Cyber",
+    "m": 10.71,
+    "s": 11.03,
     "kalimat": 1
    },
    {
-    "k": "dijelaskan,",
-    "m": 10.81,
-    "s": 11.63,
+    "k": "Hackathon",
+    "m": 11.03,
+    "s": 11.53,
     "kalimat": 1
    },
    {
-    "k": "lalu",
-    "m": 11.79,
-    "s": 11.97,
+    "k": "2026,",
+    "m": 11.53,
+    "s": 12.59,
     "kalimat": 1
    },
    {
-    "k": "dihentikan,",
-    "m": 11.97,
-    "s": 12.79,
+    "k": "kategori",
+    "m": 12.85,
+    "s": 13.17,
     "kalimat": 1
    },
    {
-    "k": "sampai",
-    "m": 13.07,
+    "k": "Penangkalan.",
+    "m": 13.17,
     "s": 13.35,
     "kalimat": 1
    },
    {
+    "k": "Dalam",
+    "m": 13.69,
+    "s": 14.37,
+    "kalimat": 2
+   },
+   {
+    "k": "beberapa",
+    "m": 14.37,
+    "s": 14.77,
+    "kalimat": 2
+   },
+   {
+    "k": "menit",
+    "m": 14.77,
+    "s": 14.99,
+    "kalimat": 2
+   },
+   {
+    "k": "ke",
+    "m": 14.99,
+    "s": 15.13,
+    "kalimat": 2
+   },
+   {
+    "k": "depan,",
+    "m": 15.13,
+    "s": 15.71,
+    "kalimat": 2
+   },
+   {
+    "k": "kita",
+    "m": 15.93,
+    "s": 16.05,
+    "kalimat": 2
+   },
+   {
+    "k": "lihat",
+    "m": 16.05,
+    "s": 16.35,
+    "kalimat": 2
+   },
+   {
+    "k": "bagaimana",
+    "m": 16.35,
+    "s": 16.83,
+    "kalimat": 2
+   },
+   {
+    "k": "satu",
+    "m": 16.83,
+    "s": 17.13,
+    "kalimat": 2
+   },
+   {
+    "k": "serangan",
+    "m": 17.13,
+    "s": 17.47,
+    "kalimat": 2
+   },
+   {
+    "k": "sungguhan",
+    "m": 17.47,
+    "s": 17.97,
+    "kalimat": 2
+   },
+   {
+    "k": "dideteksi,",
+    "m": 17.97,
+    "s": 18.75,
+    "kalimat": 2
+   },
+   {
+    "k": "dijelaskan,",
+    "m": 19.07,
+    "s": 19.89,
+    "kalimat": 2
+   },
+   {
+    "k": "lalu",
+    "m": 20.05,
+    "s": 20.23,
+    "kalimat": 2
+   },
+   {
+    "k": "dihentikan,",
+    "m": 20.23,
+    "s": 21.05,
+    "kalimat": 2
+   },
+   {
+    "k": "sampai",
+    "m": 21.33,
+    "s": 21.61,
+    "kalimat": 2
+   },
+   {
     "k": "penyerang",
-    "m": 13.35,
-    "s": 13.71,
-    "kalimat": 1
+    "m": 21.61,
+    "s": 21.97,
+    "kalimat": 2
    },
    {
     "k": "terputus.",
-    "m": 13.71,
-    "s": 14.27,
-    "kalimat": 1
+    "m": 21.97,
+    "s": 22.53,
+    "kalimat": 2
    }
   ]
  },
