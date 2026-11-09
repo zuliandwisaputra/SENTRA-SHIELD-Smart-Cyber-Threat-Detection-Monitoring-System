@@ -19,20 +19,20 @@
     "transkrip": "Ini Sentra Shield, pusat komando deteksi dan respons ancaman siber untuk satuan."
    },
    {
-    "teks": "Karya ini dibuat oleh Tim Claudex404, Zulian Dwi Saputra, untuk Kartika Cyber Hackathon 2026, kategori Penangkalan.",
+    "teks": "Karya ini dibuat oleh Tim Claudex404, Zulian Dwi Saputra, untuk kategori Penangkalan di Kartika Cyber Hackathon 2026.",
     "mulai": 5.43,
     "selesai": 13.37,
     "lulus": true,
     "percobaan": 1,
     "nilai": {
-     "cocok": 0.967,
+     "cocok": 0.976,
      "kepala": 1.0,
-     "ekor": 0.786,
-     "akhir": 0.8,
-     "rasio_panjang": 0.967
+     "ekor": 1.0,
+     "akhir": 1.0,
+     "rasio_panjang": 0.984
     },
-    "f0": 122.8,
-    "transkrip": "Karya ini dibuat oleh tim CloudX 404, Zulian Dwi Saputra, untuk Kartika Cyber Hecaton 2026, kategori penangkap."
+    "f0": 115.2,
+    "transkrip": "Karya ini dibuat oleh tim Claudex 404, Zulian Duisa Putra, untuk kategori penangkalan di Kartika Cyber Hecaton 2026."
    },
    {
     "teks": "Dalam beberapa menit ke depan, kita lihat bagaimana satu serangan sungguhan dideteksi, dijelaskan, lalu dihentikan, sampai penyerang terputus.",
@@ -125,97 +125,103 @@
    {
     "k": "Karya",
     "m": 5.43,
-    "s": 6.11,
+    "s": 5.97,
     "kalimat": 1
    },
    {
     "k": "ini",
-    "m": 6.11,
-    "s": 6.31,
+    "m": 5.97,
+    "s": 6.17,
     "kalimat": 1
    },
    {
     "k": "dibuat",
-    "m": 6.31,
-    "s": 6.67,
+    "m": 6.17,
+    "s": 6.57,
     "kalimat": 1
    },
    {
     "k": "oleh",
-    "m": 6.67,
-    "s": 6.83,
+    "m": 6.57,
+    "s": 6.79,
     "kalimat": 1
    },
    {
     "k": "Tim",
-    "m": 6.83,
-    "s": 7.07,
+    "m": 6.79,
+    "s": 7.03,
     "kalimat": 1
    },
    {
     "k": "Claudex404,",
-    "m": 7.07,
-    "s": 8.59,
+    "m": 7.03,
+    "s": 8.43,
     "kalimat": 1
    },
    {
     "k": "Zulian",
-    "m": 8.77,
-    "s": 9.01,
+    "m": 8.55,
+    "s": 8.85,
     "kalimat": 1
    },
    {
     "k": "Dwi",
-    "m": 9.01,
-    "s": 9.25,
+    "m": 8.85,
+    "s": 9.12,
     "kalimat": 1
    },
    {
     "k": "Saputra,",
-    "m": 9.25,
-    "s": 9.85,
+    "m": 9.12,
+    "s": 9.75,
     "kalimat": 1
    },
    {
     "k": "untuk",
-    "m": 10.11,
-    "s": 10.25,
-    "kalimat": 1
-   },
-   {
-    "k": "Kartika",
-    "m": 10.25,
-    "s": 10.71,
-    "kalimat": 1
-   },
-   {
-    "k": "Cyber",
-    "m": 10.71,
-    "s": 11.03,
-    "kalimat": 1
-   },
-   {
-    "k": "Hackathon",
-    "m": 11.03,
-    "s": 11.53,
-    "kalimat": 1
-   },
-   {
-    "k": "2026,",
-    "m": 11.53,
-    "s": 12.59,
+    "m": 10.01,
+    "s": 10.11,
     "kalimat": 1
    },
    {
     "k": "kategori",
-    "m": 12.85,
-    "s": 13.17,
+    "m": 10.11,
+    "s": 10.57,
     "kalimat": 1
    },
    {
-    "k": "Penangkalan.",
-    "m": 13.17,
-    "s": 13.35,
+    "k": "Penangkalan",
+    "m": 10.57,
+    "s": 11.05,
+    "kalimat": 1
+   },
+   {
+    "k": "di",
+    "m": 11.05,
+    "s": 11.25,
+    "kalimat": 1
+   },
+   {
+    "k": "Kartika",
+    "m": 11.25,
+    "s": 11.57,
+    "kalimat": 1
+   },
+   {
+    "k": "Cyber",
+    "m": 11.57,
+    "s": 11.89,
+    "kalimat": 1
+   },
+   {
+    "k": "Hackathon",
+    "m": 11.89,
+    "s": 12.35,
+    "kalimat": 1
+   },
+   {
+    "k": "2026.",
+    "m": 12.35,
+    "s": 13.23,
     "kalimat": 1
    },
    {
