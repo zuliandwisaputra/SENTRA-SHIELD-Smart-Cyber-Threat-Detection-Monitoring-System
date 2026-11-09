@@ -1449,7 +1449,7 @@
   ]
  },
  "04-arsitektur": {
-  "durasi": 37.37,
+  "durasi": 55.2,
   "lufs": -16.0,
   "puncak": -1.5,
   "kalimat": [
@@ -1511,9 +1511,57 @@
     "transkrip": "Komen adalah layar untuk operator, analis dan komandan, termasuk di hape."
    },
    {
-    "teks": "Untuk demo ini kami membangun lab: dua satuan latihan, Kodim A dan Kodim B, sebuah mesin industri PLC, dan satu komputer penyerang di jaringan terpisah.",
+    "teks": "Teknologinya: Laravel dan MySQL di Core, Livewire dan WebSocket Reverb untuk tampilan.",
     "mulai": 24.27,
-    "selesai": 33.69,
+    "selesai": 30.9,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 0.986,
+     "kepala": 1.0,
+     "ekor": 1.0,
+     "akhir": 1.0,
+     "rasio_panjang": 1.0
+    },
+    "f0": 118.6,
+    "transkrip": "Teknologinya, Laravel dan MySQL Decore, LiveWire dan WebSocket Reverb untuk tampilan."
+   },
+   {
+    "teks": "Agent ditulis dengan Python, dan blokir dipasang lewat nftables di firewall.",
+    "mulai": 31.22,
+    "selesai": 36.02,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 0.977,
+     "kepala": 1.0,
+     "ekor": 0.929,
+     "akhir": 0.875,
+     "rasio_panjang": 1.016
+    },
+    "f0": 119.0,
+    "transkrip": "Agent ditulis dengan Python dan blockir dipasang lewat nftables di Fairwall."
+   },
+   {
+    "teks": "Semuanya dikemas dalam Docker Compose, termasuk AI lokal Ollama untuk menyusun laporan.",
+    "mulai": 36.34,
+    "selesai": 41.78,
+    "lulus": true,
+    "percobaan": 1,
+    "nilai": {
+     "cocok": 0.966,
+     "kepala": 1.0,
+     "ekor": 1.0,
+     "akhir": 1.0,
+     "rasio_panjang": 0.959
+    },
+    "f0": 120.0,
+    "transkrip": "Semuanya dikemas dalam doker kompos, termasuk AI lokal olama untuk menyusun laporan."
+   },
+   {
+    "teks": "Untuk demo ini kami membangun lab: dua satuan latihan, Kodim A dan Kodim B, sebuah mesin industri PLC, dan satu komputer penyerang di jaringan terpisah.",
+    "mulai": 42.1,
+    "selesai": 51.52,
     "lulus": true,
     "percobaan": 3,
     "nilai": {
@@ -1526,8 +1574,8 @@
    },
    {
     "teks": "Semuanya berjalan tanpa internet, di satu laptop.",
-    "mulai": 34.01,
-    "selesai": 37.37,
+    "mulai": 51.84,
+    "selesai": 55.2,
     "lulus": true,
     "percobaan": 1,
     "nilai": {
@@ -1871,196 +1919,406 @@
     "kalimat": 3
    },
    {
-    "k": "Untuk",
+    "k": "Teknologinya:",
     "m": 24.27,
-    "s": 25.01,
-    "kalimat": 4
-   },
-   {
-    "k": "demo",
-    "m": 25.01,
-    "s": 25.21,
-    "kalimat": 4
-   },
-   {
-    "k": "ini",
-    "m": 25.21,
     "s": 25.45,
     "kalimat": 4
    },
    {
-    "k": "kami",
-    "m": 25.45,
-    "s": 25.69,
-    "kalimat": 4
-   },
-   {
-    "k": "membangun",
-    "m": 25.69,
-    "s": 26.17,
-    "kalimat": 4
-   },
-   {
-    "k": "lab:",
-    "m": 26.17,
-    "s": 26.47,
-    "kalimat": 4
-   },
-   {
-    "k": "dua",
-    "m": 26.47,
-    "s": 26.77,
-    "kalimat": 4
-   },
-   {
-    "k": "satuan",
-    "m": 26.77,
-    "s": 27.09,
-    "kalimat": 4
-   },
-   {
-    "k": "latihan,",
-    "m": 27.09,
-    "s": 27.85,
-    "kalimat": 4
-   },
-   {
-    "k": "Kodim",
-    "m": 28.01,
-    "s": 28.31,
-    "kalimat": 4
-   },
-   {
-    "k": "A",
-    "m": 28.31,
-    "s": 28.51,
+    "k": "Laravel",
+    "m": 25.97,
+    "s": 26.33,
     "kalimat": 4
    },
    {
     "k": "dan",
-    "m": 28.51,
-    "s": 28.67,
+    "m": 26.33,
+    "s": 26.57,
     "kalimat": 4
    },
    {
-    "k": "Kodim",
-    "m": 28.67,
-    "s": 29.07,
-    "kalimat": 4
-   },
-   {
-    "k": "B,",
-    "m": 29.07,
-    "s": 29.33,
-    "kalimat": 4
-   },
-   {
-    "k": "sebuah",
-    "m": 29.55,
-    "s": 29.75,
-    "kalimat": 4
-   },
-   {
-    "k": "mesin",
-    "m": 29.75,
-    "s": 30.09,
-    "kalimat": 4
-   },
-   {
-    "k": "industri",
-    "m": 30.09,
-    "s": 30.49,
-    "kalimat": 4
-   },
-   {
-    "k": "PLC,",
-    "m": 30.49,
-    "s": 31.21,
-    "kalimat": 4
-   },
-   {
-    "k": "dan",
-    "m": 31.41,
-    "s": 31.51,
-    "kalimat": 4
-   },
-   {
-    "k": "satu",
-    "m": 31.51,
-    "s": 31.75,
-    "kalimat": 4
-   },
-   {
-    "k": "komputer",
-    "m": 31.75,
-    "s": 32.17,
-    "kalimat": 4
-   },
-   {
-    "k": "penyerang",
-    "m": 32.17,
-    "s": 32.55,
+    "k": "MySQL",
+    "m": 26.57,
+    "s": 27.31,
     "kalimat": 4
    },
    {
     "k": "di",
-    "m": 32.55,
-    "s": 32.73,
+    "m": 27.31,
+    "s": 27.523,
     "kalimat": 4
    },
    {
-    "k": "jaringan",
-    "m": 32.73,
-    "s": 33.15,
+    "k": "Core,",
+    "m": 27.523,
+    "s": 27.95,
     "kalimat": 4
    },
    {
-    "k": "terpisah.",
-    "m": 33.15,
-    "s": 33.61,
+    "k": "Livewire",
+    "m": 28.33,
+    "s": 28.71,
     "kalimat": 4
+   },
+   {
+    "k": "dan",
+    "m": 28.71,
+    "s": 28.91,
+    "kalimat": 4
+   },
+   {
+    "k": "WebSocket",
+    "m": 28.91,
+    "s": 29.41,
+    "kalimat": 4
+   },
+   {
+    "k": "Reverb",
+    "m": 29.41,
+    "s": 29.97,
+    "kalimat": 4
+   },
+   {
+    "k": "untuk",
+    "m": 29.97,
+    "s": 30.29,
+    "kalimat": 4
+   },
+   {
+    "k": "tampilan.",
+    "m": 30.29,
+    "s": 30.73,
+    "kalimat": 4
+   },
+   {
+    "k": "Agent",
+    "m": 31.22,
+    "s": 31.88,
+    "kalimat": 5
+   },
+   {
+    "k": "ditulis",
+    "m": 31.88,
+    "s": 32.28,
+    "kalimat": 5
+   },
+   {
+    "k": "dengan",
+    "m": 32.28,
+    "s": 32.54,
+    "kalimat": 5
+   },
+   {
+    "k": "Python,",
+    "m": 32.54,
+    "s": 32.96,
+    "kalimat": 5
+   },
+   {
+    "k": "dan",
+    "m": 32.96,
+    "s": 33.4,
+    "kalimat": 5
+   },
+   {
+    "k": "blokir",
+    "m": 33.4,
+    "s": 33.82,
+    "kalimat": 5
+   },
+   {
+    "k": "dipasang",
+    "m": 33.82,
+    "s": 34.22,
+    "kalimat": 5
+   },
+   {
+    "k": "lewat",
+    "m": 34.22,
+    "s": 34.54,
+    "kalimat": 5
+   },
+   {
+    "k": "nftables",
+    "m": 34.54,
+    "s": 35.24,
+    "kalimat": 5
+   },
+   {
+    "k": "di",
+    "m": 35.24,
+    "s": 35.48,
+    "kalimat": 5
+   },
+   {
+    "k": "firewall.",
+    "m": 35.48,
+    "s": 35.86,
+    "kalimat": 5
    },
    {
     "k": "Semuanya",
-    "m": 34.01,
-    "s": 34.89,
-    "kalimat": 5
+    "m": 36.34,
+    "s": 37.04,
+    "kalimat": 6
    },
    {
-    "k": "berjalan",
-    "m": 34.89,
-    "s": 35.37,
-    "kalimat": 5
+    "k": "dikemas",
+    "m": 37.04,
+    "s": 37.46,
+    "kalimat": 6
    },
    {
-    "k": "tanpa",
-    "m": 35.37,
-    "s": 35.75,
-    "kalimat": 5
+    "k": "dalam",
+    "m": 37.46,
+    "s": 37.72,
+    "kalimat": 6
    },
    {
-    "k": "internet,",
-    "m": 35.75,
-    "s": 36.19,
-    "kalimat": 5
+    "k": "Docker",
+    "m": 37.72,
+    "s": 38.172,
+    "kalimat": 6
    },
    {
-    "k": "di",
-    "m": 36.19,
-    "s": 36.61,
-    "kalimat": 5
+    "k": "Compose,",
+    "m": 38.172,
+    "s": 38.7,
+    "kalimat": 6
+   },
+   {
+    "k": "termasuk",
+    "m": 38.98,
+    "s": 39.42,
+    "kalimat": 6
+   },
+   {
+    "k": "AI",
+    "m": 39.42,
+    "s": 39.72,
+    "kalimat": 6
+   },
+   {
+    "k": "lokal",
+    "m": 39.72,
+    "s": 40.08,
+    "kalimat": 6
+   },
+   {
+    "k": "Ollama",
+    "m": 40.08,
+    "s": 40.46,
+    "kalimat": 6
+   },
+   {
+    "k": "untuk",
+    "m": 40.46,
+    "s": 40.74,
+    "kalimat": 6
+   },
+   {
+    "k": "menyusun",
+    "m": 40.74,
+    "s": 41.18,
+    "kalimat": 6
+   },
+   {
+    "k": "laporan.",
+    "m": 41.18,
+    "s": 41.64,
+    "kalimat": 6
+   },
+   {
+    "k": "Untuk",
+    "m": 42.1,
+    "s": 42.84,
+    "kalimat": 7
+   },
+   {
+    "k": "demo",
+    "m": 42.84,
+    "s": 43.04,
+    "kalimat": 7
+   },
+   {
+    "k": "ini",
+    "m": 43.04,
+    "s": 43.28,
+    "kalimat": 7
+   },
+   {
+    "k": "kami",
+    "m": 43.28,
+    "s": 43.52,
+    "kalimat": 7
+   },
+   {
+    "k": "membangun",
+    "m": 43.52,
+    "s": 44.0,
+    "kalimat": 7
+   },
+   {
+    "k": "lab:",
+    "m": 44.0,
+    "s": 44.3,
+    "kalimat": 7
+   },
+   {
+    "k": "dua",
+    "m": 44.3,
+    "s": 44.6,
+    "kalimat": 7
+   },
+   {
+    "k": "satuan",
+    "m": 44.6,
+    "s": 44.92,
+    "kalimat": 7
+   },
+   {
+    "k": "latihan,",
+    "m": 44.92,
+    "s": 45.68,
+    "kalimat": 7
+   },
+   {
+    "k": "Kodim",
+    "m": 45.84,
+    "s": 46.14,
+    "kalimat": 7
+   },
+   {
+    "k": "A",
+    "m": 46.14,
+    "s": 46.34,
+    "kalimat": 7
+   },
+   {
+    "k": "dan",
+    "m": 46.34,
+    "s": 46.5,
+    "kalimat": 7
+   },
+   {
+    "k": "Kodim",
+    "m": 46.5,
+    "s": 46.9,
+    "kalimat": 7
+   },
+   {
+    "k": "B,",
+    "m": 46.9,
+    "s": 47.16,
+    "kalimat": 7
+   },
+   {
+    "k": "sebuah",
+    "m": 47.38,
+    "s": 47.58,
+    "kalimat": 7
+   },
+   {
+    "k": "mesin",
+    "m": 47.58,
+    "s": 47.92,
+    "kalimat": 7
+   },
+   {
+    "k": "industri",
+    "m": 47.92,
+    "s": 48.32,
+    "kalimat": 7
+   },
+   {
+    "k": "PLC,",
+    "m": 48.32,
+    "s": 49.04,
+    "kalimat": 7
+   },
+   {
+    "k": "dan",
+    "m": 49.24,
+    "s": 49.34,
+    "kalimat": 7
    },
    {
     "k": "satu",
-    "m": 36.61,
-    "s": 36.87,
-    "kalimat": 5
+    "m": 49.34,
+    "s": 49.58,
+    "kalimat": 7
+   },
+   {
+    "k": "komputer",
+    "m": 49.58,
+    "s": 50.0,
+    "kalimat": 7
+   },
+   {
+    "k": "penyerang",
+    "m": 50.0,
+    "s": 50.38,
+    "kalimat": 7
+   },
+   {
+    "k": "di",
+    "m": 50.38,
+    "s": 50.56,
+    "kalimat": 7
+   },
+   {
+    "k": "jaringan",
+    "m": 50.56,
+    "s": 50.98,
+    "kalimat": 7
+   },
+   {
+    "k": "terpisah.",
+    "m": 50.98,
+    "s": 51.44,
+    "kalimat": 7
+   },
+   {
+    "k": "Semuanya",
+    "m": 51.84,
+    "s": 52.72,
+    "kalimat": 8
+   },
+   {
+    "k": "berjalan",
+    "m": 52.72,
+    "s": 53.2,
+    "kalimat": 8
+   },
+   {
+    "k": "tanpa",
+    "m": 53.2,
+    "s": 53.58,
+    "kalimat": 8
+   },
+   {
+    "k": "internet,",
+    "m": 53.58,
+    "s": 54.02,
+    "kalimat": 8
+   },
+   {
+    "k": "di",
+    "m": 54.02,
+    "s": 54.44,
+    "kalimat": 8
+   },
+   {
+    "k": "satu",
+    "m": 54.44,
+    "s": 54.7,
+    "kalimat": 8
    },
    {
     "k": "laptop.",
-    "m": 36.87,
-    "s": 37.21,
-    "kalimat": 5
+    "m": 54.7,
+    "s": 55.04,
+    "kalimat": 8
    }
   ]
  },
