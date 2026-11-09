@@ -8,7 +8,7 @@ Halaman statis untuk link karya (F15, keputusan B8: tanpa VPS, landing page + vi
 
 ## Memasang video
 
-Video demo sudah terpasang: `data-youtube="FEUp9jdq1GE"` di `index.html` (https://youtu.be/FEUp9jdq1GE). Pemutar disematkan lewat `youtube-nocookie.com`; tanpa JavaScript, kotak video menampilkan tautan ke YouTube. Untuk mengganti video, ubah ID itu (bagian setelah `youtu.be/` pada link) dan kedua tautan `youtu.be` di bawahnya. `img/video-demo.jpg` adalah thumbnail video yang dipakai README utama.
+Video demo sudah terpasang: `data-youtube="ekRmZRPW1-4"` di `index.html` (https://youtu.be/ekRmZRPW1-4). Pemutar disematkan lewat `youtube-nocookie.com`; tanpa JavaScript, kotak video menampilkan tautan ke YouTube. Untuk mengganti video, ubah ID itu (bagian setelah `youtu.be/` pada link) dan kedua tautan `youtu.be` di bawahnya. `img/video-demo.jpg` adalah thumbnail video yang dipakai README utama.
 
 ## Menerbitkan ke GitHub Pages
 
