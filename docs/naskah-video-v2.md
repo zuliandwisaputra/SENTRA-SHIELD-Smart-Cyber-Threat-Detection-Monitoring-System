@@ -4,6 +4,16 @@ Status: **disetujui** (suara A, naskah apa adanya). Lab direkam ulang dari nol p
 
 Target durasi **8:30–9:00** (maksimal 10:00). Durasi akhir tiap adegan mengikuti panjang suara TTS.
 
+## Revisi 9 November 2026: ketentuan rulebook
+
+Rulebook Kartika Cyber Hackathon 2026 mewajibkan empat komponen: pengenalan tim dan latar belakang, arsitektur dan teknologi, demo langsung, serta kesimpulan (potensi implementasi dan dampak nyata). Versi pertama v2 sudah memuat demo dan latar belakang, tetapi nama tim hanya tampil sebagai teks, teknologi hampir tidak disebut, dan kesimpulan belum menyebut dampak. Disetujui pemilik proyek, ditambahkan tujuh kalimat (kalimat lain tidak berubah, suaranya tetap sama):
+
+| Adegan | Tambahan |
+| --- | --- |
+| 01 Pembuka | Nama tim diucapkan ("Claudex404" dilafalkan *Klaudeks empat nol empat*), nama anggota, lomba, dan kategori; chip identitas disorot saat disebut. |
+| 04 Arsitektur & teknologi | Tiga kalimat teknologi dan panel delapan kartu: Laravel 13, MySQL 8.4, Livewire 3, Laravel Reverb, Python 3.10+, Ollama, Docker Compose, Pest/unittest (dari README bagian Stack). |
+| 19 Kesimpulan | Tiga kalimat dampak dan potensi implementasi; panel Dampak bagi pertahanan siber (dengan angka terukur 3,6 dtk, 2 satuan/1 kampanye, 3,19 dtk) dan panel Potensi implementasi (1 mini-PC, 1 agent per satuan, offline). |
+
 ## Yang berubah dari versi 1
 
 | Masalah versi 1 | Perbaikan di versi 2 |
@@ -103,7 +113,7 @@ Durasi per adegan adalah perkiraan. Teks narasi ditulis dengan ejaan asli dan se
 **SFX:** ping radar, tiga stempel.
 
 **Narasi:**
-> Ini SENTRA SHIELD, pusat komando deteksi dan respons ancaman siber untuk satuan. Dalam beberapa menit ke depan, kita lihat bagaimana satu serangan sungguhan dideteksi, dijelaskan, lalu dihentikan, sampai penyerang terputus.
+> Ini SENTRA SHIELD, pusat komando deteksi dan respons ancaman siber untuk satuan. Karya ini dibuat oleh Tim Claudex404, Zulian Dwi Saputra, untuk Kartika Cyber Hackathon 2026, kategori Penangkalan. Dalam beberapa menit ke depan, kita lihat bagaimana satu serangan sungguhan dideteksi, dijelaskan, lalu dihentikan, sampai penyerang terputus.
 
 ### 02. Analogi: pos jaga markas (≈ 0:15–1:00)
 
@@ -129,14 +139,14 @@ Durasi per adegan adalah perkiraan. Teks narasi ditulis dengan ejaan asli dan se
 **Narasi:**
 > Kenapa SENTRA dibutuhkan? Satuan setingkat Kodim jarang punya tim keamanan siber sendiri, sehingga catatan komputer menumpuk tanpa pernah dibaca. Alat keamanan biasa membanjiri petugas dengan ribuan peringatan mentah. Penyerang bisa menyerang beberapa satuan sekaligus, bahkan mematikan sensor lebih dulu. Dan situs resmi bisa disusupi iklan judi online yang hanya muncul di Google, sehingga pengelolanya tidak sadar.
 
-### 04. Arsitektur dan lab (≈ 1:27–2:03)
+### 04. Arsitektur, teknologi, dan lab (≈ 1:34–2:30)
 
-**Visual:** diagram Agent → Core → Command (seperti v1), lalu topologi lab, lalu stempel OFFLINE.
+**Visual:** diagram Agent → Core → Command (seperti v1), lalu panel teknologi (delapan kartu yang menyala saat disebut), lalu topologi lab, lalu stempel OFFLINE.
 
 **SFX:** whoosh, ping radar pada topologi, stempel.
 
 **Narasi:**
-> Secara teknis, SENTRA punya tiga bagian. Agent di setiap satuan membaca catatan web, login SSH, firewall, perubahan file, dan perintah ke mesin industri, lalu mengirimnya ke pusat setiap detik lewat jalur terenkripsi. Core di pusat menjalankan 13 aturan deteksi, merangkai serangan, dan memberi skor. Command adalah layar untuk operator, analis, dan komandan, termasuk di HP. Untuk demo ini kami membangun lab: dua satuan latihan, Kodim A dan Kodim B, sebuah mesin industri PLC, dan satu komputer penyerang di jaringan terpisah. Semuanya berjalan tanpa internet, di satu laptop.
+> Secara teknis, SENTRA punya tiga bagian. Agent di setiap satuan membaca catatan web, login SSH, firewall, perubahan file, dan perintah ke mesin industri, lalu mengirimnya ke pusat setiap detik lewat jalur terenkripsi. Core di pusat menjalankan 13 aturan deteksi, merangkai serangan, dan memberi skor. Command adalah layar untuk operator, analis, dan komandan, termasuk di HP. Teknologinya: Core dibangun dengan Laravel dan MySQL, tampilannya memakai Livewire, dan layar diperbarui lewat WebSocket Reverb. Agent ditulis dengan Python tanpa pustaka tambahan, dan memblokir penyerang lewat nftables. Laporan situasi bisa disusun model AI lokal lewat Ollama, dan seluruh sistem dijalankan dengan Docker Compose. Untuk demo ini kami membangun lab: dua satuan latihan, Kodim A dan Kodim B, sebuah mesin industri PLC, dan satu komputer penyerang di jaringan terpisah. Semuanya berjalan tanpa internet, di satu laptop.
 
 ### 05. Demo 1: pemindaian dan tebak kata sandi (≈ 2:03–2:45)
 
@@ -308,14 +318,14 @@ Lalu footage asli tiga varian di Penjaga Situs.
 **Narasi:**
 > Sekali lagi, alurnya. Penyerang memindai dan menebak kata sandi; SENTRA membuka insiden dalam hitungan detik. Serangan melebar ke satuan lain dan ke mesin industri; semuanya terangkai dalam satu cerita dengan skor yang terbuka. Analis mengusulkan, Komandan menyetujui dari HP, dan 3,19 detik kemudian penyerang terputus. Semuanya tercatat di buku jaga yang tidak bisa diubah.
 
-### 19. Penutup (≈ 8:17–8:30)
+### 19. Kesimpulan (≈ 9:00–9:35)
 
-**Visual:** peta jalan singkat, lalu tanda SENTRA SHIELD, stempel NYATA · TERUKUR · SIAP PAKAI, "Zulian Dwi Saputra · Tim Claudex404", link repo, "Narasi: suara sintetis (TTS)".
+**Visual:** panel Dampak bagi pertahanan siber dan Potensi implementasi, lalu peta jalan singkat dan batasan, lalu tanda SENTRA SHIELD, stempel NYATA · TERUKUR · SIAP PAKAI, "Zulian Dwi Saputra · Tim Claudex404", link repo, "Narasi: suara sintetis (TTS)".
 
 **SFX:** tiga stempel, ping radar akhir.
 
 **Narasi:**
-> Langkah berikutnya: uji coba di satuan nyata dan menambah protokol mesin industri lain. SENTRA SHIELD: nyata, terukur, siap pakai. Terima kasih.
+> Dampak nyatanya bagi pertahanan siber: Kodim tanpa tim siber tetap terpantau dari pusat, dan serangan terkoordinasi terlihat utuh. Setiap tindakan tetap di tangan komandan, dengan bukti yang bisa dipertanggungjawabkan. Potensi implementasinya luas karena pemasangannya ringan: satu mini-PC di pusat dan satu agent di tiap satuan. Langkah berikutnya: uji coba di satuan nyata dan menambah protokol mesin industri lain. SENTRA SHIELD: nyata, terukur, siap pakai. Terima kasih.
 
 ## Catatan produksi
 

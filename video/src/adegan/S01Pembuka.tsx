@@ -29,10 +29,17 @@ export const S01Pembuka: React.FC<{ durasi: number }> = ({ durasi }) => {
   const tSub = pada(ID, "pusat komando") - 0.2;
   const tPrinsip = [pada(ID, "untuk satuan") - 0.1, pada(ID, "untuk satuan") + 0.45, pada(ID, "untuk satuan") + 1.0];
   const tAlur = ALUR.map((k) => pada(ID, k) - 0.1);
+  const tTim = pada(ID, "Tim Claudex404") - 0.1;
+  const tAnggota = pada(ID, "Zulian") - 0.1;
+  const tLomba = pada(ID, "Kartika") - 0.15;
+  // Denyut singkat (0 → 1 → 0 dalam 0,6 dtk) saat nama disebut.
+  const denyut = (t: number) => Math.sin(Math.PI * interpolate(d, [t, t + 0.6], [0, 1], klem));
   const logo = interpolate(d, [0.1, 1.6], [0, 1], klem);
   return (
     <Bingkai id={ID} nomor="01" judul="SENTRA SHIELD" durasi={durasi} tanpaKepala>
       <Bunyi jenis="ping" pada={0.15} />
+      <Bunyi jenis="klik" pada={tTim} keras={0.6} />
+      <Bunyi jenis="klik" pada={tLomba} keras={0.6} />
       {tPrinsip.map((t, i) => (
         <Bunyi key={i} jenis="stempel" pada={t + 0.05} />
       ))}
@@ -51,12 +58,16 @@ export const S01Pembuka: React.FC<{ durasi: number }> = ({ durasi }) => {
         </div>
       </div>
 
+      {/* Identitas tim: tampil sejak awal, disorot saat kalimat "Karya ini dibuat oleh Tim …" diucapkan. */}
       <div style={{ position: "absolute", left: 144, top: 372, display: "flex", gap: 14, opacity: o(tSub + 0.6), whiteSpace: "nowrap" }}>
-        <Chip warnaLatar={warna.accent} warnaTeks={warna.accentInk} style={{ fontSize: 26, padding: "8px 16px" }}>
+        <Chip warnaLatar={warna.accent} warnaTeks={warna.accentInk} style={{ fontSize: 26, padding: "8px 16px", scale: `${1 + 0.08 * denyut(tAnggota)}` }}>
           {NAMA_ANGGOTA}
         </Chip>
-        <Chip warnaLatar={warna.raised} style={{ fontSize: 26, padding: "8px 16px" }}>
+        <Chip warnaLatar={warna.raised} warnaTeks={warna.ink} style={{ fontSize: 26, padding: "8px 16px", border: `2px solid ${warna.accent}`, scale: `${1 + 0.08 * denyut(tTim)}` }}>
           Tim {NAMA_TIM}
+        </Chip>
+        <Chip warnaLatar={warna.raised} style={{ fontSize: 26, padding: "8px 16px", opacity: o(tLomba, 0.35), scale: `${1 + 0.08 * denyut(tLomba)}` }}>
+          Kartika Cyber Hackathon 2026 · Penangkalan
         </Chip>
       </div>
 
@@ -75,8 +86,8 @@ export const S01Pembuka: React.FC<{ durasi: number }> = ({ durasi }) => {
         })}
       </div>
 
-      {/* Alur kalimat kedua: dideteksi → dijelaskan → dihentikan → terputus. */}
-      <div style={{ position: "absolute", left: 144, right: 144, top: 730, display: "flex", alignItems: "center", gap: 22, opacity: o(kalimatMulai(ID, 1) - 0.2) }}>
+      {/* Alur kalimat ketiga: dideteksi → dijelaskan → dihentikan → terputus. */}
+      <div style={{ position: "absolute", left: 144, right: 144, top: 730, display: "flex", alignItems: "center", gap: 22, opacity: o(kalimatMulai(ID, 2) - 0.2) }}>
         {ALUR.map((k, i) => {
           const m = o(tAlur[i], 0.3);
           const akhir = i === ALUR.length - 1;

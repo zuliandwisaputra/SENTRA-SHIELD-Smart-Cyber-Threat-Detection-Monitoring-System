@@ -7,7 +7,7 @@ const DASAR = [
   { id: "01-pembuka", nomor: "01", judul: "SENTRA SHIELD", ekor: 1.6 },
   { id: "02-analogi", nomor: "02", judul: "Analogi pos jaga", ekor: 1.6 },
   { id: "03-masalah", nomor: "03", judul: "Masalah", ekor: 1.2 },
-  { id: "04-arsitektur", nomor: "04", judul: "Arsitektur & lab", ekor: 1.6 },
+  { id: "04-arsitektur", nomor: "04", judul: "Arsitektur & teknologi", ekor: 1.6 },
   { id: "05-pindai", nomor: "05", judul: "Demo 1 · Pemindaian", ekor: 1.4 },
   { id: "06-insiden", nomor: "06", judul: "Demo 2 · Satu insiden", ekor: 1.6 },
   { id: "07-kampanye", nomor: "07", judul: "Demo 3 · Kampanye", ekor: 1.6 },
@@ -22,7 +22,7 @@ const DASAR = [
   { id: "16-hak-akses", nomor: "16", judul: "Hak akses", ekor: 1.8 },
   { id: "17-angka", nomor: "17", judul: "Angka & kelayakan", ekor: 2.2 },
   { id: "18-rekap", nomor: "18", judul: "Rekap 30 detik", ekor: 1.8 },
-  { id: "19-penutup", nomor: "19", judul: "Penutup", ekor: 3.5 },
+  { id: "19-penutup", nomor: "19", judul: "Kesimpulan", ekor: 3.5 },
 ] as const;
 
 export type IdAdegan = (typeof DASAR)[number]["id"];

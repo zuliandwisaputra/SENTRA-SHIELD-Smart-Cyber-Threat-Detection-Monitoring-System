@@ -15,6 +15,7 @@ const T = {
   command: pada(ID, "Command adalah layar") - 0.2,
   hp: pada(ID, "termasuk di HP") - 0.3,
   kembali: pada(ID, "termasuk di HP") + 0.5,
+  tek: pada(ID, "Teknologinya") - 0.3,
   lab: pada(ID, "Untuk demo ini") - 0.4,
   kodimA: pada(ID, "Kodim A") - 0.1,
   kodimB: pada(ID, "Kodim B") - 0.1,
@@ -26,6 +27,18 @@ const T = {
 };
 
 const klem = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
+
+// Bagian teknologi: setiap kartu menyala saat teknologinya disebut di narasi (sumber: README bagian Stack).
+const TEKNOLOGI = [
+  { kode: "CORE", nama: "Laravel 13", isi: "PHP 8.3 · API agent, deteksi, korelasi, skor", t: pada(ID, "Laravel") },
+  { kode: "DATABASE", nama: "MySQL 8.4", isi: "event, insiden, audit log berantai", t: pada(ID, "MySQL") },
+  { kode: "TAMPILAN", nama: "Livewire 3", isi: "Tailwind CSS · Chart.js · responsif di HP", t: pada(ID, "Livewire") },
+  { kode: "REALTIME", nama: "Laravel Reverb", isi: "WebSocket ±2 dtk · cadangan polling 3 dtk", t: pada(ID, "WebSocket Reverb") },
+  { kode: "AGENT", nama: "Python 3.10+", isi: "pustaka standar saja · blokir lewat nftables", t: pada(ID, "Python") },
+  { kode: "LAPORAN", nama: "Ollama", isi: "model AI lokal, opsional · PDF dengan Dompdf", t: pada(ID, "Ollama") },
+  { kode: "PEMASANGAN", nama: "Docker Compose", isi: "satu perintah · berjalan tanpa internet", t: pada(ID, "Docker Compose") },
+  { kode: "PENGUJIAN", nama: "Pest · unittest", isi: "uji otomatis + serangan nyata nmap, hydra, sqlmap", t: pada(ID, "Docker Compose") + 0.6 },
+];
 
 const Kotak: React.FC<{ x: number; y: number; w: number; h: number; o: number; judul: string; kode?: string; aksen?: string; children?: React.ReactNode }> = ({
   x,
@@ -75,16 +88,23 @@ export const S04Arsitektur: React.FC<{ durasi: number }> = ({ durasi }) => {
   // Semua kotak tampil samar sejak awal bagiannya, lalu menyala penuh saat disebut (layar tidak pernah kosong).
   const aA = (t: number) => Math.max(0.22 * a(0.3), a(t));
   const aB = (t: number) => Math.max(0.22, a(t));
-  const bagianA = interpolate(d, [T.lab, T.lab + 0.5], [1, 0], klem);
+  const bagianA = interpolate(d, [T.tek, T.tek + 0.5], [1, 0], klem);
+  const bagianT = interpolate(d, [T.tek + 0.3, T.tek + 0.8, T.lab, T.lab + 0.5], [0, 1, 1, 0], klem);
   const bagianB = interpolate(d, [T.lab + 0.3, T.lab + 0.8], [0, 1], klem);
+  // Kartu teknologi tampil samar sejak bagiannya dimulai, menyala penuh saat disebut.
+  const aT = (t: number) => Math.max(0.25 * a(T.tek + 0.3), a(t - 0.15));
   const stempel = interpolate(d, [T.offline, T.offline + 0.4], [0, 1], klem);
   const ujung = [warna.accent, warna.awas, warna.aman];
 
   return (
-    <Bingkai id={ID} nomor="04" judul="Arsitektur & lab" durasi={durasi}>
+    <Bingkai id={ID} nomor="04" judul="Arsitektur & teknologi" durasi={durasi}>
       <Bunyi jenis="whoosh" pada={T.agent - 0.1} keras={0.7} />
       <Bunyi jenis="whoosh" pada={T.core - 0.1} keras={0.7} />
       <Bunyi jenis="whoosh" pada={T.command - 0.1} keras={0.7} />
+      <Bunyi jenis="whoosh" pada={T.tek} />
+      {TEKNOLOGI.map((k) => (
+        <Bunyi key={k.kode} jenis="klik" pada={k.t - 0.15} keras={0.5} />
+      ))}
       <Bunyi jenis="whoosh" pada={T.lab} />
       <Bunyi jenis="ping" pada={T.lab + 0.4} />
       <Bunyi jenis="bip" pada={T.penyerang + 0.1} keras={0.8} />
@@ -163,6 +183,42 @@ export const S04Arsitektur: React.FC<{ durasi: number }> = ({ durasi }) => {
         <LabelPanah x={660} y={826} o={aA(T.kembali + 0.2)} c={warna.aman}>
           perintah daftar tetap: block_ip · unblock_ip · run_test
         </LabelPanah>
+      </div>
+
+      {/* Bagian T: teknologi yang digunakan */}
+      <div style={{ opacity: bagianT }}>
+        <div style={{ position: "absolute", left: 96, top: 136, display: "flex", alignItems: "baseline", gap: 14, whiteSpace: "nowrap" }}>
+          <span style={{ fontFamily: huruf.mono, fontSize: 24, color: warna.accent }}>TEKNOLOGI //</span>
+          <span style={{ fontFamily: huruf.kondensasi, fontWeight: 600, fontSize: 30, color: warna.ink2 }}>semuanya sumber terbuka dan berjalan tanpa internet</span>
+        </div>
+        {TEKNOLOGI.map((k, i) => {
+          const m = aT(k.t);
+          const nyala = m > 0.9;
+          return (
+            <div
+              key={k.kode}
+              style={{
+                position: "absolute",
+                left: 96 + (i % 4) * (414 + 24),
+                top: 196 + Math.floor(i / 4) * (304 + 24),
+                width: 414,
+                height: 304,
+                padding: "22px 24px",
+                backgroundColor: nyala ? warna.raised : `${warna.panel}F2`,
+                border: `1px solid ${nyala ? warna.accent : warna.lineStrong}`,
+                opacity: m,
+                translate: `0px ${(1 - Math.min(1, m / 0.25)) * 16}px`,
+              }}
+            >
+              <Braket warnaGaris={nyala ? warna.accent : warna.lineControl} />
+              <div style={{ fontFamily: huruf.mono, fontSize: 21, color: warna.accent }}>
+                0{i + 1} // {k.kode}
+              </div>
+              <div style={{ marginTop: 14, fontFamily: huruf.stensil, fontSize: 36, letterSpacing: "0.04em", lineHeight: 1.1, color: warna.ink, whiteSpace: "nowrap" }}>{k.nama}</div>
+              <div style={{ marginTop: 16, fontFamily: huruf.kondensasi, fontWeight: 600, fontSize: 28, lineHeight: 1.3, color: warna.ink2 }}>{k.isi}</div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Bagian B: topologi lab */}

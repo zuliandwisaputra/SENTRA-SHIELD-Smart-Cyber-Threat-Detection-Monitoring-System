@@ -9,6 +9,16 @@ import re
 
 KAMUS = [
     (r"SENTRA SHIELD", "Sentra Syild"),
+    (r"\bClaudex404\b", "Klaudeks empat nol empat"),
+    (r"\bCyber Hackathon\b", "Saiber Hekaton"),
+    (r"\bDocker Compose\b", "Doker Kompos"),
+    (r"\bMySQL\b", "Mai es kyu el"),
+    (r"\bLivewire\b", "Laif waier"),
+    (r"\bWebSocket\b", "Web soket"),
+    (r"\bReverb\b", "Riverb"),
+    (r"\bPython\b", "Paiton"),
+    (r"\bOllama\b", "Olama"),
+    (r"\bAI\b", "a i"),
     (r"MITRE ATT&CK", "Maiter Atek"),
     (r"SHA-256", "Sya dua lima enam"),
     (r"SQL injection", "es kyu el injeksyen"),

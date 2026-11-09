@@ -31,6 +31,7 @@
  "adegan": {
   "01-pembuka": [
    "Ini SENTRA SHIELD, pusat komando deteksi dan respons ancaman siber untuk satuan.",
+   "Karya ini dibuat oleh Tim Claudex404, Zulian Dwi Saputra, untuk Kartika Cyber Hackathon 2026, kategori Penangkalan.",
    "Dalam beberapa menit ke depan, kita lihat bagaimana satu serangan sungguhan dideteksi, dijelaskan, lalu dihentikan, sampai penyerang terputus."
   ],
   "02-analogi": [
@@ -56,6 +57,9 @@
    "Agent di setiap satuan membaca catatan web, login SSH, firewall, perubahan file, dan perintah ke mesin industri, lalu mengirimnya ke pusat setiap detik lewat jalur terenkripsi.",
    "Core di pusat menjalankan 13 aturan deteksi, merangkai serangan, dan memberi skor.",
    "Command adalah layar untuk operator, analis, dan komandan, termasuk di HP.",
+   "Teknologinya: Core dibangun dengan Laravel dan MySQL, tampilannya memakai Livewire, dan layar diperbarui lewat WebSocket Reverb.",
+   "Agent ditulis dengan Python tanpa pustaka tambahan, dan memblokir penyerang lewat nftables.",
+   "Laporan situasi bisa disusun model AI lokal lewat Ollama, dan seluruh sistem dijalankan dengan Docker Compose.",
    "Untuk demo ini kami membangun lab: dua satuan latihan, Kodim A dan Kodim B, sebuah mesin industri PLC, dan satu komputer penyerang di jaringan terpisah.",
    "Semuanya berjalan tanpa internet, di satu laptop."
   ],
@@ -160,6 +164,9 @@
    "Semuanya tercatat di buku jaga yang tidak bisa diubah."
   ],
   "19-penutup": [
+   "Dampak nyatanya bagi pertahanan siber: Kodim tanpa tim siber tetap terpantau dari pusat, dan serangan terkoordinasi terlihat utuh.",
+   "Setiap tindakan tetap di tangan komandan, dengan bukti yang bisa dipertanggungjawabkan.",
+   "Potensi implementasinya luas karena pemasangannya ringan: satu mini-PC di pusat dan satu agent di tiap satuan.",
    "Langkah berikutnya: uji coba di satuan nyata dan menambah protokol mesin industri lain.",
    "SENTRA SHIELD: nyata, terukur, siap pakai.",
    "Terima kasih."

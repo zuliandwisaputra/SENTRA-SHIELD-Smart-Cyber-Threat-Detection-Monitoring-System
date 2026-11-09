@@ -56,6 +56,8 @@ SEED_GESER = int(os.environ.get("SEED_GESER", "0"))  # ganti untuk membuat ulang
 
 def kunci(teks: str) -> str:
     """Normalisasi untuk membandingkan naskah dengan transkrip: huruf kecil, angka jadi kata, tanpa spasi/tanda baca."""
+    # Nama tim: "Claudex404" diucapkan "Klaudeks empat nol empat"; Whisper bisa menulisnya dengan berbagai ejaan.
+    teks = re.sub(r"(?i)\b[ck]l[ao]u?d[eo]?(?:ks|x)\s*-?\s*(?:404|empat\s+nol\s+empat)", "klaudeks empat nol empat", teks)
     teks = re.sub(r"(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d+))?", lambda m: terbilang(int(m.group(1).replace(".", ""))) + (" koma " + " ".join(terbilang(int(d)) for d in m.group(2)) if m.group(2) else ""), teks)
     teks = teks.lower().replace("%", " persen")
     # Ejaan yang lazim keluar dari Whisper untuk istilah kamus.
