@@ -14,6 +14,8 @@ Rulebook Kartika Cyber Hackathon 2026 mewajibkan empat komponen: pengenalan tim 
 | 04 Arsitektur & teknologi | Tiga kalimat teknologi dan panel delapan kartu: Laravel 13, MySQL 8.4, Livewire 3, Laravel Reverb, Python 3.10+, Ollama, Docker Compose, Pest/unittest (dari README bagian Stack). |
 | 19 Kesimpulan | Tiga kalimat dampak dan potensi implementasi; panel Dampak bagi pertahanan siber (dengan angka terukur 3,6 dtk, 2 satuan/1 kampanye, 3,19 dtk) dan panel Potensi implementasi (1 mini-PC, 1 agent per satuan, offline). |
 
+Tujuh kalimat baru lolos cek Whisper pada percobaan pertama setelah kalimat panjang yang berakhir istilah asing (Reverb, Penangkalan) disusun ulang agar diakhiri kata umum. Durasi akhir 9:42. QA frame tiap 5 detik juga menemukan kotak "Waktu pembuatan LAPSIT" yang menimpa baris TOTAL 946 di panel Perhitungan rekaman; kotak dipindah ke area kosong di bawah panel.
+
 ## Yang berubah dari versi 1
 
 | Masalah versi 1 | Perbaikan di versi 2 |
