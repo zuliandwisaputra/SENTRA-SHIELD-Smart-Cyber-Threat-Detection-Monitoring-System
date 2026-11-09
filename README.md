@@ -10,7 +10,7 @@ Karya untuk **Kartika Cyber Hackathon 2026**, kategori 02 Penangkalan (Defensive
 
 | | |
 |---|---|
-| **Link karya** | Landing page: `https://zuliandwisaputra17-stack.github.io/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System/` (diterbitkan dari folder [`site/`](site/)) |
+| **Link karya** | Landing page: `https://zuliandwisaputra.github.io/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System/` (diterbitkan dari folder [`site/`](site/)) |
 | **Video presentasi** | [youtu.be/FEUp9jdq1GE](https://youtu.be/FEUp9jdq1GE) (juga disematkan di landing page) |
 | **Slide** | menyusul |
 
@@ -74,7 +74,7 @@ Semua angka di atas diukur dari lab latihan pada 6–7 November 2026 (lab pengem
 **Linux/macOS:** butuh Docker dengan Compose v2, RAM kosong ±3 GB, dan port `8443` bebas.
 
 ```bash
-git clone -b claude/pensive-galileo-eow7qv https://github.com/zuliandwisaputra17-stack/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System.git
+git clone -b claude/pensive-galileo-eow7qv https://github.com/zuliandwisaputra/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System.git
 ```
 
 ```bash

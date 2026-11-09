@@ -14,7 +14,7 @@ Video demo sudah terpasang: `data-youtube="FEUp9jdq1GE"` di `index.html` (https:
 
 1. Pastikan perubahan sudah ada di branch `main`.
 2. Di GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions** (sekali saja).
-3. **Actions → Landing page → Run workflow**. Setelah selesai, alamatnya muncul di ringkasan workflow, biasanya `https://zuliandwisaputra17-stack.github.io/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System/`.
+3. **Actions → Landing page → Run workflow**. Setelah selesai, alamatnya muncul di ringkasan workflow, biasanya `https://zuliandwisaputra.github.io/SENTRA-SHIELD-Smart-Cyber-Threat-Detection-Monitoring-System/`.
 
 Setiap perubahan di `site/` pada branch `main` diterbitkan ulang otomatis.
 
